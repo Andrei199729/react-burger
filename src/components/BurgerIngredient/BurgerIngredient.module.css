@@ -1,0 +1,29 @@
+.burger-ingredient {
+  display: block;
+}
+
+.burger-ingredient__container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px 24px;
+}
+
+.card {
+  position: relative;
+  width: 272px;
+}
+
+.card:last-child {
+  margin-bottom: 40px;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.name {
+  text-align: center;
+  height: 48px;
+}
