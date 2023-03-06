@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./BurgerIngredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import BurgerIngredient from "../BurgerIngredient/BurgerIngredient";
+import IngredientList from "../IngredientList/IngredientList";
 import { ingredients } from "../../utils/data";
 
 function BurgerIngredients() {
@@ -36,19 +36,19 @@ function BurgerIngredients() {
         </a>
       </div>
       <div className={`${styles["burger-ingredient__scroll"]} mt-10`}>
-        <BurgerIngredient
+        <IngredientList
           idTab="rolls"
           ingredients={rolls}
           title="Булки"
           category="bun"
         />
-        <BurgerIngredient
+        <IngredientList
           idTab="sauces"
           ingredients={sauces}
           title="Соусы"
           category="sauce"
         />
-        <BurgerIngredient
+        <IngredientList
           idTab="mains"
           ingredients={mains}
           title="Начинки"

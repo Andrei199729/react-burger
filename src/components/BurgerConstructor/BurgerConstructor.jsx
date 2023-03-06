@@ -11,7 +11,6 @@ import { ingredients } from "../../utils/data";
 
 function BurgerConstructor() {
   const [locked, setLocked] = useState(true);
-  const rolls = ingredients.filter((roll) => roll.type === "bun");
 
   return (
     <section className={`${styles["burger-constructor"]} ml-4 mt-25`}>
@@ -20,7 +19,7 @@ function BurgerConstructor() {
           <ConstructorElement
             type="top"
             isLocked={locked}
-            text={`Краторная булка N-200i (вверх)`}
+            text={`Краторная булка N-200i (верх)`}
             price={1255}
             thumbnail="https://code.s3.yandex.net/react/code/bun-02-mobile.png"
           />
@@ -48,7 +47,7 @@ function BurgerConstructor() {
           <ConstructorElement
             type="bottom"
             isLocked={locked}
-            text={`Краторная булка N-200i (bottom)`}
+            text={`Краторная булка N-200i (низ)`}
             price={1255}
             thumbnail="https://code.s3.yandex.net/react/code/bun-02-mobile.png"
           />
