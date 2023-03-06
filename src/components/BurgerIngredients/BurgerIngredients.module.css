@@ -1,0 +1,32 @@
+.burger-ingredients {
+  max-height: 912px;
+}
+
+.burger-ingredients__tabs {
+  display: flex;
+}
+
+.burger-ingredient__scroll {
+  max-width: 600px;
+
+  height: 756px;
+  overflow-y: scroll;
+}
+
+.burger-ingredient__scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.burger-ingredient__scroll::-webkit-scrollbar-track {
+  background-color: #2f2f37;
+  margin-bottom: 92px;
+}
+
+.burger-ingredient__scroll::-webkit-scrollbar-thumb {
+  background-color: #8585ad;
+  height: 492px;
+}
+
+.burger-ingredients__link {
+  text-decoration: none;
+}
