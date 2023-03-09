@@ -7,9 +7,9 @@ import {
   CurrencyIcon,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { ingredients } from "../../utils/data";
+import PropTypes from "prop-types";
 
-function BurgerConstructor() {
+function BurgerConstructor(props) {
   const [locked, setLocked] = useState(true);
 
   return (
@@ -25,7 +25,7 @@ function BurgerConstructor() {
           />
         </div>
         <div className={`${styles.scroll}`}>
-          {ingredients.map((main) => {
+          {props.ingredients.data?.map((main) => {
             return (
               main.type !== "bun" && (
                 <div key={main._id} className={`${styles.icon} mr-2`}>
@@ -58,12 +58,23 @@ function BurgerConstructor() {
           <p className="text text_type_main-medium mr-2">666</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button htmlType="button" type="primary" size="large">
+        <Button
+          htmlType="button"
+          type="primary"
+          size="large"
+          onClick={props.onOrderDetails}
+        >
           Оформить заказ
         </Button>
       </div>
     </section>
   );
 }
+
+BurgerConstructor.propTypes = {
+  ingredients: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
+    .isRequired,
+  onOrderDetails: PropTypes.func.isRequired,
+};
 
 export default BurgerConstructor;

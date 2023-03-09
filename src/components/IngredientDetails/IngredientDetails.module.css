@@ -1,0 +1,18 @@
+.mass-ingredient {
+  width: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mass-ingredient__container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.mass-ingredient__block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

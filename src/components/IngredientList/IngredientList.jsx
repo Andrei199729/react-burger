@@ -6,15 +6,19 @@ import React from "react";
 import styles from "./IngredientList.module.css";
 import PropTypes from "prop-types";
 
-function IngredientList({ idTab, title, ingredients, category }) {
+function IngredientList({ idTab, title, ingredients, category, onClick }) {
   return (
     <div className={`${styles["burger-ingredient"]}`} id={idTab}>
       <h2 className="text text_type_main-small mb-6">{title}</h2>
       <ul className={`${styles["burger-ingredient__container-lists"]}`}>
-        {ingredients.map((ingredient) => {
+        {ingredients?.map((ingredient) => {
           return (
             ingredient.type === category && (
-              <li className={`${styles.card}`} key={ingredient._id}>
+              <li
+                className={`${styles.card}`}
+                key={ingredient._id}
+                onClick={onClick}
+              >
                 <Counter count={1} size="default" extraClass="m-1" />
                 <img
                   className="pl-4 pr-4 mb-1"
@@ -40,8 +44,9 @@ function IngredientList({ idTab, title, ingredients, category }) {
 IngredientList.propTypes = {
   idTab: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  ingredients: PropTypes.array.isRequired,
+  ingredients: PropTypes.array,
   category: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default IngredientList;
