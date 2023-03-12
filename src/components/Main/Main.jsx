@@ -11,6 +11,7 @@ function Main(props) {
       <BurgerIngredients
         ingredients={props.ingredients}
         onIngredientDetails={props.onIngredientDetails}
+        onIngredientsData={props.onIngredientsData}
       />
       <BurgerConstructor
         ingredients={props.ingredients}
@@ -25,6 +26,7 @@ Main.propTypes = {
     .isRequired,
   onOrderDetails: PropTypes.func.isRequired,
   onIngredientDetails: PropTypes.func.isRequired,
+  onIngredientsData: PropTypes.func.isRequired,
 };
 
 export default Main;

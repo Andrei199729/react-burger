@@ -6,18 +6,27 @@ import React from "react";
 import styles from "./IngredientList.module.css";
 import PropTypes from "prop-types";
 
-function IngredientList({ idTab, title, ingredients, category, onClick }) {
+function IngredientList(props) {
+  function dataIngredients(e) {
+    props.onIngredientDetails();
+    const clickId = props.ingredients.filter(
+      (ingredient) => ingredient._id === e.currentTarget.id
+    );
+    props.onIngredientsData(clickId);
+  }
+
   return (
-    <div className={`${styles["burger-ingredient"]}`} id={idTab}>
-      <h2 className="text text_type_main-small mb-6">{title}</h2>
+    <div className={`${styles["burger-ingredient"]}`} id={props.idTab}>
+      <h2 className="text text_type_main-small mb-6">{props.title}</h2>
       <ul className={`${styles["burger-ingredient__container-lists"]}`}>
-        {ingredients?.map((ingredient) => {
+        {props.ingredients?.map((ingredient) => {
           return (
-            ingredient.type === category && (
+            ingredient.type === props.category && (
               <li
                 className={`${styles.card}`}
                 key={ingredient._id}
-                onClick={onClick}
+                onClick={dataIngredients}
+                id={ingredient._id}
               >
                 <Counter count={1} size="default" extraClass="m-1" />
                 <img
@@ -46,7 +55,8 @@ IngredientList.propTypes = {
   title: PropTypes.string.isRequired,
   ingredients: PropTypes.array,
   category: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
+  onIngredientDetails: PropTypes.func.isRequired,
+  onIngredientsData: PropTypes.func.isRequired,
 };
 
 export default IngredientList;

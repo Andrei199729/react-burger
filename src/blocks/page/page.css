@@ -4,5 +4,5 @@ html::-webkit-scrollbar {
 
 .page {
   max-width: 100%;
-  overflow-y: hidden;
+  overflow: hidden;
 }

@@ -15,7 +15,6 @@ function BurgerIngredients(props) {
   const mains =
     props.ingredients.data &&
     props.ingredients.data.filter((main) => main.type === "main");
-
   return (
     <section className={`${styles["burger-ingredients"]} mr-10`}>
       <h1 className={`text text_type_main-large mt-10 mb-5`}>
@@ -48,21 +47,24 @@ function BurgerIngredients(props) {
           ingredients={rolls}
           title="Булки"
           category="bun"
-          onClick={props.onIngredientDetails}
+          onIngredientDetails={props.onIngredientDetails}
+          onIngredientsData={props.onIngredientsData}
         />
         <IngredientList
           idTab="sauces"
           ingredients={sauces}
           title="Соусы"
           category="sauce"
-          onClick={props.onIngredientDetails}
+          onIngredientDetails={props.onIngredientDetails}
+          onIngredientsData={props.onIngredientsData}
         />
         <IngredientList
           idTab="mains"
           ingredients={mains}
           title="Начинки"
           category="main"
-          onClick={props.onIngredientDetails}
+          onIngredientDetails={props.onIngredientDetails}
+          onIngredientsData={props.onIngredientsData}
         />
       </div>
     </section>
@@ -73,6 +75,7 @@ BurgerIngredients.propTypes = {
   ingredients: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
     .isRequired,
   onIngredientDetails: PropTypes.func.isRequired,
+  onIngredientsData: PropTypes.func.isRequired,
 };
 
 export default BurgerIngredients;

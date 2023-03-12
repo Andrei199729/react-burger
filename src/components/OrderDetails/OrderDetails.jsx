@@ -1,12 +1,11 @@
 import React from "react";
 import styles from "./OrderDetails.module.css";
 import graphics from "../../images/graphics.svg";
-import Modal from "../Modal/Modal";
 import PropTypes from "prop-types";
 
 function OrderDetails(props) {
   return (
-    <Modal name="order-modal" isOpen={props.isOpen} onClose={props.onClose} s>
+    <>
       <h2
         className={`${styles["modal__title"]} text text_type_digits-large mt-9`}
       >
@@ -26,13 +25,8 @@ function OrderDetails(props) {
       >
         Дождитесь готовности на орбитальной станции
       </p>
-    </Modal>
+    </>
   );
 }
-
-Modal.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-};
 
 export default OrderDetails;

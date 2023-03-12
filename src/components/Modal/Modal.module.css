@@ -1,5 +1,4 @@
 .modal__container {
-  display: flex;
   width: 720px;
   box-sizing: border-box;
   flex-direction: column;
@@ -10,6 +9,11 @@
     0px 0px 1px rgba(0, 0, 0, 0.04);
   border-radius: 40px;
   background: #1c1c21;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
 }
 
 .modal__block {
@@ -29,4 +33,5 @@
 
 .btn_cursor {
   cursor: pointer;
+  text-align: end;
 }

@@ -5,14 +5,15 @@ import Main from "../Main/Main";
 import ingredientsApi from "../../utils/ingredientsApi";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
+import Modal from "../Modal/Modal";
 
 function App() {
   const [ingredients, setIngredients] = useState([]);
   const [isOrderDetailsPopupOpen, setIsOrderDetailsPopupOpen] = useState(false);
   const [isIngredientDetailsPopupOpen, setIsIngredientDetailsPopupOpen] =
     useState(false);
+  const [ingredientsData, setIngredientsData] = useState([]);
 
-  useState(false);
   useEffect(() => {
     fetch(ingredientsApi)
       .then((res) => {
@@ -35,20 +36,6 @@ function App() {
     setIsOrderDetailsPopupOpen(false);
   }
 
-  useEffect(() => {
-    const onKeypress = (e) => {
-      if (e.keyCode === 27) {
-        closeAllPopups();
-      }
-    };
-
-    document.addEventListener("keydown", onKeypress);
-
-    return () => {
-      document.removeEventListener("keydown", onKeypress);
-    };
-  }, []);
-
   return (
     <>
       <AppHeader />
@@ -56,12 +43,27 @@ function App() {
         ingredients={ingredients}
         onOrderDetails={() => setIsOrderDetailsPopupOpen(true)}
         onIngredientDetails={() => setIsIngredientDetailsPopupOpen(true)}
+        onIngredientsData={(data) => setIngredientsData(data)}
       />
-      <OrderDetails isOpen={isOrderDetailsPopupOpen} onClose={closeAllPopups} />
-      <IngredientDetails
-        isOpen={isIngredientDetailsPopupOpen}
-        onClose={closeAllPopups}
-      />
+      {isIngredientDetailsPopupOpen && (
+        <Modal
+          name="ingredient-modal"
+          isOpen={isIngredientDetailsPopupOpen}
+          onClose={closeAllPopups}
+          title="Детали ингредиента"
+        >
+          <IngredientDetails ingredientsData={ingredientsData} />
+        </Modal>
+      )}
+      {isOrderDetailsPopupOpen && (
+        <Modal
+          name="order-modal"
+          isOpen={isOrderDetailsPopupOpen}
+          onClose={closeAllPopups}
+        >
+          <OrderDetails />
+        </Modal>
+      )}
     </>
   );
 }
