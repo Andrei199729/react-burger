@@ -47,7 +47,6 @@ function App() {
       />
       {isIngredientDetailsPopupOpen && (
         <Modal
-          name="ingredient-modal"
           isOpen={isIngredientDetailsPopupOpen}
           onClose={closeAllPopups}
           title="Детали ингредиента"
@@ -56,11 +55,7 @@ function App() {
         </Modal>
       )}
       {isOrderDetailsPopupOpen && (
-        <Modal
-          name="order-modal"
-          isOpen={isOrderDetailsPopupOpen}
-          onClose={closeAllPopups}
-        >
+        <Modal isOpen={isOrderDetailsPopupOpen} onClose={closeAllPopups}>
           <OrderDetails />
         </Modal>
       )}

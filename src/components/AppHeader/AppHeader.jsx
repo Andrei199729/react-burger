@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./AppHeader.module.css";
 
 import {
@@ -9,8 +9,6 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 function AppHeader() {
-  const [active, setActive] = useState(false);
-
   return (
     <header className={`${styles.header} pb-4 pt-4`}>
       <nav className={`${styles.header__burger} pl-5 pb-4 pt-4 pr-5`}>
@@ -29,13 +27,7 @@ function AppHeader() {
             href="/"
           >
             <ListIcon type={"secondary"} />
-            <p
-              className={`text text_type_main-default ${
-                active && styles["active-link"]
-              } ml-2`}
-            >
-              Лента заказов
-            </p>
+            <p className={`text text_type_main-default ml-2`}>Лента заказов</p>
           </a>
           <a className={`${styles.logo}`} href="/">
             <Logo />
@@ -43,13 +35,7 @@ function AppHeader() {
         </div>
         <a className={`${styles["header__burger-link"]} pl-5 pr-5`} href="/">
           <ProfileIcon type={"secondary"} />
-          <p
-            className={`text text_type_main-default ${
-              active && styles["active-link"]
-            } ml-2`}
-          >
-            Личный кабинет
-          </p>
+          <p className={`text text_type_main-default ml-2`}>Личный кабинет</p>
         </a>
       </nav>
     </header>

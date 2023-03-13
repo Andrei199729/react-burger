@@ -3,7 +3,6 @@ import styles from "./IngredientDetails.module.css";
 import PropTypes from "prop-types";
 
 function IngredientDetails(props) {
-  console.log(props.ingredientsData);
   return (
     <>
       {props.ingredientsData.map((ingredientData) => {

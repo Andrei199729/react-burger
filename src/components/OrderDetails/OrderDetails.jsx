@@ -1,9 +1,8 @@
 import React from "react";
 import styles from "./OrderDetails.module.css";
 import graphics from "../../images/graphics.svg";
-import PropTypes from "prop-types";
 
-function OrderDetails(props) {
+function OrderDetails() {
   return (
     <>
       <h2

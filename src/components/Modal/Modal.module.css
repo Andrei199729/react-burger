@@ -23,15 +23,18 @@
   align-self: center;
 }
 
-.modal__title-ingredient {
+.modal__header {
   display: flex;
   max-width: 100%;
   width: 100%;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
+}
+
+.title {
+  margin-right: auto;
 }
 
 .btn_cursor {
   cursor: pointer;
-  text-align: end;
 }
