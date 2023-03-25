@@ -6,6 +6,7 @@ import ingredientsApi from "../../utils/ingredientsApi";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import Modal from "../Modal/Modal";
+import { IngredientsContext } from "../../services/appContext";
 
 function App() {
   const [ingredients, setIngredients] = useState([]);
@@ -13,7 +14,7 @@ function App() {
   const [isIngredientDetailsPopupOpen, setIsIngredientDetailsPopupOpen] =
     useState(false);
   const [ingredientsData, setIngredientsData] = useState([]);
-
+  const [orderBurger, setOrderBurger] = useState([]);
   useEffect(() => {
     fetch(ingredientsApi)
       .then((res) => {
@@ -37,13 +38,13 @@ function App() {
   }
 
   return (
-    <>
+    <IngredientsContext.Provider value={{ ingredients, setIngredients }}>
       <AppHeader />
       <Main
-        ingredients={ingredients}
         onOrderDetails={() => setIsOrderDetailsPopupOpen(true)}
         onIngredientDetails={() => setIsIngredientDetailsPopupOpen(true)}
         onIngredientsData={(data) => setIngredientsData(data)}
+        setOrderBurger={setOrderBurger}
       />
       {isIngredientDetailsPopupOpen && (
         <Modal
@@ -56,10 +57,10 @@ function App() {
       )}
       {isOrderDetailsPopupOpen && (
         <Modal isOpen={isOrderDetailsPopupOpen} onClose={closeAllPopups}>
-          <OrderDetails />
+          <OrderDetails orderBurger={orderBurger} />
         </Modal>
       )}
-    </>
+    </IngredientsContext.Provider>
   );
 }
 

@@ -9,21 +9,18 @@ function Main(props) {
   return (
     <main className={styles.main}>
       <BurgerIngredients
-        ingredients={props.ingredients}
         onIngredientDetails={props.onIngredientDetails}
         onIngredientsData={props.onIngredientsData}
       />
       <BurgerConstructor
-        ingredients={props.ingredients}
         onOrderDetails={props.onOrderDetails}
+        setOrderBurger={props.setOrderBurger}
       />
     </main>
   );
 }
 
 Main.propTypes = {
-  ingredients: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
-    .isRequired,
   onOrderDetails: PropTypes.func.isRequired,
   onIngredientDetails: PropTypes.func.isRequired,
   onIngredientsData: PropTypes.func.isRequired,

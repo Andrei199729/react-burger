@@ -39,13 +39,3 @@
   flex-direction: column;
   gap: 10px;
 }
-
-.total-price {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-
-.total-price__box {
-  display: flex;
-}

@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./OrderDetails.module.css";
 import graphics from "../../images/graphics.svg";
+import PropTypes from "prop-types";
 
-function OrderDetails() {
+function OrderDetails(props) {
   return (
     <>
       <h2
         className={`${styles["modal__title"]} text text_type_digits-large mt-9`}
       >
-        034536
+        {props.orderBurger.order.number}
       </h2>
       <p className={`text text_type_main-medium mt-8`}>идентификатор заказа</p>
       <img
@@ -27,5 +28,9 @@ function OrderDetails() {
     </>
   );
 }
+
+OrderDetails.propTypes = {
+  orderBurger: PropTypes.object.isRequired,
+};
 
 export default OrderDetails;

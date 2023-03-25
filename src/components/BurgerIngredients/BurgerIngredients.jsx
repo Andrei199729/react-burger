@@ -1,20 +1,23 @@
-import React from "react";
+import React, { useContext, useState } from "react";
+
+import { IngredientsContext } from "../../services/appContext";
+
 import styles from "./BurgerIngredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientList from "../IngredientList/IngredientList";
 import PropTypes from "prop-types";
 
 function BurgerIngredients(props) {
-  const [current, setCurrent] = React.useState("Булки");
+  const [current, setCurrent] = useState("Булки");
+  const { ingredients } = useContext(IngredientsContext);
+
   const rolls =
-    props.ingredients.data &&
-    props.ingredients.data.filter((roll) => roll.type === "bun");
+    ingredients.data && ingredients.data.filter((roll) => roll.type === "bun");
   const sauces =
-    props.ingredients.data &&
-    props.ingredients.data.filter((sauce) => sauce.type === "sauce");
+    ingredients.data &&
+    ingredients.data.filter((sauce) => sauce.type === "sauce");
   const mains =
-    props.ingredients.data &&
-    props.ingredients.data.filter((main) => main.type === "main");
+    ingredients.data && ingredients.data.filter((main) => main.type === "main");
   return (
     <section className={`${styles["burger-ingredients"]} mr-10`}>
       <h1 className={`text text_type_main-large mt-10 mb-5`}>
@@ -72,8 +75,6 @@ function BurgerIngredients(props) {
 }
 
 BurgerIngredients.propTypes = {
-  ingredients: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
-    .isRequired,
   onIngredientDetails: PropTypes.func.isRequired,
   onIngredientsData: PropTypes.func.isRequired,
 };
