@@ -8,11 +8,14 @@ import {
 import PropTypes from "prop-types";
 
 import { IngredientsContext } from "../../services/appContext";
+import { OrderBurgerContext } from "../../services/orderBurgerContext";
 import TotalPrice from "../TotalPrice/TotalPrice";
 import orderApi from "../../utils/ordersApi";
 
 function BurgerConstructor(props) {
   const { ingredients } = useContext(IngredientsContext);
+  const { setOrderBurger } = useContext(OrderBurgerContext);
+
   const random = Math.floor(Math.random() * ingredients.data?.length);
   const [totalPrice, setTotalPrice] = React.useState(0);
   const [locked, setLocked] = useState(true);
@@ -74,7 +77,7 @@ function BurgerConstructor(props) {
         }
       })
       .then((res) => {
-        props.setOrderBurger(res);
+        setOrderBurger(res);
         props.onOrderDetails();
       })
       .catch((err) => {
@@ -146,7 +149,6 @@ function BurgerConstructor(props) {
 
 BurgerConstructor.propTypes = {
   onOrderDetails: PropTypes.func.isRequired,
-  setOrderBurger: PropTypes.func.isRequired,
 };
 
 export default BurgerConstructor;

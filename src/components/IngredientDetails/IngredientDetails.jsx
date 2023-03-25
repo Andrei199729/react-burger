@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "./IngredientDetails.module.css";
-import PropTypes from "prop-types";
+import { IngredientsDataContext } from "../../services/ingredientsDataContext";
 
-function IngredientDetails(props) {
+function IngredientDetails() {
+  const { ingredientsData } = useContext(IngredientsDataContext);
+
   return (
     <>
-      {props.ingredientsData.map((ingredientData) => {
+      {ingredientsData.map((ingredientData) => {
         return (
           <React.Fragment key={ingredientData._id}>
             <img src={ingredientData.image_large} alt={ingredientData.name} />
@@ -70,9 +72,5 @@ function IngredientDetails(props) {
     </>
   );
 }
-
-IngredientDetails.propTypes = {
-  ingredientData: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-};
 
 export default IngredientDetails;

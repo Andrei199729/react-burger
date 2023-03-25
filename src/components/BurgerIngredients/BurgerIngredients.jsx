@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useMemo } from "react";
 
 import { IngredientsContext } from "../../services/appContext";
 
@@ -11,13 +11,25 @@ function BurgerIngredients(props) {
   const [current, setCurrent] = useState("Булки");
   const { ingredients } = useContext(IngredientsContext);
 
-  const rolls =
-    ingredients.data && ingredients.data.filter((roll) => roll.type === "bun");
-  const sauces =
-    ingredients.data &&
-    ingredients.data.filter((sauce) => sauce.type === "sauce");
-  const mains =
-    ingredients.data && ingredients.data.filter((main) => main.type === "main");
+  const rolls = useMemo(
+    () =>
+      ingredients.data &&
+      ingredients.data.filter((roll) => roll.type === "bun"),
+    [ingredients.data]
+  );
+  const sauces = useMemo(
+    () =>
+      ingredients.data &&
+      ingredients.data.filter((sauce) => sauce.type === "sauce"),
+    [ingredients.data]
+  );
+  const mains = useMemo(
+    () =>
+      ingredients.data &&
+      ingredients.data.filter((main) => main.type === "main"),
+    [ingredients.data]
+  );
+
   return (
     <section className={`${styles["burger-ingredients"]} mr-10`}>
       <h1 className={`text text_type_main-large mt-10 mb-5`}>
@@ -51,7 +63,6 @@ function BurgerIngredients(props) {
           title="Булки"
           category="bun"
           onIngredientDetails={props.onIngredientDetails}
-          onIngredientsData={props.onIngredientsData}
         />
         <IngredientList
           idTab="sauces"
@@ -59,7 +70,6 @@ function BurgerIngredients(props) {
           title="Соусы"
           category="sauce"
           onIngredientDetails={props.onIngredientDetails}
-          onIngredientsData={props.onIngredientsData}
         />
         <IngredientList
           idTab="mains"
@@ -67,7 +77,6 @@ function BurgerIngredients(props) {
           title="Начинки"
           category="main"
           onIngredientDetails={props.onIngredientDetails}
-          onIngredientsData={props.onIngredientsData}
         />
       </div>
     </section>
@@ -76,7 +85,6 @@ function BurgerIngredients(props) {
 
 BurgerIngredients.propTypes = {
   onIngredientDetails: PropTypes.func.isRequired,
-  onIngredientsData: PropTypes.func.isRequired,
 };
 
 export default BurgerIngredients;

@@ -1,15 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useContext } from "react";
 import styles from "./OrderDetails.module.css";
 import graphics from "../../images/graphics.svg";
-import PropTypes from "prop-types";
+import { OrderBurgerContext } from "../../services/orderBurgerContext";
 
-function OrderDetails(props) {
+function OrderDetails() {
+  const { orderBurger } = useContext(OrderBurgerContext);
+
   return (
     <>
       <h2
         className={`${styles["modal__title"]} text text_type_digits-large mt-9`}
       >
-        {props.orderBurger.order.number}
+        {orderBurger.order.number}
       </h2>
       <p className={`text text_type_main-medium mt-8`}>идентификатор заказа</p>
       <img
@@ -28,9 +30,5 @@ function OrderDetails(props) {
     </>
   );
 }
-
-OrderDetails.propTypes = {
-  orderBurger: PropTypes.object.isRequired,
-};
 
 export default OrderDetails;

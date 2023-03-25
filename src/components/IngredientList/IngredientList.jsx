@@ -2,17 +2,20 @@ import {
   Counter,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import React from "react";
+import React, { useContext } from "react";
 import styles from "./IngredientList.module.css";
 import PropTypes from "prop-types";
+import { IngredientsDataContext } from "../../services/ingredientsDataContext";
 
 function IngredientList(props) {
+  const { setIngredientsData } = useContext(IngredientsDataContext);
+
   function dataIngredients(e) {
     props.onIngredientDetails();
     const clickId = props.ingredients.filter(
       (ingredient) => ingredient._id === e.currentTarget.id
     );
-    props.onIngredientsData(clickId);
+    setIngredientsData(clickId);
   }
 
   return (
@@ -56,7 +59,6 @@ IngredientList.propTypes = {
   ingredients: PropTypes.array,
   category: PropTypes.string.isRequired,
   onIngredientDetails: PropTypes.func.isRequired,
-  onIngredientsData: PropTypes.func.isRequired,
 };
 
 export default IngredientList;

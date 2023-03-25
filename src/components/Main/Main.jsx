@@ -8,14 +8,8 @@ import styles from "./Main.module.css";
 function Main(props) {
   return (
     <main className={styles.main}>
-      <BurgerIngredients
-        onIngredientDetails={props.onIngredientDetails}
-        onIngredientsData={props.onIngredientsData}
-      />
-      <BurgerConstructor
-        onOrderDetails={props.onOrderDetails}
-        setOrderBurger={props.setOrderBurger}
-      />
+      <BurgerIngredients onIngredientDetails={props.onIngredientDetails} />
+      <BurgerConstructor onOrderDetails={props.onOrderDetails} />
     </main>
   );
 }
@@ -23,7 +17,6 @@ function Main(props) {
 Main.propTypes = {
   onOrderDetails: PropTypes.func.isRequired,
   onIngredientDetails: PropTypes.func.isRequired,
-  onIngredientsData: PropTypes.func.isRequired,
 };
 
 export default Main;
