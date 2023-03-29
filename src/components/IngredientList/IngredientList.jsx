@@ -6,12 +6,17 @@ import React, { useContext } from "react";
 import styles from "./IngredientList.module.css";
 import PropTypes from "prop-types";
 import { IngredientsDataContext } from "../../services/ingredientsDataContext";
+import { IngredientDetailsPopupOpenContext } from "../../services/ingredientDetailsPopupOpenContext";
 
 function IngredientList(props) {
   const { setIngredientsData } = useContext(IngredientsDataContext);
 
+  const { setIsIngredientDetailsPopupOpen } = useContext(
+    IngredientDetailsPopupOpenContext
+  );
+
   function dataIngredients(e) {
-    props.onIngredientDetails();
+    setIsIngredientDetailsPopupOpen(true);
     const clickId = props.ingredients.filter(
       (ingredient) => ingredient._id === e.currentTarget.id
     );
@@ -58,7 +63,6 @@ IngredientList.propTypes = {
   title: PropTypes.string.isRequired,
   ingredients: PropTypes.array,
   category: PropTypes.string.isRequired,
-  onIngredientDetails: PropTypes.func.isRequired,
 };
 
 export default IngredientList;

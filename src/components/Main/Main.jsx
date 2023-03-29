@@ -5,18 +5,13 @@ import PropTypes from "prop-types";
 
 import styles from "./Main.module.css";
 
-function Main(props) {
+function Main() {
   return (
     <main className={styles.main}>
-      <BurgerIngredients onIngredientDetails={props.onIngredientDetails} />
-      <BurgerConstructor onOrderDetails={props.onOrderDetails} />
+      <BurgerIngredients />
+      <BurgerConstructor />
     </main>
   );
 }
-
-Main.propTypes = {
-  onOrderDetails: PropTypes.func.isRequired,
-  onIngredientDetails: PropTypes.func.isRequired,
-};
 
 export default Main;

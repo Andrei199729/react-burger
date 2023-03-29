@@ -5,16 +5,20 @@ import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
 
 import { IngredientsContext } from "../../services/appContext";
 import { OrderBurgerContext } from "../../services/orderBurgerContext";
+import { OrderDetailsPopupOpenContext } from "../../services/orderDetailsPopupOpenContext";
+
 import TotalPrice from "../TotalPrice/TotalPrice";
 import orderApi from "../../utils/ordersApi";
 
-function BurgerConstructor(props) {
+function BurgerConstructor() {
   const { ingredients } = useContext(IngredientsContext);
   const { setOrderBurger } = useContext(OrderBurgerContext);
+  const { setIsOrderDetailsPopupOpen } = useContext(
+    OrderDetailsPopupOpenContext
+  );
 
   const random = Math.floor(Math.random() * ingredients.data?.length);
   const [totalPrice, setTotalPrice] = React.useState(0);
@@ -78,7 +82,7 @@ function BurgerConstructor(props) {
       })
       .then((res) => {
         setOrderBurger(res);
-        props.onOrderDetails();
+        setIsOrderDetailsPopupOpen(true);
       })
       .catch((err) => {
         console.log("Ошибка. Запрос не выполнен", err);
@@ -138,17 +142,9 @@ function BurgerConstructor(props) {
           })}
         </div>
       </div>
-      <TotalPrice
-        onOrderDetails={props.onOrderDetails}
-        totalPrice={totalPrice}
-        handleCheckout={handleCheckout}
-      />
+      <TotalPrice totalPrice={totalPrice} handleCheckout={handleCheckout} />
     </section>
   );
 }
-
-BurgerConstructor.propTypes = {
-  onOrderDetails: PropTypes.func.isRequired,
-};
 
 export default BurgerConstructor;

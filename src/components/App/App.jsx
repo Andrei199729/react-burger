@@ -9,6 +9,8 @@ import Modal from "../Modal/Modal";
 import { IngredientsContext } from "../../services/appContext";
 import { OrderBurgerContext } from "../../services/orderBurgerContext";
 import { IngredientsDataContext } from "../../services/ingredientsDataContext";
+import { OrderDetailsPopupOpenContext } from "../../services/orderDetailsPopupOpenContext";
+import { IngredientDetailsPopupOpenContext } from "../../services/ingredientDetailsPopupOpenContext";
 
 function App() {
   const [ingredients, setIngredients] = useState([]);
@@ -52,30 +54,39 @@ function App() {
     return { ingredientsData, setIngredientsData };
   }, [ingredientsData, setIngredientsData]);
 
+  const contextValueOrderDetailsPopupOpen = useMemo(() => {
+    return { isOrderDetailsPopupOpen, setIsOrderDetailsPopupOpen };
+  }, [isOrderDetailsPopupOpen, setIsOrderDetailsPopupOpen]);
+
+  const contextValueIngredientDetailsPopupOpen = useMemo(() => {
+    return { isIngredientDetailsPopupOpen, setIsIngredientDetailsPopupOpen };
+  }, [isIngredientDetailsPopupOpen, setIsIngredientDetailsPopupOpen]);
+
   return (
     <>
       <AppHeader />
       <IngredientsContext.Provider value={contextValueIngredients}>
         <OrderBurgerContext.Provider value={contextValueOrderBurger}>
           <IngredientsDataContext.Provider value={contextValueIngredientsData}>
-            <Main
-              onOrderDetails={() => setIsOrderDetailsPopupOpen(true)}
-              onIngredientDetails={() => setIsIngredientDetailsPopupOpen(true)}
-            />
-            {isIngredientDetailsPopupOpen && (
-              <Modal
-                isOpen={isIngredientDetailsPopupOpen}
-                onClose={closeAllPopups}
-                title="Детали ингредиента"
+            <OrderDetailsPopupOpenContext.Provider
+              value={contextValueOrderDetailsPopupOpen}
+            >
+              <IngredientDetailsPopupOpenContext.Provider
+                value={contextValueIngredientDetailsPopupOpen}
               >
-                <IngredientDetails />
-              </Modal>
-            )}
-            {isOrderDetailsPopupOpen && (
-              <Modal isOpen={isOrderDetailsPopupOpen} onClose={closeAllPopups}>
-                <OrderDetails />
-              </Modal>
-            )}
+                <Main />
+                {isIngredientDetailsPopupOpen && (
+                  <Modal onClose={closeAllPopups} title="Детали ингредиента">
+                    <IngredientDetails />
+                  </Modal>
+                )}
+                {isOrderDetailsPopupOpen && (
+                  <Modal onClose={closeAllPopups}>
+                    <OrderDetails />
+                  </Modal>
+                )}
+              </IngredientDetailsPopupOpenContext.Provider>
+            </OrderDetailsPopupOpenContext.Provider>
           </IngredientsDataContext.Provider>
         </OrderBurgerContext.Provider>
       </IngredientsContext.Provider>

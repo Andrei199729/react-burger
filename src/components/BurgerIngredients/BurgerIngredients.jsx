@@ -5,9 +5,8 @@ import { IngredientsContext } from "../../services/appContext";
 import styles from "./BurgerIngredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientList from "../IngredientList/IngredientList";
-import PropTypes from "prop-types";
 
-function BurgerIngredients(props) {
+function BurgerIngredients() {
   const [current, setCurrent] = useState("Булки");
   const { ingredients } = useContext(IngredientsContext);
 
@@ -62,29 +61,22 @@ function BurgerIngredients(props) {
           ingredients={rolls}
           title="Булки"
           category="bun"
-          onIngredientDetails={props.onIngredientDetails}
         />
         <IngredientList
           idTab="sauces"
           ingredients={sauces}
           title="Соусы"
           category="sauce"
-          onIngredientDetails={props.onIngredientDetails}
         />
         <IngredientList
           idTab="mains"
           ingredients={mains}
           title="Начинки"
           category="main"
-          onIngredientDetails={props.onIngredientDetails}
         />
       </div>
     </section>
   );
 }
-
-BurgerIngredients.propTypes = {
-  onIngredientDetails: PropTypes.func.isRequired,
-};
 
 export default BurgerIngredients;
