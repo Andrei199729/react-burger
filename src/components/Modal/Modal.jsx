@@ -4,14 +4,23 @@ import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 import { createPortal } from "react-dom";
 import ModalOverlay from "../ModalOverlay/ModalOverlay";
+import { useSelector, useDispatch } from "react-redux";
+import { DELETE_INGREDIENT_DATA_MODAL } from "../../services/actions/ingredient";
 
 const modalRoot = document.getElementById("modals");
 
 function Modal(props) {
+  const { ingredientsConstructor } = useSelector((state) => state.ingredients);
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const onKeypress = (e) => {
       if (e.key === "Escape") {
         props.onClose();
+        dispatch({
+          type: DELETE_INGREDIENT_DATA_MODAL,
+          ingredientsConstructor,
+        });
       }
     };
 
@@ -20,7 +29,7 @@ function Modal(props) {
     return () => {
       document.removeEventListener("keydown", onKeypress);
     };
-  }, [props]);
+  }, [dispatch, ingredientsConstructor, props]);
 
   return createPortal(
     <>

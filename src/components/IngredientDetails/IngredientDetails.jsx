@@ -1,13 +1,14 @@
-import React, { useContext } from "react";
+import React from "react";
 import styles from "./IngredientDetails.module.css";
-import { IngredientsDataContext } from "../../services/ingredientsDataContext";
+import { useSelector } from "react-redux";
 
 function IngredientDetails() {
-  const { ingredientsData } = useContext(IngredientsDataContext);
-
+  const { ingredientsDataModal } = useSelector(
+    (state) => state.ingredients.ingredientsDataModal
+  );
   return (
     <>
-      {ingredientsData.map((ingredientData) => {
+      {ingredientsDataModal?.map((ingredientData) => {
         return (
           <React.Fragment key={ingredientData._id}>
             <img src={ingredientData.image_large} alt={ingredientData.name} />

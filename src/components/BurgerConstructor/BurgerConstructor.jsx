@@ -1,118 +1,116 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useMemo } from "react";
 import styles from "./BurgerConstructor.module.css";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  ADD_CONSTRUCTOR_ITEM,
+  DELETE_CONSTRUCTOR_ITEM,
+} from "../../services/actions/ingredient";
 
 import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-import { IngredientsContext } from "../../services/appContext";
-import { OrderBurgerContext } from "../../services/orderBurgerContext";
-import { OrderDetailsPopupOpenContext } from "../../services/orderDetailsPopupOpenContext";
+import { OrderDetailsPopupOpenContext } from "../../service/orderDetailsPopupOpenContext";
 
 import TotalPrice from "../TotalPrice/TotalPrice";
-import orderApi from "../../utils/ordersApi";
+import { postIngredientsConstructorBurger } from "../../services/actions/ingredient";
+import { useDrop } from "react-dnd";
 
-function BurgerConstructor() {
-  const { ingredients } = useContext(IngredientsContext);
-  const { setOrderBurger } = useContext(OrderBurgerContext);
+function BurgerConstructor(props) {
+  const dispatch = useDispatch();
+  const { ingredients, ingredientsConstructor } = useSelector(
+    (state) => state.ingredients
+  );
+
+  const mainsIngredients = useMemo(() => {
+    return ingredientsConstructor?.filter(
+      (ingredient) => ingredient.type !== "bun" && ingredient
+    );
+  }, [ingredientsConstructor]);
+
+  const totalPrice = useMemo(() => {
+    if (!ingredientsConstructor) {
+      return 0;
+    }
+    return ingredientsConstructor?.reduce(
+      (sum, ingredient) =>
+        sum + ingredient.price * (ingredient.type === "bun" ? 2 : 1),
+      0
+    );
+  }, [ingredientsConstructor]);
+
+  const bun = useMemo(() => {
+    return ingredientsConstructor?.find((bun) => bun.type === "bun");
+  }, [ingredientsConstructor]);
+
+  const id = useMemo(() => {
+    return mainsIngredients?.map(
+      (ingredient) => ingredient.type !== "bun" && ingredient._id
+    );
+  }, [mainsIngredients]);
+
+  const moveConstructorItem = (item) => {
+    dispatch({ type: ADD_CONSTRUCTOR_ITEM, ...item });
+  };
+
+  const [{ isHover, drop }, dropTarget] = useDrop({
+    accept: "ingredients",
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+    }),
+    drop(itemId) {
+      moveConstructorItem(itemId);
+    },
+  });
   const { setIsOrderDetailsPopupOpen } = useContext(
     OrderDetailsPopupOpenContext
   );
 
-  const random = Math.floor(Math.random() * ingredients.data?.length);
-  const [totalPrice, setTotalPrice] = React.useState(0);
-  const [locked, setLocked] = useState(true);
-
-  const ingredientsData = ingredients.data;
-  const filterBun = ingredientsData?.filter((bun) => bun.type === "bun" && bun);
-  const filterMain = ingredientsData?.filter(
-    (bun) => bun.type !== "bun" && bun
-  );
-
-  const burgerObject = {
-    bun: filterBun,
-    ingredients: filterMain,
-  };
-
-  useEffect(() => {
-    let total = 0;
-    let bun = 0;
-
-    burgerObject.ingredients?.forEach((main) => {
-      return main.type !== "bun" && (total += main.price);
-    });
-
-    burgerObject.bun?.forEach((main) => {
-      return (
-        main.type === "bun" &&
-        main._id === "60d3b41abdacab0026a733c6" &&
-        (bun += main.price)
-      );
-    });
-
-    setTotalPrice(total + bun * 2);
-  }, [
-    ingredientsData,
-    ingredients.data,
-    random,
-    burgerObject.ingredients,
-    burgerObject.bun,
-  ]);
-
   function handleCheckout() {
-    const ingredientsId = ingredientsData?.map(
-      (ingredientId) => ingredientId._id
-    );
-    fetch(orderApi, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        ingredients: ingredientsId,
-      }),
-    })
-      .then((res) => {
-        if (res.status === 200) {
-          return res.json();
-        } else {
-          return Promise.reject("something wrong");
-        }
-      })
-      .then((res) => {
-        setOrderBurger(res);
-        setIsOrderDetailsPopupOpen(true);
-      })
-      .catch((err) => {
-        console.log("Ошибка. Запрос не выполнен", err);
-      });
+    const ingredientsId = ingredients?.map((ingredientId) => ingredientId._id);
+    dispatch(postIngredientsConstructorBurger(ingredientsId));
+    setIsOrderDetailsPopupOpen(true);
   }
 
+  const onDelete = () => {
+    dispatch({
+      type: DELETE_CONSTRUCTOR_ITEM,
+      id,
+    });
+    console.log(id);
+  };
+
   return (
-    <section className={`${styles["burger-constructor"]} ml-4 mt-25`}>
+    <section
+      className={`${styles["burger-constructor"]}   ${
+        isHover ? styles.onHover : ""
+      } ml-4 mt-25`}
+      ref={dropTarget}
+    >
       <div className={`${styles["burger-constructor__container"]}`}>
+        {!bun && (
+          <p className={`text text_type_main-medium ${styles.tip}`}>
+            Пожалуйста, перенесите сюда булку для создания заказа
+          </p>
+        )}
         <div className={`${styles.bun} ml-8`}>
-          {burgerObject.bun?.map((burgerBun) => {
-            return (
-              burgerBun._id === "60d3b41abdacab0026a733c6" && (
-                <ConstructorElement
-                  type="top"
-                  key={burgerBun._id}
-                  isLocked={locked}
-                  text={`${burgerBun.name} (верх)`}
-                  price={burgerBun.price}
-                  thumbnail={burgerBun.image_mobile}
-                />
-              )
-            );
-          })}
+          {bun && (
+            <ConstructorElement
+              type="top"
+              key={bun._id}
+              isLocked={true}
+              text={`${bun.name} (верх)`}
+              price={bun.price}
+              thumbnail={bun.image_mobile}
+            />
+          )}
         </div>
         <div className={`${styles.scroll}`}>
-          {burgerObject.ingredients?.map((main) => {
+          {mainsIngredients?.map((main, index) => {
             return (
-              <div key={main._id} className={`${styles.icon} mr-2`}>
-                <div className={`${styles["drag-icon"]} mr-2`}>
+              <div key={index} className={`${styles.icon} mr-2`}>
+                <div className={`mr-2`}>
                   <DragIcon type="primary" />
                 </div>
                 <ConstructorElement
@@ -120,26 +118,23 @@ function BurgerConstructor() {
                   text={main.name}
                   price={main.price}
                   thumbnail={main.image_mobile}
+                  handleClose={onDelete}
                 />
               </div>
             );
           })}
         </div>
         <div className={`${styles.bun} ml-8`}>
-          {burgerObject.bun?.map((burgerBun) => {
-            return (
-              burgerBun._id === "60d3b41abdacab0026a733c6" && (
-                <ConstructorElement
-                  type="bottom"
-                  key={burgerBun._id}
-                  isLocked={locked}
-                  text={`${burgerBun.name} (низ)`}
-                  price={burgerBun.price}
-                  thumbnail={burgerBun.image_mobile}
-                />
-              )
-            );
-          })}
+          {bun && (
+            <ConstructorElement
+              type="bottom"
+              key={bun._id}
+              isLocked={true}
+              text={`${bun.name} (низ)`}
+              price={bun.price}
+              thumbnail={bun.image_mobile}
+            />
+          )}
         </div>
       </div>
       <TotalPrice totalPrice={totalPrice} handleCheckout={handleCheckout} />

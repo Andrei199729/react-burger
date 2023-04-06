@@ -1,17 +1,16 @@
-import React, { useContext } from "react";
+import React from "react";
 import styles from "./OrderDetails.module.css";
 import graphics from "../../images/graphics.svg";
-import { OrderBurgerContext } from "../../services/orderBurgerContext";
+import { useSelector } from "react-redux";
 
 function OrderDetails() {
-  const { orderBurger } = useContext(OrderBurgerContext);
-
+  const { createdOrder } = useSelector((state) => state.ingredients);
   return (
     <>
       <h2
         className={`${styles["modal__title"]} text text_type_digits-large mt-9`}
       >
-        {orderBurger.order.number}
+        {createdOrder.res.order.number}
       </h2>
       <p className={`text text_type_main-medium mt-8`}>идентификатор заказа</p>
       <img

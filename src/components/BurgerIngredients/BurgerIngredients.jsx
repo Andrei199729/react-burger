@@ -1,33 +1,61 @@
-import React, { useContext, useState, useMemo } from "react";
-
-import { IngredientsContext } from "../../services/appContext";
+import React, { useState, useMemo, useEffect } from "react";
 
 import styles from "./BurgerIngredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientList from "../IngredientList/IngredientList";
+import { useInView } from "react-intersection-observer";
+import { useSelector } from "react-redux";
 
-function BurgerIngredients() {
-  const [current, setCurrent] = useState("Булки");
-  const { ingredients } = useContext(IngredientsContext);
+function BurgerIngredients(props) {
+  const [current, setCurrent] = useState("rolls");
+  const { ingredients, ingredientsConstructor } = useSelector(
+    (state) => state.ingredients
+  );
+
+  const [refRolls, inViewRolls] = useInView({
+    threshold: 0,
+  });
+
+  const [refSauces, inViewSauces] = useInView({
+    threshold: 0,
+  });
+
+  const [refMains, inViewMains] = useInView({
+    threshold: 0,
+  });
+
+  useEffect(() => {
+    if (inViewRolls) {
+      setCurrent("rolls");
+    } else if (inViewSauces) {
+      setCurrent("sauces");
+    } else if (inViewMains) {
+      setCurrent("mains");
+    }
+  }, [inViewRolls, inViewMains, inViewSauces]);
 
   const rolls = useMemo(
-    () =>
-      ingredients.data &&
-      ingredients.data.filter((roll) => roll.type === "bun"),
-    [ingredients.data]
+    () => ingredients?.filter((roll) => roll.type === "bun"),
+    [ingredients]
   );
+
   const sauces = useMemo(
-    () =>
-      ingredients.data &&
-      ingredients.data.filter((sauce) => sauce.type === "sauce"),
-    [ingredients.data]
+    () => ingredients?.filter((sauce) => sauce.type === "sauce"),
+    [ingredients]
   );
+
   const mains = useMemo(
-    () =>
-      ingredients.data &&
-      ingredients.data.filter((main) => main.type === "main"),
-    [ingredients.data]
+    () => ingredients?.filter((main) => main.type === "main"),
+    [ingredients]
   );
+
+  const handleClickTab = (name) => {
+    setCurrent(name);
+    const element = document.getElementById(`${name}`);
+    if (element) {
+      element.scrollIntoView({ block: "start", behavior: "smooth" });
+    }
+  };
 
   return (
     <section className={`${styles["burger-ingredients"]} mr-10`}>
@@ -35,25 +63,27 @@ function BurgerIngredients() {
         Соберите бургер
       </h1>
       <div className={`${styles["burger-ingredients__tabs"]}`}>
-        <a href="#rolls" className={`${styles["burger-ingredients__link"]}`}>
-          <Tab value="Булки" active={current === "Булки"} onClick={setCurrent}>
-            Булки
-          </Tab>
-        </a>
-        <a href="#sauces" className={`${styles["burger-ingredients__link"]}`}>
-          <Tab value="Соусы" active={current === "Соусы"} onClick={setCurrent}>
-            Соусы
-          </Tab>
-        </a>
-        <a href="#mains" className={`${styles["burger-ingredients__link"]}`}>
-          <Tab
-            value="Начинки"
-            active={current === "Начинки"}
-            onClick={setCurrent}
-          >
-            Начинки
-          </Tab>
-        </a>
+        <Tab
+          value="rolls"
+          active={current === "rolls"}
+          onClick={handleClickTab}
+        >
+          Булки
+        </Tab>
+        <Tab
+          value="sauces"
+          active={current === "sauces"}
+          onClick={handleClickTab}
+        >
+          Соусы
+        </Tab>
+        <Tab
+          value="mains"
+          active={current === "mains"}
+          onClick={handleClickTab}
+        >
+          Начинки
+        </Tab>
       </div>
       <div className={`${styles["burger-ingredient__scroll"]} mt-10`}>
         <IngredientList
@@ -61,18 +91,21 @@ function BurgerIngredients() {
           ingredients={rolls}
           title="Булки"
           category="bun"
+          innerRef={refRolls}
         />
         <IngredientList
           idTab="sauces"
           ingredients={sauces}
           title="Соусы"
           category="sauce"
+          innerRef={refSauces}
         />
         <IngredientList
           idTab="mains"
           ingredients={mains}
           title="Начинки"
           category="main"
+          innerRef={refMains}
         />
       </div>
     </section>
