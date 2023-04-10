@@ -6,11 +6,9 @@ import IngredientList from "../IngredientList/IngredientList";
 import { useInView } from "react-intersection-observer";
 import { useSelector } from "react-redux";
 
-function BurgerIngredients(props) {
+function BurgerIngredients() {
   const [current, setCurrent] = useState("rolls");
-  const { ingredients, ingredientsConstructor } = useSelector(
-    (state) => state.ingredients
-  );
+  const { ingredients } = useSelector((state) => state.ingredients);
 
   const [refRolls, inViewRolls] = useInView({
     threshold: 0,

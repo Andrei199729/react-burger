@@ -5,12 +5,12 @@ import { useSelector } from "react-redux";
 
 function OrderDetails() {
   const { createdOrder } = useSelector((state) => state.ingredients);
-  return (
+  return createdOrder || undefined || null ? (
     <>
       <h2
         className={`${styles["modal__title"]} text text_type_digits-large mt-9`}
       >
-        {createdOrder.res.order.number}
+        {createdOrder.order.number}
       </h2>
       <p className={`text text_type_main-medium mt-8`}>идентификатор заказа</p>
       <img
@@ -27,7 +27,7 @@ function OrderDetails() {
         Дождитесь готовности на орбитальной станции
       </p>
     </>
-  );
+  ) : null;
 }
 
 export default OrderDetails;

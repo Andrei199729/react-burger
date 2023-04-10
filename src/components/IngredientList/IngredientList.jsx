@@ -11,7 +11,6 @@ function IngredientList(props) {
     IngredientDetailsPopupOpenContext
   );
   const dispatch = useDispatch();
-
   function dataIngredients(e) {
     setIsIngredientDetailsPopupOpen(true);
     const clickId = props.ingredients.filter(
@@ -58,6 +57,7 @@ IngredientList.propTypes = {
   title: PropTypes.string.isRequired,
   ingredients: PropTypes.array,
   category: PropTypes.string.isRequired,
+  innerRef: PropTypes.func.isRequired,
 };
 
 export default IngredientList;

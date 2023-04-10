@@ -9,7 +9,9 @@ import { useDrag } from "react-dnd";
 import { useSelector } from "react-redux";
 
 function Ingredient({ ingredient, dataIngredients }) {
-  const { ingredientsConstructor } = useSelector((state) => state.ingredients);
+  const { ingredientsConstructor, bun } = useSelector(
+    (state) => state.ingredients
+  );
   const id = ingredient._id;
   const [{ opacity }, ref] = useDrag({
     type: "ingredients",
@@ -19,18 +21,14 @@ function Ingredient({ ingredient, dataIngredients }) {
     }),
   });
   const ingredientsCount = useMemo(() => {
-    if (!ingredientsConstructor) {
-      return {};
-    }
-
-    return ingredientsConstructor.reduce(
-      (acc, item) => ({
-        ...acc,
-        [item._id]: (acc[item._id] || 0) + (item.type === "bun" ? 2 : 1),
-      }),
-      {}
-    );
-  }, [ingredientsConstructor]);
+    const result = {};
+    ingredientsConstructor.forEach((item) => {
+      result[item._id] = result[item._id] ?? 0;
+      result[item._id]++;
+    });
+    if (bun) result[bun._id] = 2;
+    return result;
+  }, [ingredientsConstructor, bun]);
 
   return (
     <li
@@ -60,4 +58,8 @@ function Ingredient({ ingredient, dataIngredients }) {
   );
 }
 
+Ingredient.propTypes = {
+  ingredient: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+  dataIngredients: PropTypes.func.isRequired,
+};
 export default Ingredient;

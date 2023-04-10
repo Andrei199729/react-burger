@@ -1,28 +1,58 @@
-import React, { useContext, useMemo } from "react";
+import React, { useContext, useMemo, useState, useCallback } from "react";
 import styles from "./BurgerConstructor.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import {
   ADD_CONSTRUCTOR_ITEM,
   DELETE_CONSTRUCTOR_ITEM,
+  UPDATE_CONSTRUCTOR_ITEM,
 } from "../../services/actions/ingredient";
 
-import {
-  ConstructorElement,
-  DragIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { OrderDetailsPopupOpenContext } from "../../service/orderDetailsPopupOpenContext";
 
 import TotalPrice from "../TotalPrice/TotalPrice";
 import { postIngredientsConstructorBurger } from "../../services/actions/ingredient";
 import { useDrop } from "react-dnd";
+import update from "immutability-helper";
 
-function BurgerConstructor(props) {
+import BurgerConstructorIngredients from "../BurgerConstructorIngredients/BurgerConstructorIngredients";
+function BurgerConstructor() {
   const dispatch = useDispatch();
-  const { ingredients, ingredientsConstructor } = useSelector(
+
+  const { ingredients, ingredientsConstructor, bun } = useSelector(
     (state) => state.ingredients
   );
+  //
+  const findCard = useCallback(
+    (id) => {
+      const ingredientContainer = ingredientsConstructor.filter(
+        (c) => c._id === id
+      )[0];
+      return {
+        ingredientContainer,
+        index: ingredientsConstructor.indexOf(ingredientContainer),
+      };
+    },
+    [ingredientsConstructor]
+  );
 
+  const moveCard = useCallback(
+    (id, atIndex) => {
+      const { ingredientContainer, index } = findCard(id);
+      dispatch({
+        type: UPDATE_CONSTRUCTOR_ITEM,
+        item: update(ingredientsConstructor, {
+          $splice: [
+            [index, 1],
+            [atIndex, 0, ingredientContainer],
+          ],
+        }),
+      });
+    },
+    [dispatch, findCard, ingredientsConstructor]
+  );
+  //
   const mainsIngredients = useMemo(() => {
     return ingredientsConstructor?.filter(
       (ingredient) => ingredient.type !== "bun" && ingredient
@@ -34,27 +64,23 @@ function BurgerConstructor(props) {
       return 0;
     }
     return ingredientsConstructor?.reduce(
-      (sum, ingredient) =>
-        sum + ingredient.price * (ingredient.type === "bun" ? 2 : 1),
+      (sum, ingredient) => sum + ingredient.price,
       0
     );
   }, [ingredientsConstructor]);
 
-  const bun = useMemo(() => {
-    return ingredientsConstructor?.find((bun) => bun.type === "bun");
-  }, [ingredientsConstructor]);
-
-  const id = useMemo(() => {
-    return mainsIngredients?.map(
-      (ingredient) => ingredient.type !== "bun" && ingredient._id
-    );
-  }, [mainsIngredients]);
+  const totalPriceBun = useMemo(() => {
+    if (!bun) {
+      return 0;
+    }
+    return bun.price * 2;
+  }, [bun]);
 
   const moveConstructorItem = (item) => {
     dispatch({ type: ADD_CONSTRUCTOR_ITEM, ...item });
   };
 
-  const [{ isHover, drop }, dropTarget] = useDrop({
+  const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredients",
     collect: (monitor) => ({
       isHover: monitor.isOver(),
@@ -63,6 +89,9 @@ function BurgerConstructor(props) {
       moveConstructorItem(itemId);
     },
   });
+
+  const [, drop] = useDrop(() => ({ accept: "card" }));
+
   const { setIsOrderDetailsPopupOpen } = useContext(
     OrderDetailsPopupOpenContext
   );
@@ -73,17 +102,21 @@ function BurgerConstructor(props) {
     setIsOrderDetailsPopupOpen(true);
   }
 
-  const onDelete = () => {
-    dispatch({
-      type: DELETE_CONSTRUCTOR_ITEM,
-      id,
-    });
-    console.log(id);
+  const onDelete = (main) => {
+    let myIndex = ingredientsConstructor.indexOf(main);
+    if (myIndex !== -1) {
+      const chosenIngredientsClone = ingredientsConstructor.slice();
+      chosenIngredientsClone.splice(myIndex, 1);
+      dispatch({
+        type: DELETE_CONSTRUCTOR_ITEM,
+        chosenIngredientsClone,
+      });
+    }
   };
 
   return (
     <section
-      className={`${styles["burger-constructor"]}   ${
+      className={`${styles["burger-constructor"]} ${
         isHover ? styles.onHover : ""
       } ml-4 mt-25`}
       ref={dropTarget}
@@ -95,7 +128,7 @@ function BurgerConstructor(props) {
           </p>
         )}
         <div className={`${styles.bun} ml-8`}>
-          {bun && (
+          {(bun || undefined || null) && (
             <ConstructorElement
               type="top"
               key={bun._id}
@@ -106,21 +139,21 @@ function BurgerConstructor(props) {
             />
           )}
         </div>
-        <div className={`${styles.scroll}`}>
+        <div className={`${styles.scroll}`} ref={drop}>
           {mainsIngredients?.map((main, index) => {
             return (
-              <div key={index} className={`${styles.icon} mr-2`}>
-                <div className={`mr-2`}>
-                  <DragIcon type="primary" />
-                </div>
-                <ConstructorElement
-                  key={main._id}
-                  text={main.name}
-                  price={main.price}
-                  thumbnail={main.image_mobile}
-                  handleClose={onDelete}
-                />
-              </div>
+              <BurgerConstructorIngredients
+                key={`todo-item-${index}`}
+                onDelete={onDelete}
+                id={main._id}
+                index={index}
+                name={main.name}
+                price={main.price}
+                imageMobile={main.image_mobile}
+                main={main}
+                moveCard={moveCard}
+                findCard={findCard}
+              />
             );
           })}
         </div>
@@ -137,7 +170,10 @@ function BurgerConstructor(props) {
           )}
         </div>
       </div>
-      <TotalPrice totalPrice={totalPrice} handleCheckout={handleCheckout} />
+      <TotalPrice
+        totalPrice={totalPrice + totalPriceBun}
+        handleCheckout={handleCheckout}
+      />
     </section>
   );
 }

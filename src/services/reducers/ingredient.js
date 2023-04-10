@@ -10,13 +10,15 @@ import {
   POST_ORDER_DETAILS_FAILED,
   ADD_CONSTRUCTOR_ITEM,
   DELETE_CONSTRUCTOR_ITEM,
+  UPDATE_CONSTRUCTOR_ITEM,
 } from "../actions/ingredient";
 
 const initialState = {
   ingredients: [],
   ingredientsConstructor: [],
   ingredientsDataModal: [],
-  createdOrder: [],
+  createdOrder: undefined || null,
+  bun: null || undefined,
 };
 
 export const ingredientReducer = (state = initialState, action) => {
@@ -61,7 +63,7 @@ export const ingredientReducer = (state = initialState, action) => {
     case POST_ORDER_DETAILS_SUCCESS:
       return {
         ...state,
-        createdOrder: action,
+        createdOrder: action.order,
       };
 
     case POST_ORDER_DETAILS_FAILED:
@@ -69,6 +71,12 @@ export const ingredientReducer = (state = initialState, action) => {
         ...state,
       };
     case ADD_CONSTRUCTOR_ITEM: {
+      if (action.ingredient.type === "bun") {
+        return {
+          ...state,
+          bun: action.ingredient,
+        };
+      }
       return {
         ...state,
         ingredientsConstructor: [
@@ -77,12 +85,19 @@ export const ingredientReducer = (state = initialState, action) => {
         ],
       };
     }
+
+    case UPDATE_CONSTRUCTOR_ITEM: {
+      return {
+        ...state,
+        ingredientsConstructor: action.item,
+      };
+    }
+
     case DELETE_CONSTRUCTOR_ITEM: {
       return {
         ...state,
-        ingredientsConstructor: state.ingredientsConstructor.filter((item) => {
-          console.log(item, action.id);
-          return item._id !== action.id;
+        ingredientsConstructor: action.chosenIngredientsClone.filter((item) => {
+          return item._id;
         }),
       };
     }

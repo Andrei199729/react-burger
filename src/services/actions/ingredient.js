@@ -15,7 +15,7 @@ export const POST_ORDER_DETAILS_REQUEST = "POST_ORDER_DETAILS_REQUEST";
 export const POST_ORDER_DETAILS_FAILED = "POST_ORDER_DETAILS_FAILED";
 export const ADD_CONSTRUCTOR_ITEM = "ADD_CONSTRUCTOR_ITEM";
 export const DELETE_CONSTRUCTOR_ITEM = "DELETE_CONSTRUCTOR_ITEM";
-
+export const UPDATE_CONSTRUCTOR_ITEM = "UPDATE_CONSTRUCTOR_ITEM";
 export function getIngredients() {
   return function (dispatch) {
     dispatch({
@@ -47,7 +47,7 @@ export function postIngredientsConstructorBurger(ingredientsId) {
       .then((res) => {
         dispatch({
           type: POST_ORDER_DETAILS_SUCCESS,
-          res,
+          order: res,
         });
       })
       .catch((err) =>
