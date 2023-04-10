@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 
 function Ingredient({ ingredient, dataIngredients }) {
   const { ingredientsConstructor, bun } = useSelector(
-    (state) => state.ingredients
+    (state) => state.constructorItems
   );
   const id = ingredient._id;
   const [{ opacity }, ref] = useDrag({
@@ -22,7 +22,7 @@ function Ingredient({ ingredient, dataIngredients }) {
   });
   const ingredientsCount = useMemo(() => {
     const result = {};
-    ingredientsConstructor.forEach((item) => {
+    ingredientsConstructor?.forEach((item) => {
       result[item._id] = result[item._id] ?? 0;
       result[item._id]++;
     });
@@ -59,7 +59,12 @@ function Ingredient({ ingredient, dataIngredients }) {
 }
 
 Ingredient.propTypes = {
-  ingredient: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+  ingredient: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+  }),
   dataIngredients: PropTypes.func.isRequired,
 };
 export default Ingredient;

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 
@@ -11,7 +11,7 @@ function Main() {
     <main className={styles.main}>
       <DndProvider backend={HTML5Backend}>
         <BurgerIngredients />
-        <BurgerConstructor name="constructor" />
+        <BurgerConstructor />
       </DndProvider>
     </main>
   );

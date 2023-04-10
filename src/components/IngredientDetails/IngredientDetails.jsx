@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 function IngredientDetails() {
   const { ingredientsDataModal } = useSelector(
-    (state) => state.ingredients.ingredientsDataModal
+    (state) => state.popupIngredient.ingredientsDataModal
   );
   return (
     <>

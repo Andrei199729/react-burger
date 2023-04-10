@@ -1,58 +1,55 @@
-import React, { useContext, useMemo, useState, useCallback } from "react";
+import React, { useMemo } from "react";
 import styles from "./BurgerConstructor.module.css";
 import { useSelector, useDispatch } from "react-redux";
+
 import {
   ADD_CONSTRUCTOR_ITEM,
   DELETE_CONSTRUCTOR_ITEM,
   UPDATE_CONSTRUCTOR_ITEM,
-} from "../../services/actions/ingredient";
-
+} from "../../services/actions/constructor";
+import { DELETE_ORDER_DATA_MODAL } from "../../services/actions/popupOrder";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 
-import { OrderDetailsPopupOpenContext } from "../../service/orderDetailsPopupOpenContext";
-
 import TotalPrice from "../TotalPrice/TotalPrice";
-import { postIngredientsConstructorBurger } from "../../services/actions/ingredient";
+import { postIngredientsConstructorBurger } from "../../services/actions/popupOrder";
 import { useDrop } from "react-dnd";
 import update from "immutability-helper";
 
 import BurgerConstructorIngredients from "../BurgerConstructorIngredients/BurgerConstructorIngredients";
+import OrderDetails from "../OrderDetails/OrderDetails";
+import Modal from "../Modal/Modal";
+
 function BurgerConstructor() {
   const dispatch = useDispatch();
 
-  const { ingredients, ingredientsConstructor, bun } = useSelector(
-    (state) => state.ingredients
+  const { ingredients } = useSelector((state) => state.ingredients);
+  const { orderDetailsPopupOpen } = useSelector((state) => state.popupOrder);
+  const { ingredientsConstructor, bun } = useSelector(
+    (state) => state.constructorItems
   );
-  //
-  const findCard = useCallback(
-    (id) => {
-      const ingredientContainer = ingredientsConstructor.filter(
-        (c) => c._id === id
-      )[0];
-      return {
-        ingredientContainer,
-        index: ingredientsConstructor.indexOf(ingredientContainer),
-      };
-    },
-    [ingredientsConstructor]
-  );
+  const findCard = (id) => {
+    const ingredientContainer = ingredientsConstructor.filter(
+      (c) => c._id === id
+    )[0];
+    return {
+      ingredientContainer,
+      index: ingredientsConstructor.indexOf(ingredientContainer),
+    };
+  };
 
-  const moveCard = useCallback(
-    (id, atIndex) => {
-      const { ingredientContainer, index } = findCard(id);
-      dispatch({
-        type: UPDATE_CONSTRUCTOR_ITEM,
-        item: update(ingredientsConstructor, {
-          $splice: [
-            [index, 1],
-            [atIndex, 0, ingredientContainer],
-          ],
-        }),
-      });
-    },
-    [dispatch, findCard, ingredientsConstructor]
-  );
-  //
+  const moveCard = (id, atIndex) => {
+    const { ingredientContainer, index } = findCard(id);
+    dispatch({
+      type: UPDATE_CONSTRUCTOR_ITEM,
+      item: update(ingredientsConstructor, {
+        $splice: [
+          [index, 1],
+          [atIndex, 0, ingredientContainer],
+        ],
+      }),
+    });
+  };
+
   const mainsIngredients = useMemo(() => {
     return ingredientsConstructor?.filter(
       (ingredient) => ingredient.type !== "bun" && ingredient
@@ -92,14 +89,9 @@ function BurgerConstructor() {
 
   const [, drop] = useDrop(() => ({ accept: "card" }));
 
-  const { setIsOrderDetailsPopupOpen } = useContext(
-    OrderDetailsPopupOpenContext
-  );
-
   function handleCheckout() {
     const ingredientsId = ingredients?.map((ingredientId) => ingredientId._id);
     dispatch(postIngredientsConstructorBurger(ingredientsId));
-    setIsOrderDetailsPopupOpen(true);
   }
 
   const onDelete = (main) => {
@@ -114,67 +106,80 @@ function BurgerConstructor() {
     }
   };
 
+  function closeAllPopups() {
+    dispatch({
+      type: DELETE_ORDER_DATA_MODAL,
+    });
+  }
+
   return (
-    <section
-      className={`${styles["burger-constructor"]} ${
-        isHover ? styles.onHover : ""
-      } ml-4 mt-25`}
-      ref={dropTarget}
-    >
-      <div className={`${styles["burger-constructor__container"]}`}>
-        {!bun && (
-          <p className={`text text_type_main-medium ${styles.tip}`}>
-            Пожалуйста, перенесите сюда булку для создания заказа
-          </p>
-        )}
-        <div className={`${styles.bun} ml-8`}>
-          {(bun || undefined || null) && (
-            <ConstructorElement
-              type="top"
-              key={bun._id}
-              isLocked={true}
-              text={`${bun.name} (верх)`}
-              price={bun.price}
-              thumbnail={bun.image_mobile}
-            />
+    <>
+      <section
+        className={`${styles["burger-constructor"]} ${
+          isHover ? styles.onHover : ""
+        } ml-4 mt-25`}
+        ref={dropTarget}
+      >
+        <div className={`${styles["burger-constructor__container"]}`}>
+          {!bun && (
+            <p className={`text text_type_main-medium ${styles.tip}`}>
+              Пожалуйста, перенесите сюда булку для создания заказа
+            </p>
           )}
-        </div>
-        <div className={`${styles.scroll}`} ref={drop}>
-          {mainsIngredients?.map((main, index) => {
-            return (
-              <BurgerConstructorIngredients
-                key={`todo-item-${index}`}
-                onDelete={onDelete}
-                id={main._id}
-                index={index}
-                name={main.name}
-                price={main.price}
-                imageMobile={main.image_mobile}
-                main={main}
-                moveCard={moveCard}
-                findCard={findCard}
+          <div className={`${styles.bun} ml-8`}>
+            {(bun || undefined || null) && (
+              <ConstructorElement
+                type="top"
+                key={bun._id}
+                isLocked={true}
+                text={`${bun.name} (верх)`}
+                price={bun.price}
+                thumbnail={bun.image_mobile}
               />
-            );
-          })}
+            )}
+          </div>
+          <div className={`${styles.scroll}`} ref={drop}>
+            {mainsIngredients?.map((main, index) => {
+              return (
+                <BurgerConstructorIngredients
+                  key={`todo-item-${index}`}
+                  onDelete={onDelete}
+                  id={main._id}
+                  index={index}
+                  name={main.name}
+                  price={main.price}
+                  imageMobile={main.image_mobile}
+                  main={main}
+                  moveCard={moveCard}
+                  findCard={findCard}
+                />
+              );
+            })}
+          </div>
+          <div className={`${styles.bun} ml-8`}>
+            {bun && (
+              <ConstructorElement
+                type="bottom"
+                key={bun._id}
+                isLocked={true}
+                text={`${bun.name} (низ)`}
+                price={bun.price}
+                thumbnail={bun.image_mobile}
+              />
+            )}
+          </div>
         </div>
-        <div className={`${styles.bun} ml-8`}>
-          {bun && (
-            <ConstructorElement
-              type="bottom"
-              key={bun._id}
-              isLocked={true}
-              text={`${bun.name} (низ)`}
-              price={bun.price}
-              thumbnail={bun.image_mobile}
-            />
-          )}
-        </div>
-      </div>
-      <TotalPrice
-        totalPrice={totalPrice + totalPriceBun}
-        handleCheckout={handleCheckout}
-      />
-    </section>
+        <TotalPrice
+          totalPrice={totalPrice + totalPriceBun}
+          handleCheckout={handleCheckout}
+        />
+      </section>
+      {orderDetailsPopupOpen && (
+        <Modal onClose={closeAllPopups}>
+          <OrderDetails />
+        </Modal>
+      )}
+    </>
   );
 }
 

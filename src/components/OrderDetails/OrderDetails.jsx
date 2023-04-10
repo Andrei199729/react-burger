@@ -4,7 +4,7 @@ import graphics from "../../images/graphics.svg";
 import { useSelector } from "react-redux";
 
 function OrderDetails() {
-  const { createdOrder } = useSelector((state) => state.ingredients);
+  const { createdOrder } = useSelector((state) => state.popupOrder);
   return createdOrder || undefined || null ? (
     <>
       <h2

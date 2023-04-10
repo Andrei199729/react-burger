@@ -4,11 +4,25 @@ import styles from "./BurgerIngredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientList from "../IngredientList/IngredientList";
 import { useInView } from "react-intersection-observer";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import IngredientDetails from "../IngredientDetails/IngredientDetails";
+import Modal from "../Modal/Modal";
+import { DELETE_INGREDIENT_DATA_MODAL } from "../../services/actions/popupIngredient";
+import { getIngredients } from "../../services/actions/ingredient";
 
 function BurgerIngredients() {
   const [current, setCurrent] = useState("rolls");
   const { ingredients } = useSelector((state) => state.ingredients);
+  const { ingredientsConstructor } = useSelector(
+    (state) => state.constructorItems
+  );
+  const { ingredientDetailsPopupOpen } = useSelector(
+    (state) => state.popupIngredient
+  );
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getIngredients());
+  }, [dispatch]);
 
   const [refRolls, inViewRolls] = useInView({
     threshold: 0,
@@ -55,58 +69,72 @@ function BurgerIngredients() {
     }
   };
 
+  function closeAllPopups() {
+    dispatch({
+      type: DELETE_INGREDIENT_DATA_MODAL,
+      ingredientsConstructor,
+    });
+  }
+
   return (
-    <section className={`${styles["burger-ingredients"]} mr-10`}>
-      <h1 className={`text text_type_main-large mt-10 mb-5`}>
-        Соберите бургер
-      </h1>
-      <div className={`${styles["burger-ingredients__tabs"]}`}>
-        <Tab
-          value="rolls"
-          active={current === "rolls"}
-          onClick={handleClickTab}
-        >
-          Булки
-        </Tab>
-        <Tab
-          value="sauces"
-          active={current === "sauces"}
-          onClick={handleClickTab}
-        >
-          Соусы
-        </Tab>
-        <Tab
-          value="mains"
-          active={current === "mains"}
-          onClick={handleClickTab}
-        >
-          Начинки
-        </Tab>
-      </div>
-      <div className={`${styles["burger-ingredient__scroll"]} mt-10`}>
-        <IngredientList
-          idTab="rolls"
-          ingredients={rolls}
-          title="Булки"
-          category="bun"
-          innerRef={refRolls}
-        />
-        <IngredientList
-          idTab="sauces"
-          ingredients={sauces}
-          title="Соусы"
-          category="sauce"
-          innerRef={refSauces}
-        />
-        <IngredientList
-          idTab="mains"
-          ingredients={mains}
-          title="Начинки"
-          category="main"
-          innerRef={refMains}
-        />
-      </div>
-    </section>
+    <>
+      <section className={`${styles["burger-ingredients"]} mr-10`}>
+        <h1 className={`text text_type_main-large mt-10 mb-5`}>
+          Соберите бургер
+        </h1>
+        <div className={`${styles["burger-ingredients__tabs"]}`}>
+          <Tab
+            value="rolls"
+            active={current === "rolls"}
+            onClick={handleClickTab}
+          >
+            Булки
+          </Tab>
+          <Tab
+            value="sauces"
+            active={current === "sauces"}
+            onClick={handleClickTab}
+          >
+            Соусы
+          </Tab>
+          <Tab
+            value="mains"
+            active={current === "mains"}
+            onClick={handleClickTab}
+          >
+            Начинки
+          </Tab>
+        </div>
+        <div className={`${styles["burger-ingredient__scroll"]} mt-10`}>
+          <IngredientList
+            idTab="rolls"
+            ingredients={rolls}
+            title="Булки"
+            category="bun"
+            ref={refRolls}
+          />
+          <IngredientList
+            idTab="sauces"
+            ingredients={sauces}
+            title="Соусы"
+            category="sauce"
+            ref={refSauces}
+          />
+          <IngredientList
+            idTab="mains"
+            ingredients={mains}
+            title="Начинки"
+            category="main"
+            ref={refMains}
+          />
+        </div>
+      </section>
+      {ingredientDetailsPopupOpen && (
+        <Modal onClose={closeAllPopups} title="Детали ингредиента">
+          <IngredientDetails />
+        </Modal>
+      )}
+    </>
   );
 }
 
