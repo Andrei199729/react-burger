@@ -20,6 +20,7 @@ function Ingredient({ ingredient, dataIngredients }) {
       opacity: monitor.isDragging() ? 0.5 : 1,
     }),
   });
+
   const ingredientsCount = useMemo(() => {
     const result = {};
     ingredientsConstructor?.forEach((item) => {

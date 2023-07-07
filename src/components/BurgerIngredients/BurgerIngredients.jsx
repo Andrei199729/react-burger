@@ -5,20 +5,14 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientList from "../IngredientList/IngredientList";
 import { useInView } from "react-intersection-observer";
 import { useSelector, useDispatch } from "react-redux";
-import IngredientDetails from "../IngredientDetails/IngredientDetails";
-import Modal from "../Modal/Modal";
-import { DELETE_INGREDIENT_DATA_MODAL } from "../../services/actions/popupIngredient";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+
 import { getIngredients } from "../../services/actions/ingredient";
 
 function BurgerIngredients() {
   const [current, setCurrent] = useState("rolls");
   const { ingredients } = useSelector((state) => state.ingredients);
-  const { ingredientsConstructor } = useSelector(
-    (state) => state.constructorItems
-  );
-  const { ingredientDetailsPopupOpen } = useSelector(
-    (state) => state.popupIngredient
-  );
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getIngredients());
@@ -68,13 +62,6 @@ function BurgerIngredients() {
       element.scrollIntoView({ block: "start", behavior: "smooth" });
     }
   };
-
-  function closeAllPopups() {
-    dispatch({
-      type: DELETE_INGREDIENT_DATA_MODAL,
-      ingredientsConstructor,
-    });
-  }
 
   return (
     <>
@@ -129,11 +116,6 @@ function BurgerIngredients() {
           />
         </div>
       </section>
-      {ingredientDetailsPopupOpen && (
-        <Modal onClose={closeAllPopups} title="Детали ингредиента">
-          <IngredientDetails />
-        </Modal>
-      )}
     </>
   );
 }

@@ -18,15 +18,18 @@ import update from "immutability-helper";
 import BurgerConstructorIngredients from "../BurgerConstructorIngredients/BurgerConstructorIngredients";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import Modal from "../Modal/Modal";
+import { useNavigate } from "react-router-dom";
 
 function BurgerConstructor() {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const { ingredients } = useSelector((state) => state.ingredients);
   const { orderDetailsPopupOpen } = useSelector((state) => state.popupOrder);
   const { ingredientsConstructor, bun } = useSelector(
     (state) => state.constructorItems
   );
+  const { loggedIn } = useSelector((state) => state.user);
+
   const findCard = (id) => {
     const ingredientContainer = ingredientsConstructor.filter(
       (c) => c._id === id
@@ -92,6 +95,9 @@ function BurgerConstructor() {
   function handleCheckout() {
     const ingredientsId = ingredients?.map((ingredientId) => ingredientId._id);
     dispatch(postIngredientsConstructorBurger(ingredientsId));
+    if (!loggedIn) {
+      navigate("/login");
+    }
   }
 
   const onDelete = (main) => {

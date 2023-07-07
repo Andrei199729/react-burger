@@ -4,9 +4,11 @@ import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import { INGREDIENT_DATA_MODAL } from "../../services/actions/popupIngredient";
 import Ingredient from "../Ingredient/Ingredient";
+import { Link, useLocation } from "react-router-dom";
 
 const IngredientList = forwardRef((props, ref) => {
   const dispatch = useDispatch();
+  const location = useLocation();
   const dataIngredients = (e) => {
     const clickId = props.ingredients.filter(
       (item) => item._id === e.currentTarget.id
@@ -34,11 +36,18 @@ const IngredientList = forwardRef((props, ref) => {
         {props.ingredients?.map((ingredient) => {
           return (
             ingredient.type === props.category && (
-              <Ingredient
-                ingredient={ingredient}
+              <Link
+                to={`/ingredients/${ingredient._id}`}
+                state={{ background: location }}
                 key={ingredient._id}
-                dataIngredients={dataIngredients}
-              />
+                className={styles.link}
+              >
+                <Ingredient
+                  ingredient={ingredient}
+                  key={ingredient._id}
+                  dataIngredients={dataIngredients}
+                />
+              </Link>
             )
           );
         })}

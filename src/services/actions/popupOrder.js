@@ -1,4 +1,5 @@
 import api from "../../utils/api";
+import { getCookie } from "../../utils/cookie";
 
 export const ORDER_DATA_MODAL = "ORDER_DATA_MODAL";
 export const DELETE_ORDER_DATA_MODAL = "DELETE_ORDER_DATA_MODAL";
@@ -12,8 +13,9 @@ export function postIngredientsConstructorBurger(ingredientsId) {
       type: POST_ORDER_DETAILS_REQUEST,
     });
     api
-      .postIngredientsBurger(ingredientsId)
+      .postIngredientsBurger(ingredientsId, getCookie("accessToken"))
       .then((res) => {
+        console.log("res", res);
         dispatch({
           type: POST_ORDER_DETAILS_SUCCESS,
           order: res,

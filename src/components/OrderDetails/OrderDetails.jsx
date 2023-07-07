@@ -5,13 +5,20 @@ import { useSelector } from "react-redux";
 
 function OrderDetails() {
   const { createdOrder } = useSelector((state) => state.popupOrder);
-  return createdOrder || undefined || null ? (
-    <>
-      <h2
-        className={`${styles["modal__title"]} text text_type_digits-large mt-9`}
-      >
-        {createdOrder.order.number}
-      </h2>
+  console.log("create", createdOrder);
+  return (
+    <div>
+      {createdOrder.order?.map((order) => {
+        console.log("order", order);
+        return (
+          <h2
+            className={`${styles["modal__title"]} text text_type_digits-large mt-9`}
+          >
+            {order.order.number}
+          </h2>
+        );
+      })}
+
       <p className={`text text_type_main-medium mt-8`}>идентификатор заказа</p>
       <img
         className={`${styles["icon-graphics"]} mt-15`}
@@ -26,8 +33,8 @@ function OrderDetails() {
       >
         Дождитесь готовности на орбитальной станции
       </p>
-    </>
-  ) : null;
+    </div>
+  );
 }
 
 export default OrderDetails;

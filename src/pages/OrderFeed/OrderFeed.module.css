@@ -1,0 +1,89 @@
+.text {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.box {
+  display: grid;
+  grid-template-columns: 1fr min-content min-content;
+  align-items: center;
+}
+
+.lists-ingredient {
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  z-index: 1;
+}
+
+.list {
+  width: 64px;
+  height: 64px;
+  border: 4px solid #801ab2;
+  background-color: #131316;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.list:nth-child(6) {
+  margin-left: -16px;
+  z-index: 1;
+}
+
+.list:nth-child(5) {
+  margin-left: -16px;
+  z-index: 2;
+}
+
+.list:nth-child(4) {
+  margin-left: -16px;
+  z-index: 3;
+}
+
+.list:nth-child(3) {
+  margin-left: -16px;
+  z-index: 4;
+}
+
+.list:nth-child(2) {
+  margin-left: -16px;
+  z-index: 5;
+}
+
+.list:nth-child(1) {
+  z-index: 6;
+}
+
+.list-count:nth-child(6) {
+  position: relative;
+  background: #1c1c21;
+}
+
+.list-count:nth-child(6) .image {
+  opacity: 0.6;
+}
+
+.count {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.image {
+  border-radius: 50%;
+  width: 112px;
+  height: 56px;
+}
+
+.image-last {
+  opacity: 0.6;
+}
+.total-price__box {
+  display: flex;
+}
