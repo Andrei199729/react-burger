@@ -1,8 +1,27 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 
-export const ProtectedRouteElement = ({ element }) => {
-  const { loggedIn } = useSelector((state) => state.user);
-  return loggedIn ? element : <Navigate to="/login" replace />;
+const Protected = ({ elementRouteAuth = false, component }) => {
+  const { loggedIn, userData } = useSelector((state) => state.user);
+  const location = useLocation();
+
+  if (!loggedIn) {
+    return null;
+  }
+
+  if (elementRouteAuth && userData) {
+    const { from } = location.state || { from: { pathname: "/" } };
+    return <Navigate to={from} />;
+  }
+
+  if (!elementRouteAuth && !userData) {
+    return <Navigate to="/login" state={{ from: location }} />;
+  }
+  return component;
+};
+
+export const ProtectedRoute = Protected;
+export const ProtectedRouteElement = ({ component }) => {
+  <Protected elementRouteAuth={true} component={component} />;
 };

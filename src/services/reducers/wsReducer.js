@@ -25,7 +25,6 @@ export const initFeedProfileOrders = (accessToken) => ({
 });
 
 export const wsReducer = (state = initialState, action) => {
-  console.log(action);
   switch (action.type) {
     case WS_CONNECTION_SUCCESS:
       return {

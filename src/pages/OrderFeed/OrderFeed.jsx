@@ -5,6 +5,7 @@ import {
   FormattedDate,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useSelector } from "react-redux";
+import PropTypes from "prop-types";
 
 function OrderFeed(props) {
   const ingredienstId = props.ingredients;
@@ -82,5 +83,12 @@ function OrderFeed(props) {
     </>
   );
 }
+
+OrderFeed.prototype = {
+  ingredients: PropTypes.number.isRequired,
+  number: PropTypes.number.isRequired,
+  updatedAt: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+};
 
 export default OrderFeed;

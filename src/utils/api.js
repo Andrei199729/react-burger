@@ -1,3 +1,5 @@
+import { setCookie } from "../utils/cookie.js";
+
 class Api {
   constructor({ address }) {
     this.address = address;

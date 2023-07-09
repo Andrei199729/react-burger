@@ -22,8 +22,6 @@ function HistoryOrders() {
     return () => dispatch({ type: WS_CONNECTION_CLOSED });
   }, [dispatch, accessToken]);
 
-  console.log(accessToken);
-
   return (
     <section className={`${styles["history-orders__constructor"]}`}>
       {orders && orders.length <= 0 && (

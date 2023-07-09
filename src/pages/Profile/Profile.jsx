@@ -17,7 +17,7 @@ import {
 } from "../../services/actions/user";
 import { getCookie } from "../../utils/cookie";
 
-function Profile(props) {
+function Profile() {
   const location = useLocation();
   const locationProfileOrders = location.pathname === "/profile/orders";
   const locationProfile = location.pathname === "/profile";

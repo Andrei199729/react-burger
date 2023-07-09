@@ -63,6 +63,8 @@ IngredientList.propTypes = {
     _id: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
   }),
+  ingredients: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
+    .isRequired,
   category: PropTypes.string.isRequired,
 };
 

@@ -71,6 +71,7 @@ BurgerConstructorIngredients.propTypes = {
   findCard: PropTypes.func.isRequired,
   moveCard: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
   imageMobile: PropTypes.string.isRequired,
   onDelete: PropTypes.func.isRequired,
   main: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),

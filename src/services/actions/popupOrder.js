@@ -15,7 +15,6 @@ export function postIngredientsConstructorBurger(ingredientsId) {
     api
       .postIngredientsBurger(ingredientsId, getCookie("accessToken"))
       .then((res) => {
-        console.log("res", res);
         dispatch({
           type: POST_ORDER_DETAILS_SUCCESS,
           order: res,

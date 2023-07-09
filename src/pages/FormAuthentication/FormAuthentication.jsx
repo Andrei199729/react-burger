@@ -3,6 +3,7 @@ import styles from "./FormAuthentication.module.css";
 import { Link } from "react-router-dom";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useLocation } from "react-router-dom";
+import PropTypes from "prop-types";
 
 function FormAuthentication(props) {
   const location = useLocation();
@@ -54,5 +55,19 @@ function FormAuthentication(props) {
     </>
   );
 }
+
+FormAuthentication.propTypes = {
+  title: PropTypes.string.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  method: PropTypes.string.isRequired,
+  formName: PropTypes.string.isRequired,
+  children: PropTypes.object.isRequired,
+  button: PropTypes.string.isRequired,
+  textLogin: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
+  linkEntrance: PropTypes.string.isRequired,
+  link: PropTypes.string.isRequired,
+  linkText: PropTypes.string.isRequired,
+};
 
 export default FormAuthentication;

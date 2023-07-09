@@ -5,11 +5,9 @@ import { useSelector } from "react-redux";
 
 function OrderDetails() {
   const { createdOrder } = useSelector((state) => state.popupOrder);
-  console.log("create", createdOrder);
   return (
     <div>
       {createdOrder.order?.map((order) => {
-        console.log("order", order);
         return (
           <h2
             className={`${styles["modal__title"]} text text_type_digits-large mt-9`}

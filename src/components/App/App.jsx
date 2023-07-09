@@ -20,7 +20,10 @@ import {
   useNavigate,
 } from "react-router-dom";
 import HistoryOrders from "../../pages/HistoryOrders/HistoryOrders";
-import { ProtectedRouteElement } from "../ProtectedRouteElement/ProtectedRouteElement";
+import {
+  ProtectedRouteElement,
+  ProtectedRoute,
+} from "../ProtectedRouteElement/ProtectedRouteElement";
 import { useSelector, useDispatch } from "react-redux";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import IngredientPage from "../../pages/IngredientPage/IngredientPage";
@@ -65,8 +68,14 @@ function App() {
       <Routes location={background || location}>
         <Route path="/" element={<Main />} />
         <Route path="/ingredients/:id" element={<IngredientPage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Registration />} />
+        <Route
+          path="/login"
+          element={<ProtectedRouteElement component={<Login />} />}
+        />
+        <Route
+          path="/register"
+          element={<ProtectedRouteElement component={<Registration />} />}
+        />
         <Route path="/feed" element={<OrdersFeed />} />
         <Route path="/feed/:id" element={<OrderFeedInfo />} />
         <Route
@@ -82,13 +91,13 @@ function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route
           path="/profile"
-          element={<ProtectedRouteElement element={<Profile />} />}
+          element={<ProtectedRoute component={<Profile />} />}
         >
           <Route path="orders" element={<HistoryOrders />} />
         </Route>
         <Route
           path="/profile/orders/:id"
-          element={<ProtectedRouteElement element={<OrderInfo />} />}
+          element={<ProtectedRoute component={<OrderInfo />} />}
         />
         <Route path="*" element={<NotFound404 />} />
       </Routes>

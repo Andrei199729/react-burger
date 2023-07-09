@@ -23,7 +23,6 @@ function OrderInfo() {
 
   const { orders } = useAppSelector((store) => store.ws);
   const accessToken = getCookie("accessToken").slice(7);
-  console.log(orders);
   const ingredientId = orders?.find((item) => item._id === id);
   const { ingredients } = useSelector((state) => state.ingredients);
   const objIngredients = Object.fromEntries(

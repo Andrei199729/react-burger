@@ -54,8 +54,6 @@ export function postRegisterAuth(
     });
     postRegister(nameRegister, emailRegister, passwordRegister)
       .then((res) => {
-        console.log(nameRegister, emailRegister, passwordRegister);
-
         dispatch({
           type: POST_REGISTER_SUCCESS,
           user: res,
@@ -78,8 +76,6 @@ export function postLoginAuth(emailRegister, passwordRegister) {
     });
     postLogin(emailRegister, passwordRegister)
       .then((res) => {
-        console.log(emailRegister, passwordRegister);
-
         dispatch({
           type: POST_LOGIN_SUCCESS,
           user: res,

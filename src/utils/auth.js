@@ -1,4 +1,4 @@
-import { getCookie } from "./cookie";
+import { getCookie, setCookie } from "./cookie";
 
 export const BASE_URL = "https://norma.nomoreparties.space/api";
 
@@ -12,6 +12,39 @@ const getJson = (response) => {
     return response.json();
   }
   throw new Error({ status: response.status });
+};
+
+export const fetchWithRefresh = async (url, options) => {
+  try {
+    const res = await fetch(url, options);
+    return await getJson(res);
+  } catch (err) {
+    if (err.message === "jwt expired") {
+      const refreshData = await this.postRefreshToken();
+      if (!refreshData.success) {
+        return Promise.reject(refreshData);
+      }
+      localStorage.setItem("refreshToken", refreshData.refreshToken);
+      setCookie("accessToken", refreshData.accessToken);
+      options.headers.Authorization = refreshData.accessToken;
+      const res = await fetch(url, options);
+      return await getJson(res);
+    } else {
+      return Promise.reject(err);
+    }
+  }
+};
+
+export const postRefreshToken = (refreshToken) => {
+  return fetch(`${BASE_URL}/auth/token`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      token: refreshToken,
+    }),
+  }).then(getJson);
 };
 
 export const postRegister = (nameRegister, emailRegister, passwordRegister) => {
@@ -46,7 +79,7 @@ export const postLogout = (token) => {
 };
 
 export const getAboutUser = (token) => {
-  return fetch(`${BASE_URL}/auth/user`, {
+  return fetchWithRefresh(`${BASE_URL}/auth/user`, {
     method: "GET",
     headers: {
       ...HEADERS,
@@ -61,7 +94,7 @@ export const updateAboutUser = (
   updatePassword,
   token
 ) => {
-  return fetch(`${BASE_URL}/auth/user`, {
+  return fetchWithRefresh(`${BASE_URL}/auth/user`, {
     method: "PATCH",
     headers: {
       ...HEADERS,
@@ -73,17 +106,4 @@ export const updateAboutUser = (
       password: updatePassword,
     }),
   }).then(getJson);
-};
-
-export const postRefreshToken = (refreshToken) => {
-  console.log(refreshToken);
-  return fetch(`${BASE_URL}/auth/token`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      token: refreshToken,
-    }),
-  }).then(this._getResponseData);
 };
