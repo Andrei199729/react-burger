@@ -28,7 +28,7 @@ function BurgerConstructor() {
   const { ingredientsConstructor, bun } = useSelector(
     (state) => state.constructorItems
   );
-  const { loggedIn } = useSelector((state) => state.user);
+  const { isAuthloggedIn } = useSelector((state) => state.user);
 
   const findCard = (id) => {
     const ingredientContainer = ingredientsConstructor.filter(
@@ -95,7 +95,7 @@ function BurgerConstructor() {
   function handleCheckout() {
     const ingredientsId = ingredients?.map((ingredientId) => ingredientId._id);
     dispatch(postIngredientsConstructorBurger(ingredientsId));
-    if (!loggedIn) {
+    if (!isAuthloggedIn) {
       navigate("/login");
     }
   }

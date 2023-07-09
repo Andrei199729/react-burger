@@ -29,23 +29,20 @@ import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import IngredientPage from "../../pages/IngredientPage/IngredientPage";
 import Modal from "../Modal/Modal";
 import { DELETE_INGREDIENT_DATA_MODAL } from "../../services/actions/popupIngredient";
-import { getCookie } from "../../utils/cookie";
 import { getIngredients } from "../../services/actions/ingredient";
-import { getUserData } from "../../services/actions/user";
+import { checkUserAuth } from "../../services/actions/user";
 
 function App() {
-  const { loggedIn, accessToken } = useSelector((state) => state.user);
+  const { isAuthloggedIn, accessToken } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
   const background = location.state && location.state.background;
 
   useEffect(() => {
-    if (getCookie("accessToken")) {
-      dispatch(getUserData());
-    }
+    dispatch(checkUserAuth());
     dispatch(getIngredients());
-  }, [dispatch, loggedIn, navigate]);
+  }, [dispatch, navigate]);
 
   function closeAllPopups() {
     dispatch({
@@ -81,7 +78,7 @@ function App() {
         <Route
           path="/forgot-password"
           element={
-            !loggedIn && !accessToken ? (
+            !isAuthloggedIn && !accessToken ? (
               <ForgotPassword />
             ) : (
               <Navigate to={"/"} />

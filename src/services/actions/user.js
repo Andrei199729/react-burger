@@ -43,6 +43,19 @@ export const POST_RESET_PASSWORD_FAILED = "POST_RESET_PASSWORD_FAILED";
 
 export const RESET_PASSWORD_SUCCESS = "RESET_PASSWORD_SUCCESS";
 
+export const SET_AUTH_LOGGED_IN = "SET_AUTH_LOGGED_IN";
+export const SET_USER_DATA = "SET_USER_DATA";
+
+export const setAuthloggedIn = (value) => ({
+  type: SET_AUTH_LOGGED_IN,
+  payload: value,
+});
+
+export const setUserData = (value) => ({
+  type: SET_USER_DATA,
+  payload: value,
+});
+
 export function postRegisterAuth(
   nameRegister,
   emailRegister,
@@ -60,6 +73,7 @@ export function postRegisterAuth(
         });
         setCookie("accessToken", res.accessToken);
         setCookie("refreshToken", res.refreshToken);
+        dispatch(setAuthloggedIn(true));
       })
       .catch((err) =>
         dispatch({
@@ -80,6 +94,7 @@ export function postLoginAuth(emailRegister, passwordRegister) {
           type: POST_LOGIN_SUCCESS,
           user: res,
         });
+        dispatch(setAuthloggedIn(true));
         setCookie("accessToken", res.accessToken);
         setCookie("refreshToken", res.refreshToken);
       })
@@ -98,10 +113,8 @@ export function getUserData() {
     });
     getAboutUser(getCookie("accessToken"))
       .then((res) => {
-        dispatch({
-          type: GET_ABOUT_USER_SUCCESS,
-          user: res,
-        });
+        dispatch(setUserData(res));
+        dispatch(setAuthloggedIn(true));
       })
       .catch((err) =>
         dispatch({
@@ -122,6 +135,7 @@ export function patchUserData(name, email, password, token) {
           type: PATCH_ABOUT_USER_SUCCESS,
           updateUser: res,
         });
+        dispatch(setAuthloggedIn(true));
       })
       .catch((err) =>
         dispatch({
@@ -166,6 +180,8 @@ export function postLogoutAuth(token) {
           type: POST_LOGOUT_SUCCESS,
           tokenLogout: res,
         });
+        dispatch(setUserData(null));
+        dispatch(setAuthloggedIn(false));
       })
       .catch((err) =>
         dispatch({
@@ -218,3 +234,19 @@ export function postResetPasswordAuth(email, token) {
       );
   };
 }
+
+export const checkUserAuth = () => {
+  return (dispatch) => {
+    if (getCookie("accessToken")) {
+      dispatch(getUserData());
+      // .catch(() => {
+      //   deleteCookie("accessToken");
+      //   deleteCookie("refreshToken");
+      //   dispatch(setUserData(null));
+      // })
+      // .finally(() => dispatch(setAuthloggedIn(true)));
+    } else {
+      dispatch(setAuthloggedIn(true));
+    }
+  };
+};

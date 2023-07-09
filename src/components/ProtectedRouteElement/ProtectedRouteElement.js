@@ -3,10 +3,10 @@ import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
 
 const Protected = ({ elementRouteAuth = false, component }) => {
-  const { loggedIn, userData } = useSelector((state) => state.user);
+  const { isAuthloggedIn, userData } = useSelector((state) => state.user);
   const location = useLocation();
 
-  if (!loggedIn) {
+  if (!isAuthloggedIn) {
     return null;
   }
 

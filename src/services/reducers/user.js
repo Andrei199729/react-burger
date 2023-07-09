@@ -15,6 +15,7 @@ import {
   POST_LOGOUT_REQUEST,
   POST_LOGOUT_FAILED,
   RESET_PASSWORD_SUCCESS,
+  SET_USER_DATA,
 } from "../actions/user";
 
 const initialState = {
@@ -29,7 +30,7 @@ const initialState = {
   },
   userData: null,
   accessToken: undefined,
-  loggedIn: false,
+  isAuthloggedIn: false,
   success: false,
 };
 
@@ -47,7 +48,7 @@ export const authReducer = (state = initialState, action) => {
           password: action.user.password,
         },
         accessToken: action.accessToken,
-        loggedIn: true,
+        isAuthloggedIn: action.payload,
       };
     case POST_LOGIN_FAILED:
       return {
@@ -66,7 +67,7 @@ export const authReducer = (state = initialState, action) => {
           email: action.user.email,
           password: action.user.password,
         },
-        loggedIn: true,
+        isAuthloggedIn: action.payload,
       };
     case POST_REGISTER_FAILED:
       return {
@@ -77,11 +78,11 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
       };
-    case GET_ABOUT_USER_SUCCESS:
+    case SET_USER_DATA:
       return {
         ...state,
         userData: action.user,
-        loggedIn: true,
+        isAuthloggedIn: action.payload,
         accessToken: action.accessToken,
       };
     case GET_ABOUT_USER_FAILED:
@@ -97,7 +98,7 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
         user: action.updateUser,
-        loggedIn: true,
+        isAuthloggedIn: action.payload,
       };
     case PATCH_ABOUT_USER_FAILED:
       return {
@@ -113,7 +114,7 @@ export const authReducer = (state = initialState, action) => {
         ...state,
         accessToken: undefined,
         userData: null,
-        loggedIn: false,
+        isAuthloggedIn: action.payload,
       };
     case POST_LOGOUT_FAILED:
       return {

@@ -61,7 +61,7 @@ FormAuthentication.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   method: PropTypes.string.isRequired,
   formName: PropTypes.string.isRequired,
-  children: PropTypes.object.isRequired,
+  children: PropTypes.arrayOf(PropTypes.node),
   button: PropTypes.string.isRequired,
   textLogin: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
