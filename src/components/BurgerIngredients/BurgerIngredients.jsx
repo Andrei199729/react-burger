@@ -5,7 +5,6 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientList from "../IngredientList/IngredientList";
 import { useInView } from "react-intersection-observer";
 import { useSelector, useDispatch } from "react-redux";
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 
 import { getIngredients } from "../../services/actions/ingredient";
 

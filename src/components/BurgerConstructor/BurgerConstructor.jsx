@@ -7,7 +7,6 @@ import {
   DELETE_CONSTRUCTOR_ITEM,
   UPDATE_CONSTRUCTOR_ITEM,
 } from "../../services/actions/constructor";
-import { DELETE_ORDER_DATA_MODAL } from "../../services/actions/popupOrder";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import TotalPrice from "../TotalPrice/TotalPrice";
@@ -113,9 +112,7 @@ function BurgerConstructor() {
   };
 
   function closeAllPopups() {
-    dispatch({
-      type: DELETE_ORDER_DATA_MODAL,
-    });
+    navigate(-1);
   }
 
   return (

@@ -5,7 +5,6 @@ import {
 
 const initialState = {
   ingredientsDataModal: [],
-  ingredientDetailsPopupOpen: false,
 };
 
 export const popupIngredientReducer = (state = initialState, action) => {
@@ -14,14 +13,12 @@ export const popupIngredientReducer = (state = initialState, action) => {
       return {
         ...state,
         ingredientsDataModal: action,
-        ingredientDetailsPopupOpen: true,
       };
 
     case DELETE_INGREDIENT_DATA_MODAL:
       return {
         ...state,
         ingredientsDataModal: [],
-        ingredientDetailsPopupOpen: false,
       };
 
     default:

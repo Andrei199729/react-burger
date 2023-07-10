@@ -6,9 +6,9 @@ const Protected = ({ elementRouteAuth = false, component }) => {
   const { isAuthloggedIn, userData } = useSelector((state) => state.user);
   const location = useLocation();
 
-  if (!isAuthloggedIn) {
-    return null;
-  }
+  // if (!isAuthloggedIn) {
+  //   return null;
+  // }
 
   if (elementRouteAuth && userData) {
     const { from } = location.state || { from: { pathname: "/" } };

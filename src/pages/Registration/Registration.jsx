@@ -5,14 +5,11 @@ import {
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import FormAuthentication from "../FormAuthentication/FormAuthentication";
-import { useNavigate } from "react-router-dom";
 import { postRegisterAuth } from "../../services/actions/user";
-import { useDispatch, useSelector } from "react-redux";
-import { useAppSelector } from "../../services/actions-types/wsActionTypes";
+import { useDispatch } from "react-redux";
 
 function Registration() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   // register
   const [nameRegister, setNameRegister] = useState("");
@@ -22,7 +19,6 @@ function Registration() {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(postRegisterAuth(nameRegister, emailRegister, passwordRegister));
-    navigate("/login");
     setNameRegister("");
     setEmailRegister("");
     setPasswordRegister("");

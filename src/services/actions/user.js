@@ -238,13 +238,13 @@ export function postResetPasswordAuth(email, token) {
 export const checkUserAuth = () => {
   return (dispatch) => {
     if (getCookie("accessToken")) {
-      dispatch(getUserData());
-      // .catch(() => {
-      //   deleteCookie("accessToken");
-      //   deleteCookie("refreshToken");
-      //   dispatch(setUserData(null));
-      // })
-      // .finally(() => dispatch(setAuthloggedIn(true)));
+      dispatch(getUserData())
+        .catch(() => {
+          deleteCookie("accessToken");
+          deleteCookie("refreshToken");
+          dispatch(setUserData(null));
+        })
+        .finally(() => dispatch(setAuthloggedIn(true)));
     } else {
       dispatch(setAuthloggedIn(true));
     }

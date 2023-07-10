@@ -1,6 +1,5 @@
 import {
   ORDER_DATA_MODAL,
-  DELETE_ORDER_DATA_MODAL,
   POST_ORDER_DETAILS_SUCCESS,
   POST_ORDER_DETAILS_REQUEST,
   POST_ORDER_DETAILS_FAILED,
@@ -17,12 +16,6 @@ export const popupOrderReducer = (state = initialState, action) => {
       return {
         ...state,
         orderDetailsPopupOpen: true,
-      };
-
-    case DELETE_ORDER_DATA_MODAL:
-      return {
-        ...state,
-        orderDetailsPopupOpen: false,
       };
 
     case POST_ORDER_DETAILS_REQUEST:

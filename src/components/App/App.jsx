@@ -12,28 +12,20 @@ import Profile from "../../pages/Profile/Profile";
 import OrderInfo from "../../pages/OrderInfo/OrderInfo";
 import NotFound404 from "../../pages/NotFound404/NotFound404";
 
-import {
-  Routes,
-  Route,
-  Navigate,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import HistoryOrders from "../../pages/HistoryOrders/HistoryOrders";
 import {
   ProtectedRouteElement,
   ProtectedRoute,
 } from "../ProtectedRouteElement/ProtectedRouteElement";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import IngredientPage from "../../pages/IngredientPage/IngredientPage";
 import Modal from "../Modal/Modal";
-import { DELETE_INGREDIENT_DATA_MODAL } from "../../services/actions/popupIngredient";
 import { getIngredients } from "../../services/actions/ingredient";
 import { checkUserAuth } from "../../services/actions/user";
 
 function App() {
-  const { isAuthloggedIn, accessToken } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
@@ -42,22 +34,7 @@ function App() {
   useEffect(() => {
     dispatch(checkUserAuth());
     dispatch(getIngredients());
-  }, [dispatch, navigate]);
-
-  function closeAllPopups() {
-    dispatch({
-      type: DELETE_INGREDIENT_DATA_MODAL,
-      ingredientsConstructor,
-    });
-  }
-
-  const { ingredientsConstructor } = useSelector(
-    (state) => state.constructorItems
-  );
-
-  const { ingredientDetailsPopupOpen } = useSelector(
-    (state) => state.popupIngredient
-  );
+  }, [dispatch]);
 
   return (
     <>
@@ -77,15 +54,12 @@ function App() {
         <Route path="/feed/:id" element={<OrderFeedInfo />} />
         <Route
           path="/forgot-password"
-          element={
-            !isAuthloggedIn && !accessToken ? (
-              <ForgotPassword />
-            ) : (
-              <Navigate to={"/"} />
-            )
-          }
+          element={<ProtectedRouteElement component={<ForgotPassword />} />}
         />
-        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route
+          path="/reset-password"
+          element={<ProtectedRouteElement component={<ResetPassword />} />}
+        />
         <Route
           path="/profile"
           element={<ProtectedRoute component={<Profile />} />}
@@ -104,11 +78,9 @@ function App() {
             <Route
               path="/ingredients/:id"
               element={
-                ingredientDetailsPopupOpen && (
-                  <Modal onClose={closeAllPopups} title="Детали ингредиента">
-                    <IngredientDetails />
-                  </Modal>
-                )
+                <Modal title="Детали ингредиента">
+                  <IngredientDetails />
+                </Modal>
               }
             />
             <Route

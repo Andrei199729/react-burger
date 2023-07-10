@@ -67,7 +67,6 @@ export const authReducer = (state = initialState, action) => {
           email: action.user.email,
           password: action.user.password,
         },
-        isAuthloggedIn: action.payload,
       };
     case POST_REGISTER_FAILED:
       return {
@@ -82,7 +81,6 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
         userData: action.user,
-        isAuthloggedIn: action.payload,
         accessToken: action.accessToken,
       };
     case GET_ABOUT_USER_FAILED:

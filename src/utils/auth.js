@@ -1,4 +1,4 @@
-import { getCookie, setCookie } from "./cookie";
+import { setCookie } from "./cookie";
 
 export const BASE_URL = "https://norma.nomoreparties.space/api";
 

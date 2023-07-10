@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import FormAuthentication from "../FormAuthentication/FormAuthentication";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { postLoginAuth } from "../../services/actions/user";
 
 import {
@@ -10,7 +9,6 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 function Login() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [valueEmail, setValueEmail] = useState("");
 
@@ -24,7 +22,6 @@ function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(postLoginAuth(valueEmail, valuePassword));
-    navigate("/");
   };
 
   return (

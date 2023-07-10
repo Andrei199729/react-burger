@@ -4,14 +4,16 @@ import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 import { createPortal } from "react-dom";
 import ModalOverlay from "../ModalOverlay/ModalOverlay";
+import { useNavigate } from "react-router-dom";
 
 const modalRoot = document.getElementById("modals");
 
 function Modal(props) {
+  const navigate = useNavigate();
   useEffect(() => {
     const onKeypress = (e) => {
       if (e.key === "Escape") {
-        props.onClose();
+        navigate(-1);
       }
     };
 
@@ -20,7 +22,12 @@ function Modal(props) {
     return () => {
       document.removeEventListener("keydown", onKeypress);
     };
-  }, [props]);
+  }, [navigate]);
+
+  function closeModal() {
+    navigate(-1);
+  }
+
   return createPortal(
     <>
       <div className={`${styles["modal__container"]} pr-10 pl-10`}>
@@ -31,19 +38,18 @@ function Modal(props) {
             </h2>
           )}
           <div className={`${styles["btn_cursor"]}`}>
-            <CloseIcon type="primary" onClick={props.onClose} />
+            <CloseIcon type="primary" onClick={closeModal} />
           </div>
         </header>
         <div className={`${styles["modal__block"]}`}>{props.children}</div>
       </div>
-      <ModalOverlay onClose={props.onClose} />
+      <ModalOverlay onClose={closeModal} />
     </>,
     modalRoot
   );
 }
 
 Modal.propTypes = {
-  onClose: PropTypes.func.isRequired,
   title: PropTypes.string,
   children: PropTypes.object.isRequired,
 };

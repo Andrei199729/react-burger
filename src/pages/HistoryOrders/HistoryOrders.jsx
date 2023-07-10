@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import styles from "./HistoryOrders.module.css";
 import { Link, useLocation } from "react-router-dom";
-import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { getCookie } from "../../utils/cookie";
 import {
   WS_CONNECTION_CLOSED,
