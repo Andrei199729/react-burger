@@ -16,26 +16,26 @@ import {
   POST_LOGOUT_FAILED,
   RESET_PASSWORD_SUCCESS,
   SET_USER_DATA,
+  SET_AUTH_LOGGED_IN,
+  SET_USER_DATA_REGISTER,
 } from "../actions/user";
 
 const initialState = {
-  login: {
-    email: "",
-    password: "",
-  },
-  register: {
-    name: "",
-    email: "",
-    password: "",
-  },
   userData: null,
   accessToken: undefined,
   isAuthloggedIn: false,
   success: false,
+  password: null,
 };
 
 export const authReducer = (state = initialState, action) => {
+  console.log(action);
   switch (action.type) {
+    case SET_AUTH_LOGGED_IN:
+      return {
+        ...state,
+        isAuthloggedIn: action.payload,
+      };
     case POST_LOGIN_REQUEST:
       return {
         ...state,
@@ -43,10 +43,7 @@ export const authReducer = (state = initialState, action) => {
     case POST_LOGIN_SUCCESS:
       return {
         ...state,
-        login: {
-          email: action.user.email,
-          password: action.user.password,
-        },
+        userData: action.payload,
         accessToken: action.accessToken,
         isAuthloggedIn: action.payload,
       };
@@ -59,14 +56,11 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
       };
-    case POST_REGISTER_SUCCESS:
+    case SET_USER_DATA_REGISTER:
       return {
         ...state,
-        register: {
-          name: action.user.name,
-          email: action.user.email,
-          password: action.user.password,
-        },
+        userData: action.payload,
+        // password: action.password,
       };
     case POST_REGISTER_FAILED:
       return {
@@ -80,7 +74,7 @@ export const authReducer = (state = initialState, action) => {
     case SET_USER_DATA:
       return {
         ...state,
-        userData: action.user,
+        userData: action.payload,
         accessToken: action.accessToken,
       };
     case GET_ABOUT_USER_FAILED:

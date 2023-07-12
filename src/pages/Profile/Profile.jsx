@@ -21,12 +21,12 @@ function Profile() {
   const location = useLocation();
   const locationProfileOrders = location.pathname === "/profile/orders";
   const locationProfile = location.pathname === "/profile";
-  const [nameProfile, setNameProfile] = useState("");
-  const [emailProfile, setEmailProfile] = useState("");
+  const { isAuthloggedIn, userData } = useSelector((state) => state.user);
+  const [nameProfile, setNameProfile] = useState(userData.user.name);
+  const [emailProfile, setEmailProfile] = useState(userData.user.email);
   const [passwordProfile, setPasswordProfile] = useState("******");
   const inputRef = React.useRef(null);
   const accessToken = getCookie("accessToken");
-  const { userData } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -50,16 +50,6 @@ function Profile() {
     setNameProfile(userData.user.name);
     // setPasswordProfile(userData.user.password);
   };
-  useEffect(() => {
-    if (userData) {
-      setEmailProfile(userData.user.email);
-      setNameProfile(userData.user.name);
-      // setPasswordProfile(userData.user.password);
-    } else {
-      dispatch(getUserData());
-      navigate("/profile");
-    }
-  }, [dispatch, userData, navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

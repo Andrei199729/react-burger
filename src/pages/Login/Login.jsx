@@ -7,11 +7,15 @@ import {
   PasswordInput,
   EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../../services/actions-types/wsActionTypes";
 
 function Login() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { userData, password } = useAppSelector((state) => state.user);
   const [valueEmail, setValueEmail] = useState("");
-
+  console.log(userData);
   const [valuePassword, setValuePassword] = useState("");
 
   const handleChangeEmail = (e) => {
@@ -22,6 +26,7 @@ function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(postLoginAuth(valueEmail, valuePassword));
+    navigate("/");
   };
 
   return (

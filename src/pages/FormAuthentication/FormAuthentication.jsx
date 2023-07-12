@@ -63,9 +63,9 @@ FormAuthentication.propTypes = {
   formName: PropTypes.string.isRequired,
   children: PropTypes.arrayOf(PropTypes.node),
   button: PropTypes.string.isRequired,
-  textLogin: PropTypes.string.isRequired,
+  textLogin: PropTypes.string,
   text: PropTypes.string.isRequired,
-  linkEntrance: PropTypes.string.isRequired,
+  linkEntrance: PropTypes.string,
   link: PropTypes.string.isRequired,
   linkText: PropTypes.string.isRequired,
 };

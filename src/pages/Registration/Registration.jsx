@@ -6,11 +6,13 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import FormAuthentication from "../FormAuthentication/FormAuthentication";
 import { postRegisterAuth } from "../../services/actions/user";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../../services/actions-types/wsActionTypes";
 
 function Registration() {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   // register
   const [nameRegister, setNameRegister] = useState("");
   const [emailRegister, setEmailRegister] = useState("");

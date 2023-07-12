@@ -45,6 +45,7 @@ export const RESET_PASSWORD_SUCCESS = "RESET_PASSWORD_SUCCESS";
 
 export const SET_AUTH_LOGGED_IN = "SET_AUTH_LOGGED_IN";
 export const SET_USER_DATA = "SET_USER_DATA";
+export const SET_USER_DATA_REGISTER = "SET_USER_DATA_REGISTER";
 
 export const setAuthloggedIn = (value) => ({
   type: SET_AUTH_LOGGED_IN,
@@ -54,6 +55,12 @@ export const setAuthloggedIn = (value) => ({
 export const setUserData = (value) => ({
   type: SET_USER_DATA,
   payload: value,
+});
+
+export const setUserDataRegister = (value) => ({
+  type: SET_USER_DATA_REGISTER,
+  payload: value,
+  // password: password,
 });
 
 export function postRegisterAuth(
@@ -67,10 +74,9 @@ export function postRegisterAuth(
     });
     postRegister(nameRegister, emailRegister, passwordRegister)
       .then((res) => {
-        dispatch({
-          type: POST_REGISTER_SUCCESS,
-          user: res,
-        });
+        dispatch(setUserDataRegister(res));
+        dispatch(setAuthloggedIn(true));
+
         setCookie("accessToken", res.accessToken);
         setCookie("refreshToken", res.refreshToken);
         dispatch(setAuthloggedIn(true));
@@ -90,10 +96,7 @@ export function postLoginAuth(emailRegister, passwordRegister) {
     });
     postLogin(emailRegister, passwordRegister)
       .then((res) => {
-        dispatch({
-          type: POST_LOGIN_SUCCESS,
-          user: res,
-        });
+        dispatch(setUserData(res));
         dispatch(setAuthloggedIn(true));
         setCookie("accessToken", res.accessToken);
         setCookie("refreshToken", res.refreshToken);
@@ -111,7 +114,7 @@ export function getUserData() {
     dispatch({
       type: GET_ABOUT_USER_REQUEST,
     });
-    getAboutUser(getCookie("accessToken"))
+    return getAboutUser(getCookie("accessToken"))
       .then((res) => {
         dispatch(setUserData(res));
         dispatch(setAuthloggedIn(true));

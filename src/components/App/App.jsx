@@ -15,8 +15,8 @@ import NotFound404 from "../../pages/NotFound404/NotFound404";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import HistoryOrders from "../../pages/HistoryOrders/HistoryOrders";
 import {
-  ProtectedRouteElement,
-  ProtectedRoute,
+  Authorized,
+  Unauthorized,
 } from "../ProtectedRouteElement/ProtectedRouteElement";
 import { useDispatch } from "react-redux";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
@@ -42,33 +42,27 @@ function App() {
       <Routes location={background || location}>
         <Route path="/" element={<Main />} />
         <Route path="/ingredients/:id" element={<IngredientPage />} />
-        <Route
-          path="/login"
-          element={<ProtectedRouteElement component={<Login />} />}
-        />
+        <Route path="/login" element={<Unauthorized component={<Login />} />} />
         <Route
           path="/register"
-          element={<ProtectedRouteElement component={<Registration />} />}
+          element={<Unauthorized component={<Registration />} />}
         />
         <Route path="/feed" element={<OrdersFeed />} />
         <Route path="/feed/:id" element={<OrderFeedInfo />} />
         <Route
           path="/forgot-password"
-          element={<ProtectedRouteElement component={<ForgotPassword />} />}
+          element={<Unauthorized component={<ForgotPassword />} />}
         />
         <Route
           path="/reset-password"
-          element={<ProtectedRouteElement component={<ResetPassword />} />}
+          element={<Unauthorized component={<ResetPassword />} />}
         />
-        <Route
-          path="/profile"
-          element={<ProtectedRoute component={<Profile />} />}
-        >
+        <Route path="/profile" element={<Authorized component={<Profile />} />}>
           <Route path="orders" element={<HistoryOrders />} />
         </Route>
         <Route
           path="/profile/orders/:id"
-          element={<ProtectedRoute component={<OrderInfo />} />}
+          element={<Authorized component={<OrderInfo />} />}
         />
         <Route path="*" element={<NotFound404 />} />
       </Routes>
