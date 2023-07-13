@@ -17,9 +17,7 @@ function AppHeader() {
   const matchProfile = useMatch("/profile");
   const matchProfileOrders = useMatch("/profile/orders");
   const matchProfileOrdersId = useMatch("/profile/orders/:id");
-
   const iconType = (path) => (path ? "primary" : "secondary");
-
   return (
     <header
       className={`${styles.header} pb-4 pt-4 ${matchListId ? "mb-30" : null}`}

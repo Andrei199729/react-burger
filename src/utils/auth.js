@@ -85,7 +85,7 @@ export const getAboutUser = (token) => {
       ...HEADERS,
       Authorization: token,
     },
-  }).then(getJson);
+  });
 };
 
 export const updateAboutUser = (

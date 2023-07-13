@@ -57,12 +57,6 @@ export const setUserData = (value) => ({
   payload: value,
 });
 
-export const setUserDataRegister = (value) => ({
-  type: SET_USER_DATA_REGISTER,
-  payload: value,
-  // password: password,
-});
-
 export function postRegisterAuth(
   nameRegister,
   emailRegister,
@@ -74,9 +68,10 @@ export function postRegisterAuth(
     });
     postRegister(nameRegister, emailRegister, passwordRegister)
       .then((res) => {
-        dispatch(setUserDataRegister(res));
-        dispatch(setAuthloggedIn(true));
-
+        dispatch({
+          type: POST_REGISTER_SUCCESS,
+          user: res,
+        });
         setCookie("accessToken", res.accessToken);
         setCookie("refreshToken", res.refreshToken);
         dispatch(setAuthloggedIn(true));
@@ -184,7 +179,6 @@ export function postLogoutAuth(token) {
           tokenLogout: res,
         });
         dispatch(setUserData(null));
-        dispatch(setAuthloggedIn(false));
       })
       .catch((err) =>
         dispatch({

@@ -24,6 +24,7 @@ function Registration() {
     setNameRegister("");
     setEmailRegister("");
     setPasswordRegister("");
+    navigate("/login");
   };
 
   return (

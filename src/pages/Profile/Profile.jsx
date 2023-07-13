@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styles from "./Profile.module.css";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import {
   Input,
   PasswordInput,
@@ -10,25 +10,21 @@ import {
 import { useLocation } from "react-router-dom";
 import HistoryOrders from "../HistoryOrders/HistoryOrders";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getUserData,
-  patchUserData,
-  postLogoutAuth,
-} from "../../services/actions/user";
+import { patchUserData, postLogoutAuth } from "../../services/actions/user";
 import { getCookie } from "../../utils/cookie";
 
 function Profile() {
   const location = useLocation();
   const locationProfileOrders = location.pathname === "/profile/orders";
   const locationProfile = location.pathname === "/profile";
-  const { isAuthloggedIn, userData } = useSelector((state) => state.user);
+  const { userData } = useSelector((state) => state.user);
   const [nameProfile, setNameProfile] = useState(userData.user.name);
   const [emailProfile, setEmailProfile] = useState(userData.user.email);
   const [passwordProfile, setPasswordProfile] = useState("******");
   const inputRef = React.useRef(null);
   const accessToken = getCookie("accessToken");
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const [edit, setEdit] = useState(false);
 
   const onChangeName = (e) => {
     setNameProfile(e.target.value);
@@ -48,7 +44,7 @@ function Profile() {
   const handleCancel = () => {
     setEmailProfile(userData.user.email);
     setNameProfile(userData.user.name);
-    // setPasswordProfile(userData.user.password);
+    setEdit(false);
   };
 
   const handleSubmit = (e) => {
@@ -56,12 +52,26 @@ function Profile() {
     dispatch(
       patchUserData(nameProfile, emailProfile, passwordProfile, accessToken)
     );
+    setEdit(false);
   };
 
   const handleLogout = () => {
     const refreshToken = getCookie("refreshToken");
     dispatch(postLogoutAuth(refreshToken));
   };
+
+  function blurHandler(e) {
+    switch (e.target.name) {
+      case "name":
+        setEdit(true);
+        break;
+      case "email":
+        setEdit(true);
+        break;
+      default:
+        break;
+    }
+  }
 
   return (
     <section className={`${styles.profile} mt-30`}>
@@ -120,22 +130,24 @@ function Profile() {
                 onChange={onChangeName}
                 icon={"EditIcon"}
                 value={nameProfile}
-                name={"name"}
+                name="name"
                 error={false}
                 errorText={"Ошибка"}
                 size={"default"}
                 onIconClick={onIconClick}
                 ref={inputRef}
                 extraClass="mb-6"
+                onBlur={blurHandler}
               />
               <EmailInput
                 type={"text"}
                 placeholder={"E-mail"}
                 onChange={onChangeEmail}
                 value={emailProfile}
-                name={"email"}
+                name="email"
                 isIcon={true}
                 extraClass="mb-6"
+                onBlur={blurHandler}
               />
               <PasswordInput
                 placeholder={"Пароль"}
@@ -144,19 +156,21 @@ function Profile() {
                 name={"password"}
                 extraClass="mb-6"
               />
-              <div className={`${styles.buttons} mt-6`}>
-                <Button
-                  type="secondary"
-                  size="medium"
-                  htmlType="button"
-                  onClick={handleCancel}
-                >
-                  Отмена
-                </Button>
-                <Button type="primary" size="medium" htmlType="submit">
-                  Сохранить
-                </Button>
-              </div>
+              {edit && (
+                <div className={`${styles.buttons} mt-6`}>
+                  <Button
+                    type="secondary"
+                    size="medium"
+                    htmlType="button"
+                    onClick={handleCancel}
+                  >
+                    Отмена
+                  </Button>
+                  <Button type="primary" size="medium" htmlType="submit">
+                    Сохранить
+                  </Button>
+                </div>
+              )}
             </form>
           ) : (
             <HistoryOrders />
