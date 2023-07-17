@@ -1,3 +1,11 @@
+import {
+  INGREDIENTS_API_PATH,
+  FORGOT_PASS_API_PATH,
+  RESET_PASS_API_PATH,
+  ORDERS_PATH,
+  BASE_URL,
+} from "../utils/constants";
+
 class Api {
   constructor({ address }) {
     this.address = address;
@@ -10,11 +18,13 @@ class Api {
   }
 
   getInitialIngredients() {
-    return fetch(`${this.address}/ingredients`).then(this._getResponseData);
+    return fetch(`${this.address}/${INGREDIENTS_API_PATH}`).then(
+      this._getResponseData
+    );
   }
 
   postIngredientsBurger(ingredientsId, accessToken) {
-    return fetch(`${this.address}/orders`, {
+    return fetch(`${this.address}/${ORDERS_PATH}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -25,7 +35,7 @@ class Api {
   }
 
   postForgotPassword(email) {
-    return fetch(`${this.address}/password-reset`, {
+    return fetch(`${this.address}/${FORGOT_PASS_API_PATH}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -35,7 +45,7 @@ class Api {
   }
 
   postResetPassword(email, token) {
-    return fetch(`${this.address}/password-reset/reset`, {
+    return fetch(`${this.address}/${RESET_PASS_API_PATH}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -46,7 +56,7 @@ class Api {
 }
 
 const api = new Api({
-  address: "https://norma.nomoreparties.space/api",
+  address: BASE_URL,
 });
 
 export default api;

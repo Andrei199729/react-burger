@@ -9,6 +9,8 @@ import {
 import { initFeed } from "../../services/reducers/wsReducer";
 import OrderFeed from "../OrderFeed/OrderFeed";
 
+import { ORDER_FEED_PATH } from "../../utils/constants";
+
 function OrdersFeed() {
   const location = useLocation();
   const dispatch = useAppDispatch();
@@ -29,7 +31,7 @@ function OrdersFeed() {
               {orders?.map((order) => {
                 return (
                   <Link
-                    to={`/feed/${order._id}`}
+                    to={`${ORDER_FEED_PATH}/${order._id}`}
                     className={`${styles["card-order"]} p-6 mr-2`}
                     state={{ background: location }}
                     key={order._id}

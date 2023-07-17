@@ -5,9 +5,11 @@ import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 
+import { LOGIN_PATH, REGISTER_PATH } from "../../utils/constants";
+
 function FormAuthentication(props) {
   const location = useLocation();
-  const loginLocation = location.pathname === "/login";
+  const loginLocation = location.pathname === LOGIN_PATH;
   return (
     <>
       <div className={`${styles.authentication}`}>
@@ -38,7 +40,7 @@ function FormAuthentication(props) {
             {loginLocation && (
               <p className={`text text_type_main-small mb-4`}>
                 {props.textLogin}
-                <Link className={`${styles.linkSign} ml-2`} to="/register">
+                <Link className={`${styles.linkSign} ml-2`} to={REGISTER_PATH}>
                   {props.linkEntrance}
                 </Link>
               </p>
@@ -59,9 +61,9 @@ function FormAuthentication(props) {
 FormAuthentication.propTypes = {
   title: PropTypes.string.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  method: PropTypes.string.isRequired,
-  formName: PropTypes.string.isRequired,
-  children: PropTypes.arrayOf(PropTypes.node),
+  method: PropTypes.string,
+  formName: PropTypes.string,
+  children: PropTypes.node,
   button: PropTypes.string.isRequired,
   textLogin: PropTypes.string,
   text: PropTypes.string.isRequired,

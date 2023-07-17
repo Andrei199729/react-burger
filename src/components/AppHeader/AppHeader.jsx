@@ -3,6 +3,16 @@ import styles from "./AppHeader.module.css";
 import { NavLink, useMatch } from "react-router-dom";
 
 import {
+  MAIN_PATH,
+  INGREDIENTS_ID_PATH,
+  ORDER_FEED_PATH,
+  ORDER_FEED_ID_PATH,
+  PROFILE_ORDERS_ID_PATH,
+  PROFILE_PATH,
+  PROFILE_ORDERS_PATH,
+} from "../../utils/constants";
+
+import {
   Logo,
   BurgerIcon,
   ListIcon,
@@ -10,13 +20,13 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 function AppHeader() {
-  const matchHome = useMatch("/");
-  const matchHomeIngredients = useMatch("/ingredients/:id");
-  const matchList = useMatch("/feed");
-  const matchListId = useMatch("/feed/:id");
-  const matchProfile = useMatch("/profile");
-  const matchProfileOrders = useMatch("/profile/orders");
-  const matchProfileOrdersId = useMatch("/profile/orders/:id");
+  const matchHome = useMatch(MAIN_PATH);
+  const matchHomeIngredients = useMatch(INGREDIENTS_ID_PATH);
+  const matchList = useMatch(ORDER_FEED_PATH);
+  const matchListId = useMatch(ORDER_FEED_ID_PATH);
+  const matchProfile = useMatch(PROFILE_PATH);
+  const matchProfileOrders = useMatch(PROFILE_ORDERS_PATH);
+  const matchProfileOrdersId = useMatch(PROFILE_ORDERS_ID_PATH);
   const iconType = (path) => (path ? "primary" : "secondary");
   return (
     <header
@@ -30,14 +40,14 @@ function AppHeader() {
                 ? `${styles["header__burger-link"]} ${styles["active-link"]} mr-2 pr-5`
                 : `${styles["header__burger-link"]} mr-2 pr-5`
             }
-            to="/"
+            to={MAIN_PATH}
           >
             <BurgerIcon type={iconType(matchHome || matchHomeIngredients)} />
             <p className={`text text_type_main-default ml-2`}>Конструктор</p>
           </NavLink>
           <NavLink
             id="2"
-            to="/feed"
+            to={ORDER_FEED_PATH}
             className={({ isActive }) =>
               isActive
                 ? `${styles["header__burger-link"]} ${styles["active-link"]} pl-5 pr-5`
@@ -47,7 +57,7 @@ function AppHeader() {
             <ListIcon type={iconType(matchList || matchListId)} />
             <p className={`text text_type_main-default ml-2`}>Лента заказов</p>
           </NavLink>
-          <a className={`${styles.logo}`} href="/">
+          <a className={`${styles.logo}`} href={MAIN_PATH}>
             <Logo />
           </a>
         </div>
@@ -57,7 +67,7 @@ function AppHeader() {
               ? `${styles["header__burger-link"]} ${styles["active-link"]} pl-5 pr-5`
               : `${styles["header__burger-link"]} pl-5 pr-5`
           }
-          to="/profile"
+          to={PROFILE_PATH}
         >
           <ProfileIcon
             type={iconType(

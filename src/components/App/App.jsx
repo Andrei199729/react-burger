@@ -12,7 +12,7 @@ import Profile from "../../pages/Profile/Profile";
 import OrderInfo from "../../pages/OrderInfo/OrderInfo";
 import NotFound404 from "../../pages/NotFound404/NotFound404";
 
-import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import HistoryOrders from "../../pages/HistoryOrders/HistoryOrders";
 import {
   Authorized,
@@ -25,10 +25,24 @@ import Modal from "../Modal/Modal";
 import { getIngredients } from "../../services/actions/ingredient";
 import { checkUserAuth } from "../../services/actions/user";
 
+import {
+  MAIN_PATH,
+  INGREDIENTS_ID_PATH,
+  LOGIN_PATH,
+  REGISTER_PATH,
+  ORDERS_PATH,
+  ORDER_FEED_PATH,
+  ORDER_FEED_ID_PATH,
+  PASSWORD_RECOVERY_PATH,
+  PASSWORD_RESET_PATH,
+  PROFILE_ORDERS_ID_PATH,
+  PROFILE_PATH,
+  ERROR_PATH,
+} from "../../utils/constants";
+
 function App() {
   const dispatch = useDispatch();
   const location = useLocation();
-  const navigate = useNavigate();
   const background = location.state && location.state.background;
 
   useEffect(() => {
@@ -40,37 +54,43 @@ function App() {
     <>
       <AppHeader />
       <Routes location={background || location}>
-        <Route path="/" element={<Main />} />
-        <Route path="/ingredients/:id" element={<IngredientPage />} />
-        <Route path="/login" element={<Unauthorized component={<Login />} />} />
+        <Route path={MAIN_PATH} element={<Main />} />
+        <Route path={INGREDIENTS_ID_PATH} element={<IngredientPage />} />
         <Route
-          path="/register"
+          path={LOGIN_PATH}
+          element={<Unauthorized component={<Login />} />}
+        />
+        <Route
+          path={REGISTER_PATH}
           element={<Unauthorized component={<Registration />} />}
         />
-        <Route path="/feed" element={<OrdersFeed />} />
-        <Route path="/feed/:id" element={<OrderFeedInfo />} />
+        <Route path={ORDER_FEED_PATH} element={<OrdersFeed />} />
+        <Route path={ORDER_FEED_ID_PATH} element={<OrderFeedInfo />} />
         <Route
-          path="/forgot-password"
+          path={PASSWORD_RECOVERY_PATH}
           element={<Unauthorized component={<ForgotPassword />} />}
         />
         <Route
-          path="/reset-password"
+          path={PASSWORD_RESET_PATH}
           element={<Unauthorized component={<ResetPassword />} />}
         />
-        <Route path="/profile" element={<Authorized component={<Profile />} />}>
-          <Route path="orders" element={<HistoryOrders />} />
+        <Route
+          path={PROFILE_PATH}
+          element={<Authorized component={<Profile />} />}
+        >
+          <Route path={ORDERS_PATH} element={<HistoryOrders />} />
         </Route>
         <Route
-          path="/profile/orders/:id"
+          path={PROFILE_ORDERS_ID_PATH}
           element={<Authorized component={<OrderInfo />} />}
         />
-        <Route path="*" element={<NotFound404 />} />
+        <Route path={ERROR_PATH} element={<NotFound404 />} />
       </Routes>
       {background && (
         <>
           <Routes>
             <Route
-              path="/ingredients/:id"
+              path={INGREDIENTS_ID_PATH}
               element={
                 <Modal title="Детали ингредиента">
                   <IngredientDetails />
@@ -78,17 +98,17 @@ function App() {
               }
             />
             <Route
-              path="/feed/:id"
+              path={ORDER_FEED_ID_PATH}
               element={
-                <Modal onClose={() => navigate("/feed")}>
+                <Modal>
                   <OrderFeedInfo />
                 </Modal>
               }
             />
             <Route
-              path="/profile/orders/:id"
+              path={PROFILE_ORDERS_ID_PATH}
               element={
-                <Modal onClose={() => navigate("/profile/orders")}>
+                <Modal>
                   <OrderInfo />
                 </Modal>
               }

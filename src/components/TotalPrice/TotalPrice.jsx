@@ -6,8 +6,11 @@ import {
 
 import styles from "./TotalPrice.module.css";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
 function TotalPrice(props) {
+  const { userData } = useSelector((state) => state.user);
+  const disabled = !userData ? true : false;
   return (
     <div className={`${styles["total-price"]} mt-10`}>
       <div className={`${styles["total-price__box"]} mr-10`}>
@@ -19,6 +22,7 @@ function TotalPrice(props) {
         type="primary"
         size="large"
         onClick={props.handleCheckout}
+        disabled={disabled}
       >
         Оформить заказ
       </Button>

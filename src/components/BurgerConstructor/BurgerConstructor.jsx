@@ -2,6 +2,8 @@ import React, { useMemo } from "react";
 import styles from "./BurgerConstructor.module.css";
 import { useSelector, useDispatch } from "react-redux";
 
+import { LOGIN_PATH } from "../../utils/constants";
+
 import {
   ADD_CONSTRUCTOR_ITEM,
   DELETE_CONSTRUCTOR_ITEM,
@@ -27,7 +29,7 @@ function BurgerConstructor() {
   const { ingredientsConstructor, bun } = useSelector(
     (state) => state.constructorItems
   );
-  const { isAuthloggedIn } = useSelector((state) => state.user);
+  const { userData } = useSelector((state) => state.user);
 
   const findCard = (id) => {
     const ingredientContainer = ingredientsConstructor.filter(
@@ -94,8 +96,8 @@ function BurgerConstructor() {
   function handleCheckout() {
     const ingredientsId = ingredients?.map((ingredientId) => ingredientId._id);
     dispatch(postIngredientsConstructorBurger(ingredientsId));
-    if (!isAuthloggedIn) {
-      navigate("/login");
+    if (!userData) {
+      navigate(LOGIN_PATH);
     }
   }
 
@@ -110,10 +112,6 @@ function BurgerConstructor() {
       });
     }
   };
-
-  function closeAllPopups() {
-    navigate(-1);
-  }
 
   return (
     <>
@@ -177,9 +175,9 @@ function BurgerConstructor() {
           handleCheckout={handleCheckout}
         />
       </section>
-      {orderDetailsPopupOpen && (
-        <Modal onClose={closeAllPopups}>
-          <OrderDetails />
+      {userData && orderDetailsPopupOpen && (
+        <Modal>
+          <OrderDetails orderDetailsPopupOpen={orderDetailsPopupOpen} />
         </Modal>
       )}
     </>

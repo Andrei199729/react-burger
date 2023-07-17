@@ -1,3 +1,4 @@
+import { getAboutUser } from "../../utils/auth";
 export const socketMiddleware = (wsActions) => {
   let socket = null;
 
@@ -22,7 +23,12 @@ export const socketMiddleware = (wsActions) => {
         socket.onmessage = (event) => {
           const { data } = event;
           const parsedData = JSON.parse(data);
-
+          if (
+            parsedData.message &&
+            parsedData.message === "Invalid or missing token"
+          ) {
+            dispatch(getAboutUser());
+          }
           dispatch({ type: onMessage, payload: parsedData });
         };
 

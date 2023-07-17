@@ -8,6 +8,8 @@ import {
   EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
+import { MAIN_PATH, PASSWORD_RECOVERY_PATH } from "../../utils/constants";
+
 function Login() {
   const dispatch = useDispatch();
   const [valueEmail, setValueEmail] = useState("");
@@ -27,8 +29,8 @@ function Login() {
       linkEntrance="Зарегистрироваться"
       text="Забыли пароль?"
       linkText="Восстановить пароль"
-      link="/forgot-password"
-      linkPath="/"
+      link={PASSWORD_RECOVERY_PATH}
+      linkPath={MAIN_PATH}
       method="POST"
       formName="formlogin"
     >

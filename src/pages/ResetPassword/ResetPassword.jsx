@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   PasswordInput,
   Input,
@@ -7,6 +7,8 @@ import FormAuthentication from "../FormAuthentication/FormAuthentication";
 import { useNavigate } from "react-router-dom";
 import { postResetPasswordAuth } from "../../services/actions/user";
 import { useDispatch, useSelector } from "react-redux";
+
+import { LOGIN_PATH, PASSWORD_RESET_PATH } from "../../utils/constants";
 
 function ResetPassword() {
   const navigate = useNavigate();
@@ -24,10 +26,10 @@ function ResetPassword() {
     e.preventDefault();
     if (valueCode && valuePassword) {
       dispatch(postResetPasswordAuth(valuePassword, valueCode));
-      navigate("/login");
+      navigate(LOGIN_PATH);
     }
     if (!success) {
-      return navigate("/reset-password");
+      return navigate(PASSWORD_RESET_PATH);
     }
   };
 
@@ -38,7 +40,7 @@ function ResetPassword() {
       button={"Сохранить"}
       text="Вспомнили пароль?"
       linkText="Войти"
-      link="/login"
+      link={LOGIN_PATH}
     >
       <div>
         <PasswordInput

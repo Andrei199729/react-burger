@@ -20,6 +20,7 @@ import {
 
 const initialState = {
   userData: null,
+  password: "",
   accessToken: undefined,
   isAuthloggedIn: false,
   success: false,
@@ -55,7 +56,8 @@ export const authReducer = (state = initialState, action) => {
     case POST_REGISTER_SUCCESS:
       return {
         ...state,
-        userData: action.payload,
+        userData: action.user,
+        password: action.password,
       };
     case POST_REGISTER_FAILED:
       return {

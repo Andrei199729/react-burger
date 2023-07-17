@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { postForgotPasswordAuth } from "../../services/actions/user";
 import { useDispatch } from "react-redux";
 
+import { LOGIN_PATH, PASSWORD_RESET_PATH } from "../../utils/constants";
+
 function ForgotPassword() {
   const navigate = useNavigate();
   const [valueEmail, setValueEmail] = useState("");
@@ -17,7 +19,7 @@ function ForgotPassword() {
     e.preventDefault();
     if (valueEmail) {
       dispatch(postForgotPasswordAuth(valueEmail));
-      navigate("/reset-password");
+      navigate(PASSWORD_RESET_PATH);
     }
   };
 
@@ -28,7 +30,7 @@ function ForgotPassword() {
       button={"Восстановить"}
       text="Вспомнили пароль?"
       linkText="Войти"
-      link="/login"
+      link={LOGIN_PATH}
     >
       <EmailInput
         type={"text"}

@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 import Main from "../../components/Main/Main";
 import IngredientDetails from "../../components/IngredientDetails/IngredientDetails";
 
+import { MAIN_PATH } from "../../utils/constants";
+
 function IngredientPage() {
   const { id } = useParams();
   const location = useLocation();
@@ -13,7 +15,7 @@ function IngredientPage() {
 
   return (
     <>
-      {location.pathname === "/" ? (
+      {location.pathname === MAIN_PATH ? (
         <Main />
       ) : (
         ingredientId && (

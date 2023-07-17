@@ -6,6 +6,8 @@ import {
   WS_CONNECTION_START,
 } from "../actions-types/wsActionTypes";
 
+import { WS_BASE_URL, WS_BASE_URL_ALL } from "../../utils/constants";
+
 const initialState = {
   wsConnected: false,
   orders: [],
@@ -16,12 +18,12 @@ const initialState = {
 
 export const initFeed = () => ({
   type: WS_CONNECTION_START,
-  payload: "wss://norma.nomoreparties.space/orders/all",
+  payload: WS_BASE_URL_ALL,
 });
 
 export const initFeedProfileOrders = (accessToken) => ({
   type: WS_CONNECTION_START,
-  payload: `wss://norma.nomoreparties.space/orders?token=${accessToken}`,
+  payload: `${WS_BASE_URL}?token=${accessToken}`,
 });
 
 export const wsReducer = (state = initialState, action) => {

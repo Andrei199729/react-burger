@@ -6,25 +6,26 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import FormAuthentication from "../FormAuthentication/FormAuthentication";
 import { postRegisterAuth } from "../../services/actions/user";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../services/actions-types/wsActionTypes";
+
+import { LOGIN_PATH } from "../../utils/constants";
 
 function Registration() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // register
+
   const [nameRegister, setNameRegister] = useState("");
   const [emailRegister, setEmailRegister] = useState("");
   const [passwordRegister, setPasswordRegister] = useState("");
-  // register
+
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(postRegisterAuth(nameRegister, emailRegister, passwordRegister));
     setNameRegister("");
     setEmailRegister("");
     setPasswordRegister("");
-    navigate("/login");
+    navigate(LOGIN_PATH);
   };
 
   return (
@@ -34,7 +35,7 @@ function Registration() {
       button="Зарегистрироваться"
       text="Уже зарегистрированы?"
       linkText="Войти"
-      link="/login"
+      link={LOGIN_PATH}
       method="POST"
       formName="formregister"
     >

@@ -71,6 +71,7 @@ export function postRegisterAuth(
         dispatch({
           type: POST_REGISTER_SUCCESS,
           user: res,
+          password: passwordRegister,
         });
         setCookie("accessToken", res.accessToken);
         setCookie("refreshToken", res.refreshToken);

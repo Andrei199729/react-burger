@@ -13,14 +13,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { patchUserData, postLogoutAuth } from "../../services/actions/user";
 import { getCookie } from "../../utils/cookie";
 
+import {
+  LOGIN_PATH,
+  ORDERS_PATH,
+  PROFILE_PATH,
+  PROFILE_ORDERS_PATH,
+} from "../../utils/constants";
+
 function Profile() {
   const location = useLocation();
-  const locationProfileOrders = location.pathname === "/profile/orders";
-  const locationProfile = location.pathname === "/profile";
-  const { userData } = useSelector((state) => state.user);
+  const locationProfileOrders = location.pathname === PROFILE_ORDERS_PATH;
+  const locationProfile = location.pathname === PROFILE_PATH;
+  const { userData, password } = useSelector((state) => state.user);
   const [nameProfile, setNameProfile] = useState(userData.user.name);
   const [emailProfile, setEmailProfile] = useState(userData.user.email);
-  const [passwordProfile, setPasswordProfile] = useState("******");
+  const [passwordProfile, setPasswordProfile] = useState(password);
   const inputRef = React.useRef(null);
   const accessToken = getCookie("accessToken");
   const dispatch = useDispatch();
@@ -68,6 +75,9 @@ function Profile() {
       case "email":
         setEdit(true);
         break;
+      case "password":
+        setEdit(true);
+        break;
       default:
         break;
     }
@@ -86,7 +96,7 @@ function Profile() {
                       ? `${styles.active} ${styles.link}`
                       : styles.link
                   } text text_type_main-default`}
-                  to="/profile"
+                  to={PROFILE_PATH}
                   end
                 >
                   Профиль
@@ -97,7 +107,7 @@ function Profile() {
                       ? `${styles.active} ${styles.link}`
                       : styles.link
                   } text text_type_main-default`}
-                  to="orders"
+                  to={ORDERS_PATH}
                 >
                   История заказов
                 </NavLink>
@@ -109,7 +119,7 @@ function Profile() {
                         : styles.link
                     } text text_type_main-default`
                   }
-                  to="/login"
+                  to={LOGIN_PATH}
                   onClick={handleLogout}
                 >
                   Выход
@@ -155,6 +165,7 @@ function Profile() {
                 value={passwordProfile}
                 name={"password"}
                 extraClass="mb-6"
+                onBlur={blurHandler}
               />
               {edit && (
                 <div className={`${styles.buttons} mt-6`}>

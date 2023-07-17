@@ -6,6 +6,8 @@ import { INGREDIENT_DATA_MODAL } from "../../services/actions/popupIngredient";
 import Ingredient from "../Ingredient/Ingredient";
 import { Link, useLocation } from "react-router-dom";
 
+import { INGREDIENTS_PATH } from "../../utils/constants";
+
 const IngredientList = forwardRef((props, ref) => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -37,7 +39,7 @@ const IngredientList = forwardRef((props, ref) => {
           return (
             ingredient.type === props.category && (
               <Link
-                to={`/ingredients/${ingredient._id}`}
+                to={`${INGREDIENTS_PATH}/${ingredient._id}`}
                 state={{ background: location }}
                 key={ingredient._id}
                 className={styles.link}

@@ -14,6 +14,8 @@ import OrdersFeed from "../OrdersFeed/OrdersFeed";
 import { initFeed } from "../../services/reducers/wsReducer";
 import { useSelector } from "react-redux";
 
+import { ORDER_FEED_PATH } from "../../utils/constants";
+
 function OrderFeedInfo() {
   const { id } = useParams();
   const location = useLocation();
@@ -85,7 +87,7 @@ function OrderFeedInfo() {
 
   return (
     <>
-      {location.pathname === "/feed" ? (
+      {location.pathname === ORDER_FEED_PATH ? (
         <OrdersFeed />
       ) : (
         ingredientId && (

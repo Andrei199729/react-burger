@@ -1,17 +1,20 @@
 import { setCookie } from "./cookie";
-
-export const BASE_URL = "https://norma.nomoreparties.space/api";
+import {
+  BASE_URL,
+  REGISTER_USER_PATH,
+  LOGIN_USER_PATH,
+  USER_PATH,
+  TOKEN_PATH,
+  LOGOUT_PATH,
+} from "../utils/constants";
 
 const HEADERS = {
   Accept: "application/json",
   "Content-Type": "application/json",
 };
 
-const getJson = (response) => {
-  if (response.ok) {
-    return response.json();
-  }
-  throw new Error({ status: response.status });
+const getJson = (res) => {
+  return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
 export const fetchWithRefresh = async (url, options) => {
@@ -36,11 +39,9 @@ export const fetchWithRefresh = async (url, options) => {
 };
 
 export const postRefreshToken = (refreshToken) => {
-  return fetch(`${BASE_URL}/auth/token`, {
+  return fetch(`${BASE_URL}/${TOKEN_PATH}`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: HEADERS,
     body: JSON.stringify({
       token: refreshToken,
     }),
@@ -48,7 +49,7 @@ export const postRefreshToken = (refreshToken) => {
 };
 
 export const postRegister = (nameRegister, emailRegister, passwordRegister) => {
-  return fetch(`${BASE_URL}/auth/register`, {
+  return fetch(`${BASE_URL}/${REGISTER_USER_PATH}`, {
     method: "POST",
     headers: HEADERS,
     body: JSON.stringify({
@@ -60,7 +61,7 @@ export const postRegister = (nameRegister, emailRegister, passwordRegister) => {
 };
 
 export const postLogin = (emailRegister, passwordRegister) => {
-  return fetch(`${BASE_URL}/auth/login`, {
+  return fetch(`${BASE_URL}/${LOGIN_USER_PATH}`, {
     method: "POST",
     headers: HEADERS,
     body: JSON.stringify({
@@ -71,7 +72,7 @@ export const postLogin = (emailRegister, passwordRegister) => {
 };
 
 export const postLogout = (token) => {
-  return fetch(`${BASE_URL}/auth/logout`, {
+  return fetch(`${BASE_URL}/${LOGOUT_PATH}`, {
     method: "POST",
     headers: HEADERS,
     body: JSON.stringify({ token: token }),
@@ -79,7 +80,7 @@ export const postLogout = (token) => {
 };
 
 export const getAboutUser = (token) => {
-  return fetchWithRefresh(`${BASE_URL}/auth/user`, {
+  return fetchWithRefresh(`${BASE_URL}/${USER_PATH}`, {
     method: "GET",
     headers: {
       ...HEADERS,
@@ -94,7 +95,7 @@ export const updateAboutUser = (
   updatePassword,
   token
 ) => {
-  return fetchWithRefresh(`${BASE_URL}/auth/user`, {
+  return fetchWithRefresh(`${BASE_URL}/${USER_PATH}`, {
     method: "PATCH",
     headers: {
       ...HEADERS,

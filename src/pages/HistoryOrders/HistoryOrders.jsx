@@ -10,6 +10,8 @@ import {
 import { initFeedProfileOrders } from "../../services/reducers/wsReducer";
 import OrderFeed from "../OrderFeed/OrderFeed";
 
+import { PROFILE_ORDERS_PATH } from "../../utils/constants";
+
 function HistoryOrders() {
   const location = useLocation();
   const accessToken = getCookie("accessToken").slice(7);
@@ -31,7 +33,7 @@ function HistoryOrders() {
           {orders?.map((order) => {
             return (
               <Link
-                to={`/profile/orders/${order._id}`}
+                to={`${PROFILE_ORDERS_PATH}/${order._id}`}
                 className={`${styles["card-order"]} p-6 mr-2`}
                 state={{ background: location }}
                 key={order._id}

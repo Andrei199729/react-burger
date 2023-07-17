@@ -16,6 +16,23 @@ import { useSelector } from "react-redux";
 import HistoryOrders from "../HistoryOrders/HistoryOrders";
 import { getCookie } from "../../utils/cookie";
 
+// import {
+//   MAIN_PATH,
+//   INGREDIENTS_ID_PATH,
+//   LOGIN_PATH,
+//   REGISTER_PATH,
+//   ORDERS_PATH,
+//   ORDER_FEED_PATH,
+//   ORDER_FEED_ID_PATH,
+//   PASSWORD_RECOVERY_PATH,
+//   PASSWORD_RESET_PATH,
+//   PROFILE_ORDERS_PATH,
+//   PROFILE_ORDERS_ID_PATH,
+//   PROFILE_PATH,
+//   ERROR_PATH,
+//   INGREDIENTS_PATH,
+// } from "../../utils/constants";
+
 function OrderInfo() {
   const { id } = useParams();
   const location = useLocation();
