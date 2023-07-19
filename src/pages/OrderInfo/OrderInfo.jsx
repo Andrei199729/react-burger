@@ -16,22 +16,7 @@ import { useSelector } from "react-redux";
 import HistoryOrders from "../HistoryOrders/HistoryOrders";
 import { getCookie } from "../../utils/cookie";
 
-// import {
-//   MAIN_PATH,
-//   INGREDIENTS_ID_PATH,
-//   LOGIN_PATH,
-//   REGISTER_PATH,
-//   ORDERS_PATH,
-//   ORDER_FEED_PATH,
-//   ORDER_FEED_ID_PATH,
-//   PASSWORD_RECOVERY_PATH,
-//   PASSWORD_RESET_PATH,
-//   PROFILE_ORDERS_PATH,
-//   PROFILE_ORDERS_ID_PATH,
-//   PROFILE_PATH,
-//   ERROR_PATH,
-//   INGREDIENTS_PATH,
-// } from "../../utils/constants";
+import { PROFILE_ORDERS_PATH } from "../../utils/constants";
 
 function OrderInfo() {
   const { id } = useParams();
@@ -104,7 +89,7 @@ function OrderInfo() {
 
   return (
     <>
-      {/* {location.pathname === "/profile/orders" ? (
+      {location.pathname === PROFILE_ORDERS_PATH ? (
         <HistoryOrders />
       ) : (
         ingredientId && (
@@ -115,13 +100,17 @@ function OrderInfo() {
               >
                 #{ingredientId.number}
               </p>
-              <h2 className="text text_type_main-medium mb-3">
+              <h2 className="text text_type_main-medium">
                 {ingredientId.name}
               </h2>
               <p
-                className={`${styles.function} text text_type_main-default mb-15`}
+                className={`text text_type_main-default mt-3 mb-6 ${
+                  ingredientId.status === "done" && styles.done
+                }`}
               >
-                {ingredientId.status === "done" ? "Готово" : "В ожидании"}
+                {ingredientId.status === "created" && "Создан"}
+                {ingredientId.status === "pending" && "Готовится"}
+                {ingredientId.status === "done" && "Выполнен"}
               </p>
               <p className="text text_type_main-medium mb-6">Состав:</p>
               <div className={`${styles.scroll} mb-10`}>
@@ -163,93 +152,7 @@ function OrderInfo() {
             </div>
           </section>
         )
-      )} */}
-
-      <section className={`${styles["order-info"]}`}>
-        <div className={`${styles["order-info__container"]} mt-30`}>
-          <p className={`${styles.number} text text_type_digits-default mb-10`}>
-            #034533
-          </p>
-          <h2 className="text text_type_main-medium mb-3">
-            Black Hole Singularity острый бургер
-          </h2>
-          <p className={`${styles.function} text text_type_main-default mb-15`}>
-            Выполнен
-          </p>
-          <p className="text text_type_main-medium mb-6">Состав:</p>
-          <div className={`${styles.scroll} mb-10`}>
-            <div className={`${styles["info-ingredient"]} mr-6`}>
-              <img className={`${styles.image} mr-4`} src="/" alt="img" />
-              <p className="text text_type_main-default">
-                Флюоресцентная булка R2-D3
-              </p>
-              <div className={`${styles.count}`}>
-                <p className="text text_type_digits-default mr-2 ml-4">
-                  2 x 20
-                </p>
-                <CurrencyIcon type="primary" />
-              </div>
-            </div>
-            <div className={`${styles["info-ingredient"]} mr-6`}>
-              <img className={`${styles.image} mr-4`} src="/" alt="img" />
-              <p className="text text_type_main-default">
-                Флюоресцентная булка R2-D3
-              </p>
-              <div className={`${styles.count}`}>
-                <p className="text text_type_digits-default mr-2 ml-4">
-                  2 x 20
-                </p>
-                <CurrencyIcon type="primary" />
-              </div>
-            </div>
-            <div className={`${styles["info-ingredient"]} mr-6`}>
-              <img className={`${styles.image} mr-4`} src="/" alt="img" />
-              <p className="text text_type_main-default">
-                Флюоресцентная булка R2-D3
-              </p>
-              <div className={`${styles.count}`}>
-                <p className="text text_type_digits-default mr-2 ml-4">
-                  2 x 20
-                </p>
-                <CurrencyIcon type="primary" />
-              </div>
-            </div>
-            <div className={`${styles["info-ingredient"]} mr-6`}>
-              <img className={`${styles.image} mr-4`} src="/" alt="img" />
-              <p className="text text_type_main-default">
-                Флюоресцентная булка R2-D3
-              </p>
-              <div className={`${styles.count}`}>
-                <p className="text text_type_digits-default mr-2 ml-4">
-                  2 x 20
-                </p>
-                <CurrencyIcon type="primary" />
-              </div>
-            </div>
-            <div className={`${styles["info-ingredient"]} mr-6`}>
-              <img className={`${styles.image} mr-4`} src="/" alt="img" />
-              <p className="text text_type_main-default">
-                Флюоресцентная булка R2-D3
-              </p>
-              <div className={`${styles.count}`}>
-                <p className="text text_type_digits-default mr-2 ml-4">
-                  2 x 20
-                </p>
-                <CurrencyIcon type="primary" />
-              </div>
-            </div>
-          </div>
-          <div className={`${styles["box-date"]}`}>
-            <p className="text text_type_main-default text_color_inactive">
-              Вчера, 13:50 i-GMT+3
-            </p>
-            <div className={`${styles.total}`}>
-              <p className="text text_type_digits-default mr-2">510</p>
-              <CurrencyIcon type="primary" />
-            </div>
-          </div>
-        </div>
-      </section>
+      )}
     </>
   );
 }

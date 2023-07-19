@@ -31,28 +31,30 @@ export const wsReducer = (state = initialState, action) => {
     case WS_CONNECTION_SUCCESS:
       return {
         ...state,
-        error: undefined,
+        error: false,
+        errorMessage: null,
         wsConnected: true,
       };
 
     case WS_CONNECTION_ERROR:
       return {
         ...state,
-        error: action.payload,
+        errorMessage: action.payload,
+        error: true,
         wsConnected: false,
       };
 
     case WS_CONNECTION_CLOSED:
       return {
         ...state,
-        error: undefined,
+        error: false,
         wsConnected: false,
       };
 
     case WS_GET_MESSAGE:
       return {
         ...state,
-        error: undefined,
+        error: false,
         orders: action.payload.orders,
         total: action.payload.total,
         totalToday: action.payload.totalToday,

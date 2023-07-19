@@ -6,14 +6,18 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
+import { useMatch } from "react-router-dom";
+
+import { PROFILE_ORDERS_PATH } from "../../utils/constants";
 
 function OrderFeed(props) {
+  const matchHistoryProfile = useMatch(PROFILE_ORDERS_PATH);
+
   const ingredienstId = props.ingredients;
   const { ingredients } = useSelector((state) => state.ingredients);
 
   const set = new Set(ingredienstId.map((item) => item));
   const feedIngredients = ingredients.filter((item) => set.has(item._id));
-
   const priceMains = feedIngredients.map(
     (price) => price.type !== "bun" && price.price
   );
@@ -36,6 +40,14 @@ function OrderFeed(props) {
     return priceBuns?.reduce((sum, ingredient) => sum + ingredient * 2, 0);
   }, [feedIngredients, priceBuns]);
 
+  const showCount = () => {
+    if (feedIngredients.length - 6 === 0) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   return (
     <>
       <div className={`${styles.text} mb-6`}>
@@ -44,32 +56,60 @@ function OrderFeed(props) {
           <FormattedDate date={new Date(props.updatedAt)} />
         </p>
       </div>
-      <h2 className={`text text_type_main-medium mb-6`}>{props.name}</h2>
-      <div className={`${styles.box}`}>
+      <h2 className={`text text_type_main-medium`}>{props.name}</h2>
+      {matchHistoryProfile && (
+        <p
+          className={`text text_type_main-default mt-2 ${
+            props.status === "done" && styles.done
+          }`}
+        >
+          {props.status === "created" && "Создан"}
+          {props.status === "pending" && "Готовится"}
+          {props.status === "done" && "Выполнен"}
+        </p>
+      )}
+      <div className={`${styles.box}  mt-6`}>
         <ul className={`${styles["lists-ingredient"]}`}>
           {feedIngredients
             .map((ingredient, index) => {
-              return (
-                <li
-                  className={`${styles.list} ${
-                    feedIngredients.length >= 7 && styles["list-count"]
-                  }`}
-                  key={index}
-                >
-                  <img
-                    className={`${styles["image"]}`}
-                    src={ingredient.image_mobile}
-                    alt={ingredient.name}
-                  />
-                  {feedIngredients.length >= 7 && (
-                    <p
-                      className={`${styles.count} text text_type_main-default`}
-                    >
-                      {`+${feedIngredients.length - 6}`}
-                    </p>
-                  )}
-                </li>
-              );
+              if (index === 5) {
+                return (
+                  <li
+                    className={`${styles.list} ${
+                      feedIngredients.length >= 7 && styles["list-count"]
+                    }`}
+                    key={index}
+                  >
+                    <img
+                      className={`${styles["image"]}`}
+                      src={ingredient.image_mobile}
+                      alt={ingredient.name}
+                    />
+                    {showCount && (
+                      <p
+                        className={`${styles.count} text text_type_main-default`}
+                      >
+                        {`+${feedIngredients.length - 6}`}
+                      </p>
+                    )}
+                  </li>
+                );
+              } else if (index < 5) {
+                return (
+                  <li
+                    className={`${styles.list} ${
+                      feedIngredients.length >= 7 && styles["list-count"]
+                    }`}
+                    key={index}
+                  >
+                    <img
+                      className={`${styles["image"]}`}
+                      src={ingredient.image_mobile}
+                      alt={ingredient.name}
+                    />
+                  </li>
+                );
+              }
             })
             .slice(0, 6)}
         </ul>
@@ -89,6 +129,7 @@ OrderFeed.prototype = {
   number: PropTypes.number.isRequired,
   updatedAt: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
+  status: PropTypes.string,
 };
 
 export default OrderFeed;

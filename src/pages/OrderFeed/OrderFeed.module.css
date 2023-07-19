@@ -84,6 +84,11 @@
 .image-last {
   opacity: 0.6;
 }
+
+.done {
+  color: #00cccc;
+}
+
 .total-price__box {
   display: flex;
 }

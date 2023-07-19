@@ -30,7 +30,9 @@ function AppHeader() {
   const iconType = (path) => (path ? "primary" : "secondary");
   return (
     <header
-      className={`${styles.header} pb-4 pt-4 ${matchListId ? "mb-30" : null}`}
+      className={`${styles.header} pb-4 pt-4 ${
+        matchListId || matchProfileOrdersId ? "mb-30" : null
+      }`}
     >
       <nav className={`${styles.header__burger} pl-5 pb-4 pt-4 pr-5`}>
         <div className={`${styles["header__burger-navigation"]}`}>

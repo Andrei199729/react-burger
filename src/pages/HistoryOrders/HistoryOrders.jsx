@@ -9,28 +9,39 @@ import {
 } from "../../services/actions-types/wsActionTypes";
 import { initFeedProfileOrders } from "../../services/reducers/wsReducer";
 import OrderFeed from "../OrderFeed/OrderFeed";
-
+import { wsConnectionClosed } from "../../services/actions/wsAction";
 import { PROFILE_ORDERS_PATH } from "../../utils/constants";
+import { getUserData } from "../../services/actions/user";
 
 function HistoryOrders() {
   const location = useLocation();
-  const accessToken = getCookie("accessToken").slice(7);
+  const accessToken = getCookie("accessToken").slice(1);
   const dispatch = useAppDispatch();
-  const { orders } = useAppSelector((store) => store.ws);
+  const { orders, error } = useAppSelector((store) => store.ws);
 
   useEffect(() => {
     dispatch(initFeedProfileOrders(accessToken));
     return () => dispatch({ type: WS_CONNECTION_CLOSED });
   }, [dispatch, accessToken]);
 
+  useEffect(() => {
+    const accessToken = getCookie("accessToken").slice(7);
+    if (error) {
+      dispatch(wsConnectionClosed());
+      dispatch(getUserData())
+        .then(() => dispatch(initFeedProfileOrders(accessToken)))
+        .catch(() => dispatch(wsConnectionClosed()));
+    }
+  }, [dispatch, error]);
+
   return (
     <section className={`${styles["history-orders__constructor"]}`}>
-      {orders && orders.length <= 0 && (
+      {orders && orders.length === 0 && (
         <p className={`text text_type_main-large`}>Сделайте заказ</p>
       )}
       <div className={`${styles.scroll}`}>
         <div className={`${styles["cards-order"]}`}>
-          {orders?.map((order) => {
+          {orders.reverse()?.map((order) => {
             return (
               <Link
                 to={`${PROFILE_ORDERS_PATH}/${order._id}`}

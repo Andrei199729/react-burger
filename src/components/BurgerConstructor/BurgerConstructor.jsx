@@ -24,7 +24,6 @@ import { useNavigate } from "react-router-dom";
 function BurgerConstructor() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { ingredients } = useSelector((state) => state.ingredients);
   const { orderDetailsPopupOpen } = useSelector((state) => state.popupOrder);
   const { ingredientsConstructor, bun } = useSelector(
     (state) => state.constructorItems
@@ -53,7 +52,6 @@ function BurgerConstructor() {
       }),
     });
   };
-
   const mainsIngredients = useMemo(() => {
     return ingredientsConstructor?.filter(
       (ingredient) => ingredient.type !== "bun" && ingredient
@@ -94,8 +92,14 @@ function BurgerConstructor() {
   const [, drop] = useDrop(() => ({ accept: "card" }));
 
   function handleCheckout() {
-    const ingredientsId = ingredients?.map((ingredientId) => ingredientId._id);
-    dispatch(postIngredientsConstructorBurger(ingredientsId));
+    const ingredientsId = ingredientsConstructor.map(
+      (ingredientId) => ingredientId._id
+    );
+    const buns = new Array(2).fill(bun);
+    const dataIds = buns.map((el) => el._id);
+    dataIds.splice(1, 0, ...ingredientsId);
+    dispatch(postIngredientsConstructorBurger(dataIds));
+
     if (!userData) {
       navigate(LOGIN_PATH);
     }
