@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import styles from "./OrderInfo.module.css";
 
 import { useLocation, useParams } from "react-router-dom";
@@ -7,14 +7,12 @@ import {
   FormattedDate,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import {
-  WS_CONNECTION_CLOSED,
   useAppDispatch,
   useAppSelector,
 } from "../../services/actions-types/wsActionTypes";
-import { initFeedProfileOrders } from "../../services/reducers/wsReducer";
+// import { initFeedProfileOrders } from "../../services/reducers/wsReducer";
 import { useSelector } from "react-redux";
 import HistoryOrders from "../HistoryOrders/HistoryOrders";
-import { getCookie } from "../../utils/cookie";
 
 import { PROFILE_ORDERS_PATH } from "../../utils/constants";
 
@@ -24,7 +22,7 @@ function OrderInfo() {
   const dispatch = useAppDispatch();
 
   const { orders } = useAppSelector((store) => store.ws);
-  const accessToken = getCookie("accessToken").slice(7);
+  // const accessToken = getCookie("accessToken").slice(7);
   const ingredientId = orders?.find((item) => item._id === id);
   const { ingredients } = useSelector((state) => state.ingredients);
   const objIngredients = Object.fromEntries(
@@ -55,10 +53,10 @@ function OrderInfo() {
     return priceBuns?.reduce((sum, ingredient) => sum + ingredient * 2, 0);
   }, [feedIngredients, priceBuns]);
 
-  useEffect(() => {
-    dispatch(initFeedProfileOrders(accessToken));
-    return () => dispatch({ type: WS_CONNECTION_CLOSED });
-  }, [dispatch, accessToken]);
+  // useEffect(() => {
+  //   dispatch(initFeedProfileOrders(accessToken));
+  //   return () => dispatch({ type: WS_CONNECTION_CLOSED });
+  // }, [dispatch, accessToken]);
 
   if (!ingredientId) {
     return null;

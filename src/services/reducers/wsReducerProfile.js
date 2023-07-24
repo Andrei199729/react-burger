@@ -1,12 +1,12 @@
 import {
-  WS_CONNECTION_SUCCESS,
-  WS_CONNECTION_ERROR,
-  WS_CONNECTION_CLOSED,
-  WS_GET_MESSAGE,
-  WS_CONNECTION_START,
+  WS_CONNECTION_SUCCESS_PROFILE,
+  WS_CONNECTION_ERROR_PROFILE,
+  WS_CONNECTION_CLOSED_PROFILE,
+  WS_GET_MESSAGE_PROFILE,
+  WS_CONNECTION_START_PROFILE,
 } from "../actions-types/wsActionTypes";
 
-import { WS_BASE_URL_ALL } from "../../utils/constants";
+import { WS_BASE_URL, WS_BASE_URL_ALL } from "../../utils/constants";
 
 const initialState = {
   wsConnected: false,
@@ -16,14 +16,14 @@ const initialState = {
   error: undefined,
 };
 
-export const initFeed = () => ({
-  type: WS_CONNECTION_START,
-  payload: WS_BASE_URL_ALL,
+export const initFeedProfileOrders = (accessToken) => ({
+  type: WS_CONNECTION_START_PROFILE,
+  payload: `${WS_BASE_URL}?token=${accessToken}`,
 });
 
-export const wsReducer = (state = initialState, action) => {
+export const wsReducerProfile = (state = initialState, action) => {
   switch (action.type) {
-    case WS_CONNECTION_SUCCESS:
+    case WS_CONNECTION_SUCCESS_PROFILE:
       return {
         ...state,
         error: false,
@@ -31,7 +31,7 @@ export const wsReducer = (state = initialState, action) => {
         wsConnected: true,
       };
 
-    case WS_CONNECTION_ERROR:
+    case WS_CONNECTION_ERROR_PROFILE:
       return {
         ...state,
         errorMessage: action.payload,
@@ -39,14 +39,14 @@ export const wsReducer = (state = initialState, action) => {
         wsConnected: false,
       };
 
-    case WS_CONNECTION_CLOSED:
+    case WS_CONNECTION_CLOSED_PROFILE:
       return {
         ...state,
         error: false,
         wsConnected: false,
       };
 
-    case WS_GET_MESSAGE:
+    case WS_GET_MESSAGE_PROFILE:
       return {
         ...state,
         error: false,

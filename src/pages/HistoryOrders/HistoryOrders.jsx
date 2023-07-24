@@ -1,65 +1,60 @@
 import React, { useEffect } from "react";
 import styles from "./HistoryOrders.module.css";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useMatch } from "react-router-dom";
 import { getCookie } from "../../utils/cookie";
 import {
-  WS_CONNECTION_CLOSED,
   useAppDispatch,
   useAppSelector,
 } from "../../services/actions-types/wsActionTypes";
-import { initFeedProfileOrders } from "../../services/reducers/wsReducer";
-import OrderFeed from "../OrderFeed/OrderFeed";
-import { wsConnectionClosed } from "../../services/actions/wsAction";
 import { PROFILE_ORDERS_PATH } from "../../utils/constants";
-import { getUserData } from "../../services/actions/user";
+import { initFeedProfileOrders } from "../../services/reducers/wsReducerProfile";
+import OrderFeed from "../OrderFeed/OrderFeed";
+import { wsConnectionClosedProfile } from "../../services/actions/wsActionProfile";
 
 function HistoryOrders() {
   const location = useLocation();
-  const accessToken = getCookie("accessToken").slice(1);
   const dispatch = useAppDispatch();
-  const { orders, error } = useAppSelector((store) => store.ws);
+  const match = useMatch(PROFILE_ORDERS_PATH);
+  const { orders } = useAppSelector((store) => store.wsProfile);
 
   useEffect(() => {
-    dispatch(initFeedProfileOrders(accessToken));
-    return () => dispatch({ type: WS_CONNECTION_CLOSED });
-  }, [dispatch, accessToken]);
-
-  useEffect(() => {
-    const accessToken = getCookie("accessToken").slice(7);
-    if (error) {
-      dispatch(wsConnectionClosed());
-      dispatch(getUserData())
-        .then(() => dispatch(initFeedProfileOrders(accessToken)))
-        .catch(() => dispatch(wsConnectionClosed()));
+    if (match) {
+      const accessToken = getCookie("accessToken").split(" ")[1];
+      dispatch(initFeedProfileOrders(accessToken));
     }
-  }, [dispatch, error]);
+    return () => {
+      if (match) dispatch(wsConnectionClosedProfile());
+    };
+  }, [dispatch, match]);
 
   return (
     <section className={`${styles["history-orders__constructor"]}`}>
-      {orders && orders.length === 0 && (
+      {orders.length === 0 && (
         <p className={`text text_type_main-large`}>Сделайте заказ</p>
       )}
       <div className={`${styles.scroll}`}>
         <div className={`${styles["cards-order"]}`}>
-          {orders.reverse()?.map((order) => {
-            return (
-              <Link
-                to={`${PROFILE_ORDERS_PATH}/${order._id}`}
-                className={`${styles["card-order"]} p-6 mr-2`}
-                state={{ background: location }}
-                key={order._id}
-              >
-                <OrderFeed
-                  createdAt={order.createdAt}
-                  ingredients={order.ingredients}
-                  name={order.name}
-                  number={order.number}
-                  status={order.status}
-                  updatedAt={order.updatedAt}
-                />
-              </Link>
-            );
-          })}
+          {orders
+            ?.map((order) => {
+              return (
+                <Link
+                  to={`${PROFILE_ORDERS_PATH}/${order._id}`}
+                  className={`${styles["card-order"]} p-6 mr-2`}
+                  state={{ background: location }}
+                  key={order._id}
+                >
+                  <OrderFeed
+                    createdAt={order.createdAt}
+                    ingredients={order.ingredients}
+                    name={order.name}
+                    number={order.number}
+                    status={order.status}
+                    updatedAt={order.updatedAt}
+                  />
+                </Link>
+              );
+            })
+            .reverse()}
         </div>
       </div>
     </section>

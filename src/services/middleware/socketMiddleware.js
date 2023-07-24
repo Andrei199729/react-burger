@@ -16,8 +16,8 @@ export const socketMiddleware = (wsActions) => {
           dispatch({ type: onOpen, payload: event });
         };
 
-        socket.onerror = (event) => {
-          dispatch({ type: onError, payload: event });
+        socket.onerror = () => {
+          dispatch({ type: onError, payload: "Error" });
         };
 
         socket.onmessage = (event) => {

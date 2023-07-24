@@ -66,6 +66,7 @@ function OrderFeed(props) {
           {props.status === "created" && "Создан"}
           {props.status === "pending" && "Готовится"}
           {props.status === "done" && "Выполнен"}
+          {props.status === "canceled" && "Отменен"}
         </p>
       )}
       <div className={`${styles.box}  mt-6`}>
