@@ -84,7 +84,6 @@ function OrderFeedInfo() {
   const doublePrices = Object.fromEntries(
     Object.entries(currectObj).map(([key, value]) => [key, value])
   );
-
   return (
     <>
       {location.pathname === ORDER_FEED_PATH ? (
