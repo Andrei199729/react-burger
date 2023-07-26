@@ -4,11 +4,15 @@ import {
   POST_ORDER_DETAILS_REQUEST,
   POST_ORDER_DETAILS_CLOSE,
   POST_ORDER_DETAILS_FAILED,
+  GET_ORDER_DETAILS_REQUEST,
+  GET_ORDER_DETAILS_SUCCESS,
+  GET_ORDER_DETAILS_FAILED,
 } from "../actions/popupOrder";
 
 const initialState = {
   createdOrder: undefined || null,
   orderDetailsPopupOpen: false,
+  numberOrder: null,
 };
 
 export const popupOrderReducer = (state = initialState, action) => {
@@ -40,6 +44,20 @@ export const popupOrderReducer = (state = initialState, action) => {
         ...state,
         orderDetailsPopupOpen: false,
       };
+    case GET_ORDER_DETAILS_REQUEST:
+      return {
+        ...state,
+      };
+    case GET_ORDER_DETAILS_SUCCESS:
+      return {
+        ...state,
+        numberOrder: action.number,
+      };
+    case GET_ORDER_DETAILS_FAILED:
+      return {
+        ...state,
+      };
+
     default:
       return state;
   }

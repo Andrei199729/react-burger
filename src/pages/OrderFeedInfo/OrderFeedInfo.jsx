@@ -20,6 +20,7 @@ function OrderFeedInfo() {
   const { id } = useParams();
   const location = useLocation();
   const dispatch = useAppDispatch();
+  let currectObj = {};
 
   const { orders } = useAppSelector((store) => store.ws);
   const ingredientId = orders?.find((item) => item._id === id);
@@ -62,7 +63,6 @@ function OrderFeedInfo() {
     return null;
   }
 
-  let currectObj = {};
   const currectArr = objIngredients.ingredients;
 
   const setNewValueInObj = (arrValue, arrInput, objOutput) => {

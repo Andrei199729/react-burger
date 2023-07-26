@@ -1,3 +1,5 @@
+import { getCookie } from "./cookie";
+
 export const BASE_URL = "https://norma.nomoreparties.space/api";
 
 export const WS_BASE_URL = "wss://norma.nomoreparties.space/orders";
@@ -15,7 +17,7 @@ export const PASSWORD_RESET_PATH = "/reset-password";
 export const PROFILE_PATH = "/profile";
 export const PROFILE_ORDERS_PATH = "/profile/orders";
 export const ORDERS_PATH = "orders";
-export const PROFILE_ORDERS_ID_PATH = "/profile/orders/:id";
+export const PROFILE_ORDERS_ID_PATH = "/profile/orders/:number";
 export const ERROR_PATH = "*";
 
 export const INGREDIENTS_API_PATH = "ingredients";
@@ -27,3 +29,5 @@ export const LOGIN_USER_PATH = "auth/login";
 export const USER_PATH = "auth/user";
 export const TOKEN_PATH = "auth/token";
 export const LOGOUT_PATH = "auth/logout";
+
+export const accessToken = getCookie("accessToken");

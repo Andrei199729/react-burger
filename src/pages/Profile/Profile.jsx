@@ -18,6 +18,7 @@ import {
   ORDERS_PATH,
   PROFILE_PATH,
   PROFILE_ORDERS_PATH,
+  accessToken,
 } from "../../utils/constants";
 
 function Profile() {
@@ -29,7 +30,6 @@ function Profile() {
   const [emailProfile, setEmailProfile] = useState(userData.user.email);
   const [passwordProfile, setPasswordProfile] = useState(password);
   const inputRef = React.useRef(null);
-  const accessToken = getCookie("accessToken");
   const dispatch = useDispatch();
   const [edit, setEdit] = useState(false);
 

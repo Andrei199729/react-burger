@@ -34,6 +34,12 @@ class Api {
     }).then(this._getResponseData);
   }
 
+  getOrderNumber(number) {
+    return fetch(`${this.address}/${ORDERS_PATH}/${number}`).then(
+      this._getResponseData
+    );
+  }
+
   postForgotPassword(email) {
     return fetch(`${this.address}/${FORGOT_PASS_API_PATH}`, {
       method: "POST",

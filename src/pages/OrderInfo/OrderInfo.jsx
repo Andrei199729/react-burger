@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import styles from "./OrderInfo.module.css";
 
 import { useLocation, useParams } from "react-router-dom";
@@ -10,31 +10,34 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "../../services/actions-types/wsActionTypes";
-// import { initFeedProfileOrders } from "../../services/reducers/wsReducer";
 import { useSelector } from "react-redux";
 import HistoryOrders from "../HistoryOrders/HistoryOrders";
 
-import { PROFILE_ORDERS_PATH } from "../../utils/constants";
+import {
+  PROFILE_ORDERS_ID_PATH,
+  PROFILE_ORDERS_PATH,
+  accessToken,
+} from "../../utils/constants";
+import { getOrder } from "../../services/actions/popupOrder";
 
 function OrderInfo() {
-  const { id } = useParams();
+  const { number } = useParams();
   const location = useLocation();
   const dispatch = useAppDispatch();
-
-  const { orders } = useAppSelector((store) => store.ws);
-  // const accessToken = getCookie("accessToken").slice(7);
-  const ingredientId = orders?.find((item) => item._id === id);
+  let currectObj = {};
+  const { orders } = useAppSelector((store) => store.wsProfile);
+  const ingredientId = orders?.find((item) => item.number === number);
   const { ingredients } = useSelector((state) => state.ingredients);
   const objIngredients = Object.fromEntries(
     Object.entries(ingredientId || {}).map(([key, value]) => [key, value])
   );
+  const { numberOrder } = useSelector((store) => store.popupOrder);
   const set = new Set(objIngredients.ingredients?.map((item) => item));
   const feedIngredients = ingredients?.filter((item) => set.has(item._id));
 
   const priceMains = feedIngredients.map(
     (price) => price.type !== "bun" && price.price
   );
-
   const priceBuns = feedIngredients.map(
     (price) => price.type === "bun" && price.price
   );
@@ -53,16 +56,14 @@ function OrderInfo() {
     return priceBuns?.reduce((sum, ingredient) => sum + ingredient * 2, 0);
   }, [feedIngredients, priceBuns]);
 
-  // useEffect(() => {
-  //   dispatch(initFeedProfileOrders(accessToken));
-  //   return () => dispatch({ type: WS_CONNECTION_CLOSED });
-  // }, [dispatch, accessToken]);
+  useEffect(() => {
+    dispatch(getOrder(ingredientId));
+  }, [dispatch, ingredientId]);
 
   if (!ingredientId) {
     return null;
   }
 
-  let currectObj = {};
   const currectArr = objIngredients.ingredients;
 
   const setNewValueInObj = (arrValue, arrInput, objOutput) => {
@@ -87,69 +88,64 @@ function OrderInfo() {
 
   return (
     <>
-      {location.pathname === PROFILE_ORDERS_PATH ? (
-        <HistoryOrders />
-      ) : (
-        ingredientId && (
-          <section className={`${styles["order-info"]} mb-30`}>
-            <div className={`${styles["order-info__container"]}`}>
-              <p
-                className={`${styles.number} text text_type_digits-default mb-10`}
-              >
-                #{ingredientId.number}
-              </p>
-              <h2 className="text text_type_main-medium">
-                {ingredientId.name}
-              </h2>
-              <p
-                className={`text text_type_main-default mt-3 mb-6 ${
-                  ingredientId.status === "done" && styles.done
-                }`}
-              >
-                {ingredientId.status === "created" && "Создан"}
-                {ingredientId.status === "pending" && "Готовится"}
-                {ingredientId.status === "done" && "Выполнен"}
-              </p>
-              <p className="text text_type_main-medium mb-6">Состав:</p>
-              <div className={`${styles.scroll} mb-10`}>
-                {feedIngredients.map((item) => {
-                  return (
-                    <div
-                      className={`${styles["info-ingredient"]} mr-6`}
-                      key={item._id}
-                    >
-                      <div className={`${styles["image-container"]} mr-4`}>
-                        <img
-                          className={`${styles.image}`}
-                          src={item.image_mobile}
-                          alt={item.name}
-                        />
-                      </div>
-                      <p className="text text_type_main-default">{item.name}</p>
-                      <div className={`${styles.count}`}>
-                        <p className="text text_type_digits-default mr-2 ml-4">
-                          {`${doublePrices[item._id]} x ${item.price}`}
-                        </p>
-                        <CurrencyIcon type="primary" />
-                      </div>
+      {numberOrder && (
+        <section className={`${styles["order-info"]} mb-30`}>
+          <div className={`${styles["order-info__container"]}`}>
+            <p
+              className={`${styles.number} text text_type_digits-default mb-10`}
+            >
+              #{numberOrder.number}
+            </p>
+            <h2 className="text text_type_main-medium">{numberOrder.name}</h2>
+            <p
+              className={`text text_type_main-default mt-3 mb-6 ${
+                numberOrder.status === "done" && styles.done
+              }`}
+            >
+              {numberOrder.status === "created" && "Создан"}
+              {numberOrder.status === "pending" && "Готовится"}
+              {numberOrder.status === "done" && "Выполнен"}
+              {numberOrder.status === "canceled" && "Отменен"}
+            </p>
+            <p className="text text_type_main-medium mb-6">Состав:</p>
+            <div className={`${styles.scroll} mb-10`}>
+              {feedIngredients.map((item) => {
+                return (
+                  <div
+                    className={`${styles["info-ingredient"]} mr-6`}
+                    key={item._id}
+                  >
+                    <div className={`${styles["image-container"]} mr-4`}>
+                      <img
+                        className={`${styles.image}`}
+                        src={item.image_mobile}
+                        alt={item.name}
+                      />
                     </div>
-                  );
-                })}
-              </div>
-              <div className={`${styles["box-date"]}`}>
-                <p className="text text_type_main-default text_color_inactive">
-                  <FormattedDate date={new Date(ingredientId.updatedAt)} />
+                    <p className="text text_type_main-default">{item.name}</p>
+                    <div className={`${styles.count}`}>
+                      <p className="text text_type_digits-default mr-2 ml-4">
+                        {`${doublePrices[item._id]} x ${item.price}`}
+                      </p>
+                      <CurrencyIcon type="primary" />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <div className={`${styles["box-date"]}`}>
+              <p className="text text_type_main-default text_color_inactive">
+                <FormattedDate date={new Date(ingredientId.updatedAt)} />
+              </p>
+              <div className={`${styles.total}`}>
+                <p className="text text_type_digits-default mr-2">
+                  {totalPriceMains + totalPriceBuns}
                 </p>
-                <div className={`${styles.total}`}>
-                  <p className="text text_type_digits-default mr-2">
-                    {totalPriceMains + totalPriceBuns}
-                  </p>
-                  <CurrencyIcon type="primary" />
-                </div>
+                <CurrencyIcon type="primary" />
               </div>
             </div>
-          </section>
-        )
+          </div>
+        </section>
       )}
     </>
   );

@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
 import styles from "./HistoryOrders.module.css";
 import { Link, useLocation, useMatch } from "react-router-dom";
-import { getCookie } from "../../utils/cookie";
 import {
   useAppDispatch,
   useAppSelector,
 } from "../../services/actions-types/wsActionTypes";
-import { PROFILE_ORDERS_PATH } from "../../utils/constants";
+import { PROFILE_ORDERS_PATH, accessToken } from "../../utils/constants";
 import { initFeedProfileOrders } from "../../services/reducers/wsReducerProfile";
 import OrderFeed from "../OrderFeed/OrderFeed";
 import { wsConnectionClosedProfile } from "../../services/actions/wsActionProfile";
@@ -19,8 +18,7 @@ function HistoryOrders() {
 
   useEffect(() => {
     if (match) {
-      const accessToken = getCookie("accessToken").split(" ")[1];
-      dispatch(initFeedProfileOrders(accessToken));
+      dispatch(initFeedProfileOrders(accessToken.slice(7)));
     }
     return () => {
       if (match) dispatch(wsConnectionClosedProfile());
@@ -38,7 +36,7 @@ function HistoryOrders() {
             ?.map((order) => {
               return (
                 <Link
-                  to={`${PROFILE_ORDERS_PATH}/${order._id}`}
+                  to={`${PROFILE_ORDERS_PATH}/${order.number}`}
                   className={`${styles["card-order"]} p-6 mr-2`}
                   state={{ background: location }}
                   key={order._id}
