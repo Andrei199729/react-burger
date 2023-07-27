@@ -8,7 +8,6 @@ import { useMatch, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { POST_ORDER_DETAILS_CLOSE } from "../../services/actions/popupOrder";
 import { MAIN_PATH } from "../../utils/constants";
-
 const modalRoot = document.getElementById("modals");
 
 function Modal(props) {

@@ -6,7 +6,7 @@ import {
   WS_CONNECTION_START_PROFILE,
 } from "../actions-types/wsActionTypes";
 
-import { WS_BASE_URL, WS_BASE_URL_ALL } from "../../utils/constants";
+import { WS_BASE_URL } from "../../utils/constants";
 
 const initialState = {
   wsConnected: false,

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styles from "./OrderFeedInfo.module.css";
 import { useLocation, useParams } from "react-router-dom";
 import {
@@ -20,7 +20,8 @@ function OrderFeedInfo() {
   const { id } = useParams();
   const location = useLocation();
   const dispatch = useAppDispatch();
-  let currectObj = {};
+
+  const [currectObj] = useState({});
 
   const { orders } = useAppSelector((store) => store.ws);
   const ingredientId = orders?.find((item) => item._id === id);
@@ -28,6 +29,7 @@ function OrderFeedInfo() {
   const objIngredients = Object.fromEntries(
     Object.entries(ingredientId || {}).map(([key, value]) => [key, value])
   );
+  const currectArr = objIngredients.ingredients;
 
   const set = new Set(objIngredients.ingredients?.map((item) => item));
   const feedIngredients = ingredients?.filter((item) => set.has(item._id));
@@ -59,12 +61,6 @@ function OrderFeedInfo() {
     return () => dispatch({ type: WS_CONNECTION_CLOSED });
   }, [dispatch]);
 
-  if (!ingredientId) {
-    return null;
-  }
-
-  const currectArr = objIngredients.ingredients;
-
   const setNewValueInObj = (arrValue, arrInput, objOutput) => {
     let buffs = [];
 
@@ -77,13 +73,14 @@ function OrderFeedInfo() {
     objOutput[arrValue] = buffs.length;
   };
 
-  [...currectArr].forEach((e) => {
+  currectArr?.forEach((e) => {
     setNewValueInObj(e, currectArr, currectObj);
   });
 
   const doublePrices = Object.fromEntries(
     Object.entries(currectObj).map(([key, value]) => [key, value])
   );
+
   return (
     <>
       {location.pathname === ORDER_FEED_PATH ? (

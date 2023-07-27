@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styles from "./OrderInfo.module.css";
 
 import { useLocation, useParams } from "react-router-dom";
@@ -6,33 +6,34 @@ import {
   CurrencyIcon,
   FormattedDate,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "../../services/actions-types/wsActionTypes";
+import { useAppDispatch } from "../../services/actions-types/wsActionTypes";
 import { useSelector } from "react-redux";
 import HistoryOrders from "../HistoryOrders/HistoryOrders";
 
-import {
-  ORDER_FEED_PATH,
-  PROFILE_ORDERS_ID_PATH,
-  PROFILE_ORDERS_PATH,
-  accessToken,
-} from "../../utils/constants";
+import { ORDER_FEED_PATH } from "../../utils/constants";
 import { getOrder } from "../../services/actions/popupOrder";
 
 function OrderInfo() {
   const { number } = useParams();
   const location = useLocation();
   const dispatch = useAppDispatch();
-  let currectObj = {};
-  const { orders } = useAppSelector((store) => store.wsProfile);
-  const ingredientId = orders?.find((item) => item.number === number);
+
   const { ingredients } = useSelector((state) => state.ingredients);
-  const objIngredients = Object.fromEntries(
-    Object.entries(ingredientId || {}).map(([key, value]) => [key, value])
-  );
   const { numberOrder } = useSelector((store) => store.popupOrder);
+  const [currectObj] = useState({});
+
+  const objIngredients = useMemo(() => {
+    return Object.fromEntries(
+      Object.entries(numberOrder || {}).map(([key, value]) => [key, value])
+    );
+  }, [numberOrder]);
+
+  const currectArr = objIngredients.ingredients;
+
+  useEffect(() => {
+    dispatch(getOrder(number));
+  }, [dispatch, number]);
+
   const set = new Set(objIngredients.ingredients?.map((item) => item));
   const feedIngredients = ingredients?.filter((item) => set.has(item._id));
 
@@ -57,16 +58,6 @@ function OrderInfo() {
     return priceBuns?.reduce((sum, ingredient) => sum + ingredient * 2, 0);
   }, [feedIngredients, priceBuns]);
 
-  useEffect(() => {
-    dispatch(getOrder(number));
-  }, [dispatch, number]);
-
-  if (!ingredientId) {
-    return null;
-  }
-
-  const currectArr = objIngredients.ingredients;
-
   const setNewValueInObj = (arrValue, arrInput, objOutput) => {
     let buffs = [];
 
@@ -79,7 +70,7 @@ function OrderInfo() {
     objOutput[arrValue] = buffs.length;
   };
 
-  [...currectArr].forEach((e) => {
+  currectArr?.forEach((e) => {
     setNewValueInObj(e, currectArr, currectObj);
   });
 
@@ -139,7 +130,7 @@ function OrderInfo() {
               </div>
               <div className={`${styles["box-date"]}`}>
                 <p className="text text_type_main-default text_color_inactive">
-                  <FormattedDate date={new Date(ingredientId.updatedAt)} />
+                  <FormattedDate date={new Date(numberOrder.updatedAt)} />
                 </p>
                 <div className={`${styles.total}`}>
                   <p className="text text_type_digits-default mr-2">

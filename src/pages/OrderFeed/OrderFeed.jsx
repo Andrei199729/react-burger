@@ -40,14 +40,6 @@ function OrderFeed(props) {
     return priceBuns?.reduce((sum, ingredient) => sum + ingredient * 2, 0);
   }, [feedIngredients, priceBuns]);
 
-  const showCount = () => {
-    if (feedIngredients.length - 6 === 0) {
-      return false;
-    } else {
-      return true;
-    }
-  };
-
   return (
     <>
       <div className={`${styles.text} mb-6`}>
@@ -73,44 +65,29 @@ function OrderFeed(props) {
         <ul className={`${styles["lists-ingredient"]}`}>
           {feedIngredients
             .map((ingredient, index) => {
-              if (index === 5) {
-                return (
-                  <li
-                    className={`${styles.list} ${
-                      feedIngredients.length >= 7 && styles["list-count"]
-                    }`}
-                    key={index}
-                  >
-                    <img
-                      className={`${styles["image"]}`}
-                      src={ingredient.image_mobile}
-                      alt={ingredient.name}
-                    />
-                    {showCount && (
-                      <p
-                        className={`${styles.count} text text_type_main-default`}
-                      >
-                        {`+${feedIngredients.length - 6}`}
-                      </p>
-                    )}
-                  </li>
-                );
-              } else if (index < 5) {
-                return (
-                  <li
-                    className={`${styles.list} ${
-                      feedIngredients.length >= 7 && styles["list-count"]
-                    }`}
-                    key={index}
-                  >
-                    <img
-                      className={`${styles["image"]}`}
-                      src={ingredient.image_mobile}
-                      alt={ingredient.name}
-                    />
-                  </li>
-                );
-              }
+              return (
+                <li
+                  className={`${styles.list} ${
+                    feedIngredients.length >= 7 && styles["list-count"]
+                  }`}
+                  key={index}
+                >
+                  <img
+                    className={`${styles["image"]}`}
+                    src={ingredient.image_mobile}
+                    alt={ingredient.name}
+                  />
+                  {index === 5 && (
+                    <p
+                      className={`${styles.count} text text_type_main-default`}
+                    >
+                      {feedIngredients.length - 6 === 0
+                        ? ""
+                        : `+${feedIngredients.length - 6}`}
+                    </p>
+                  )}
+                </li>
+              );
             })
             .slice(0, 6)}
         </ul>
