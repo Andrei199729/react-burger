@@ -6,6 +6,7 @@ import {
 
 const initialState = {
   ingredients: [],
+  preloader: false,
 };
 
 export const ingredientReducer = (state = initialState, action) => {
@@ -13,15 +14,19 @@ export const ingredientReducer = (state = initialState, action) => {
     case GET_BURGER_INGREDIENTS_REQUEST:
       return {
         ...state,
+        preloader: true,
       };
     case GET_BURGER_INGREDIENTS_SUCCESS:
+      console.log("success");
       return {
         ...state,
         ingredients: action.ingredients,
       };
     case GET_BURGER_INGREDIENTS_FAILED:
+      console.log("failed");
       return {
         ...state,
+        preloader: false,
       };
 
     default:

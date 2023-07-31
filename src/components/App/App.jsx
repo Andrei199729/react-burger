@@ -18,7 +18,7 @@ import {
   Authorized,
   Unauthorized,
 } from "../ProtectedRouteElement/ProtectedRouteElement";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import IngredientPage from "../../pages/IngredientPage/IngredientPage";
 import Modal from "../Modal/Modal";
@@ -39,18 +39,22 @@ import {
   PROFILE_PATH,
   ERROR_PATH,
 } from "../../utils/constants";
+import Preloader from "../Preloader/Preloader";
 
 function App() {
   const dispatch = useDispatch();
   const location = useLocation();
   const background = location.state && location.state.background;
-
+  const preloader = useSelector((state) => state.ingredients.preloader);
+  console.log("preloader", preloader);
   useEffect(() => {
     dispatch(checkUserAuth());
     dispatch(getIngredients());
   }, [dispatch]);
 
-  return (
+  return preloader ? (
+    <Preloader />
+  ) : (
     <>
       <AppHeader />
       <Routes location={background || location}>

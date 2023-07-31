@@ -7,7 +7,7 @@ import {
 } from "../../utils/auth";
 import { postLogin } from "../../utils/auth";
 import api from "../../utils/api";
-import { deleteCookie, getCookie, setCookie } from "../../utils/cookie";
+import { deleteCookie, setCookie } from "../../utils/cookie";
 import { accessToken } from "../../utils/constants";
 export const GET_ABOUT_USER_SUCCESS = "GET_ABOUT_USER_SUCCESS";
 export const GET_ABOUT_USER_REQUEST = "GET_ABOUT_USER_REQUEST";
