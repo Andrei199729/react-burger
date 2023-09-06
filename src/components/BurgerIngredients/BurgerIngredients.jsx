@@ -4,18 +4,11 @@ import styles from "./BurgerIngredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientList from "../IngredientList/IngredientList";
 import { useInView } from "react-intersection-observer";
-import { useSelector, useDispatch } from "react-redux";
-
-import { getIngredients } from "../../services/actions/ingredient";
+import { useSelector } from "react-redux";
 
 function BurgerIngredients() {
   const [current, setCurrent] = useState("rolls");
   const { ingredients } = useSelector((state) => state.ingredients);
-
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getIngredients());
-  }, [dispatch]);
 
   const [refRolls, inViewRolls] = useInView({
     threshold: 0,
