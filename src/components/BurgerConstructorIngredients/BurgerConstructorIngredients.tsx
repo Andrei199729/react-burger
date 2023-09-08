@@ -11,15 +11,14 @@ import { TIngredient } from "../../services/types/data";
 
 interface IBurgerConstructorIngredients {
   id: string;
-  findCard: (id: string) => TIngredient & {
-    index: number;
-  };
-  moveCard: (droppedId: string, originalIndex: number) => TIngredient;
+  findCard: (id: string) => { index: number };
+  moveCard: (droppedId: string, originalIndex: number) => void;
   name: string;
   price: number;
   imageMobile: string;
-  onDelete: (main: TIngredient[] | undefined) => TIngredient;
-  main?: TIngredient[];
+  onDelete: (main: TIngredient) => void;
+  main: TIngredient;
+  index: number;
 }
 
 const BurgerConstructorIngredients: FC<IBurgerConstructorIngredients> = (
@@ -44,14 +43,17 @@ const BurgerConstructorIngredients: FC<IBurgerConstructorIngredients> = (
     }),
     [id, originalIndex, props.moveCard]
   );
-  const [{ isHover }, drop] = useDrop(
+
+  const [{ isHover }, drop] = useDrop<
+    TIngredient & { id: string },
+    unknown,
+    { isHover: boolean }
+  >(
     () => ({
       accept: "card",
-      hover({ id: draggedId }) {
-        if (draggedId !== id) {
-          const { index: overIndex } = props.findCard(id);
-          props.moveCard(draggedId, overIndex);
-        }
+      hover(id: any) {
+        const { index: overIndex } = props.findCard(id);
+        props.moveCard(id, overIndex);
       },
       collect: (monitor) => ({
         isHover: monitor.isOver(),

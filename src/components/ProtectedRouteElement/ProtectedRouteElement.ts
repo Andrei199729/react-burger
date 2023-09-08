@@ -1,10 +1,15 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { Navigate, useLocation } from "react-router-dom";
+import React, { FC } from "react";
+import { Navigate, RouteProps, useLocation } from "react-router-dom";
 
 import { MAIN_PATH, LOGIN_PATH } from "../../utils/constants";
+import { useSelector } from "../../services/hooks";
 
-const Protected = ({ onlyUnauthorized = false, component }) => {
+type IProtected = {
+  onlyUnauthorized: boolean;
+  component: any;
+} & RouteProps;
+
+const Protected: FC<IProtected> = ({ onlyUnauthorized = false, component }) => {
   const { userData } = useSelector((state) => state.user);
   const location = useLocation();
 
@@ -20,6 +25,7 @@ const Protected = ({ onlyUnauthorized = false, component }) => {
 };
 
 export const Authorized = Protected;
-export const Unauthorized = ({ component }) => {
+
+export const Unauthorized: FC<any> = ({ component }) => {
   return <Protected onlyUnauthorized={true} component={component} />;
 };

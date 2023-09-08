@@ -33,6 +33,13 @@ export const getBurgerIngredientsSuccessAction = (
   chosenIngredientsClone,
 });
 
+export const addConstructorItemAction = (
+  ingredient: TIngredient
+): IAddConstructorItemAction => ({
+  type: ADD_CONSTRUCTOR_ITEM,
+  ingredient,
+});
+
 export type TBurgerIngredientsConstructorAction =
   | IBurgerIngredientsConstructorAction
   | IAddConstructorItemAction

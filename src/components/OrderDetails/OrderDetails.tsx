@@ -1,10 +1,10 @@
 import React from "react";
 import styles from "./OrderDetails.module.css";
 import graphics from "../../images/graphics.svg";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../services/hooks";
 
 function OrderDetails() {
-  const { createdOrder } = useSelector((state: any) => state.popupOrder);
+  const { createdOrder } = useSelector((state) => state.popupOrder);
 
   return (
     <>

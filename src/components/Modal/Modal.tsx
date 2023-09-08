@@ -4,14 +4,14 @@ import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { createPortal } from "react-dom";
 import ModalOverlay from "../ModalOverlay/ModalOverlay";
 import { PathMatch, useMatch, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { postOrderDetailsCloseAction } from "../../services/actions/popupOrder";
 import { MAIN_PATH } from "../../utils/constants";
+import { useDispatch } from "../../services/hooks";
 const modalRoot = document.getElementById("modals");
 
 interface IModal {
-  title: string;
-  readonly children: React.ReactNode;
+  title?: string;
+  children: React.ReactNode;
 }
 
 const Modal: FC<IModal> = (props) => {

@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./IngredientDetails.module.css";
-import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { useSelector } from "../../services/hooks";
 
 function IngredientDetails() {
   const { id } = useParams();

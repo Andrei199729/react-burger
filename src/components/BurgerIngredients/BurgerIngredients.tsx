@@ -4,7 +4,7 @@ import styles from "./BurgerIngredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientList from "../IngredientList/IngredientList";
 import { useInView } from "react-intersection-observer";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../services/hooks";
 
 function BurgerIngredients() {
   const [current, setCurrent] = useState("rolls");
@@ -47,7 +47,7 @@ function BurgerIngredients() {
     [ingredients]
   );
 
-  const handleClickTab = (name) => {
+  const handleClickTab = (name: string) => {
     setCurrent(name);
     const element = document.getElementById(`${name}`);
     if (element) {

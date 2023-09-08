@@ -18,7 +18,6 @@ import {
   Authorized,
   Unauthorized,
 } from "../ProtectedRouteElement/ProtectedRouteElement";
-import { useDispatch, useSelector } from "react-redux";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import IngredientPage from "../../pages/IngredientPage/IngredientPage";
 import Modal from "../Modal/Modal";
@@ -40,6 +39,7 @@ import {
   ERROR_PATH,
 } from "../../utils/constants";
 import Preloader from "../Preloader/Preloader";
+import { useDispatch, useSelector } from "../../services/hooks";
 
 function App() {
   const dispatch = useDispatch();

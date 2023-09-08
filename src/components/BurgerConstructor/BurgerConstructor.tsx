@@ -1,13 +1,12 @@
 import React, { useMemo } from "react";
 import styles from "./BurgerConstructor.module.css";
-import { useSelector, useDispatch } from "react-redux";
 
 import { LOGIN_PATH } from "../../utils/constants";
 
 import {
-  ADD_CONSTRUCTOR_ITEM,
   DELETE_CONSTRUCTOR_ITEM,
   UPDATE_CONSTRUCTOR_ITEM,
+  addConstructorItemAction,
 } from "../../services/actions/constructor";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 
@@ -20,6 +19,8 @@ import BurgerConstructorIngredients from "../BurgerConstructorIngredients/Burger
 import OrderDetails from "../OrderDetails/OrderDetails";
 import Modal from "../Modal/Modal";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "../../services/hooks";
+import { TIngredient } from "../../services/types/data";
 
 function BurgerConstructor() {
   const dispatch = useDispatch();
@@ -30,7 +31,7 @@ function BurgerConstructor() {
   );
   const { userData } = useSelector((state) => state.user);
 
-  const findCard = (id) => {
+  const findCard = (id: string) => {
     const ingredientContainer = ingredientsConstructor.filter(
       (c) => c._id === id
     )[0];
@@ -40,7 +41,7 @@ function BurgerConstructor() {
     };
   };
 
-  const moveCard = (id, atIndex) => {
+  const moveCard = (id: string, atIndex: number) => {
     const { ingredientContainer, index } = findCard(id);
     dispatch({
       type: UPDATE_CONSTRUCTOR_ITEM,
@@ -52,6 +53,7 @@ function BurgerConstructor() {
       }),
     });
   };
+
   const mainsIngredients = useMemo(() => {
     return ingredientsConstructor?.filter(
       (ingredient) => ingredient.type !== "bun" && ingredient
@@ -75,11 +77,15 @@ function BurgerConstructor() {
     return bun.price * 2;
   }, [bun]);
 
-  const moveConstructorItem = (item) => {
-    dispatch({ type: ADD_CONSTRUCTOR_ITEM, ...item });
+  const moveConstructorItem = (item: TIngredient) => {
+    dispatch(addConstructorItemAction(...([item] as const)));
   };
 
-  const [{ isHover }, dropTarget] = useDrop({
+  const [{ isHover }, dropTarget] = useDrop<
+    TIngredient & { itemId: string },
+    unknown,
+    { isHover: boolean }
+  >({
     accept: "ingredients",
     collect: (monitor) => ({
       isHover: monitor.isOver(),
@@ -105,7 +111,7 @@ function BurgerConstructor() {
     }
   }
 
-  const onDelete = (main) => {
+  const onDelete = (main: TIngredient) => {
     let myIndex = ingredientsConstructor.indexOf(main);
     if (myIndex !== -1) {
       const chosenIngredientsClone = ingredientsConstructor.slice();
@@ -132,7 +138,7 @@ function BurgerConstructor() {
             </p>
           )}
           <div className={`${styles.bun} ml-8`}>
-            {(bun || undefined || null) && (
+            {bun && (
               <ConstructorElement
                 type="top"
                 key={bun._id}
@@ -181,7 +187,8 @@ function BurgerConstructor() {
       </section>
       {userData && orderDetailsPopupOpen && (
         <Modal>
-          <OrderDetails orderDetailsPopupOpen={orderDetailsPopupOpen} />
+          <OrderDetails />
+          {/* <OrderDetails orderDetailsPopupOpen={orderDetailsPopupOpen} /> */}
         </Modal>
       )}
     </>

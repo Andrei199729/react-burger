@@ -2,13 +2,22 @@ import {
   Counter,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import React, { useMemo } from "react";
+import React, { FC, MouseEvent, useMemo } from "react";
 import styles from "./Ingredient.module.css";
-import PropTypes from "prop-types";
 import { useDrag } from "react-dnd";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../services/hooks";
+import { TIngredient } from "../../services/types/data";
 
-function Ingredient({ ingredient, dataIngredients }) {
+interface IIngredient {
+  ingredient: TIngredient;
+  dataIngredients: (e: MouseEvent<HTMLLIElement>) => void;
+}
+
+interface IResult {
+  [result: string]: number;
+}
+
+const Ingredient: FC<IIngredient> = ({ ingredient, dataIngredients }) => {
   const { ingredientsConstructor, bun } = useSelector(
     (state) => state.constructorItems
   );
@@ -22,7 +31,7 @@ function Ingredient({ ingredient, dataIngredients }) {
   });
 
   const ingredientsCount = useMemo(() => {
-    const result = {};
+    const result: IResult = {};
     ingredientsConstructor?.forEach((item) => {
       result[item._id] = result[item._id] ?? 0;
       result[item._id]++;
@@ -57,15 +66,6 @@ function Ingredient({ ingredient, dataIngredients }) {
       </p>
     </li>
   );
-}
-
-Ingredient.propTypes = {
-  ingredient: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-  }),
-  dataIngredients: PropTypes.func.isRequired,
 };
+
 export default Ingredient;

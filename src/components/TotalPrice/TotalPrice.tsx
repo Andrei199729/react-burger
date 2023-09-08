@@ -5,7 +5,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import styles from "./TotalPrice.module.css";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../services/hooks";
 
 interface ITotalPrice {
   totalPrice: number;
@@ -13,8 +13,7 @@ interface ITotalPrice {
 }
 
 const TotalPrice: FC<ITotalPrice> = (props) => {
-  const { userData } = useSelector((state: any) => state.user);
-  console.log(userData);
+  const { userData } = useSelector((state) => state.user);
 
   const disabled = !userData ? true : false;
   return (
