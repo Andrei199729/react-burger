@@ -1,8 +1,4 @@
 export type TIngredient = {
-  map(
-    arg0: (ingredient: TIngredient) => false | JSX.Element
-  ): import("react").ReactNode;
-  filter(arg0: (item: TIngredient) => item is TIngredient): unknown;
   ingredient: TIngredient;
   calories: number;
   carbohydrates: number;

@@ -32,16 +32,15 @@ function OrderInfo() {
   const [currectObj] = useState({});
 
   const objIngredients = useMemo(() => {
+    if (!createdOrder) {
+      return {};
+    }
     return Object.fromEntries(
-      Object.entries(createdOrder || {}).map(([key, value]: any) => [
-        key,
-        value,
-      ])
+      Object.entries(createdOrder).map(([key, value]) => [key, value])
     );
   }, [createdOrder]);
 
-  const currectArr: string[] = objIngredients.ingredients;
-  console.log(objIngredients);
+  const currectArr = objIngredients.ingredients as string[];
 
   useEffect(() => {
     dispatch(getOrder(number));
