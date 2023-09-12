@@ -4,14 +4,14 @@ import graphics from "../../images/graphics.svg";
 import { useSelector } from "../../services/hooks";
 
 function OrderDetails() {
-  const { createdOrder } = useSelector((state) => state.popupOrder);
+  const { numberOrder } = useSelector((state) => state.popupOrder);
 
   return (
     <>
       <h2
         className={`${styles["modal__title"]} text text_type_digits-large mt-9`}
       >
-        {createdOrder.order.number}
+        {numberOrder}
       </h2>
 
       <p className={`text text_type_main-medium mt-8`}>идентификатор заказа</p>

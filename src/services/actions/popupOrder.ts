@@ -1,7 +1,7 @@
 import api from "../../utils/api";
 import { accessToken } from "../../utils/constants";
 import { AppDispatch } from "../types";
-import { TPopupOrder, TPopupOrderDetails } from "../types/data";
+import { TOrderIngredient } from "../types/data";
 
 export const ORDER_DATA_MODAL: "ORDER_DATA_MODAL" = "ORDER_DATA_MODAL";
 
@@ -27,8 +27,9 @@ export interface IOrderDataModalAction {
 
 export interface IPostOrderDetailsSuccessAction {
   readonly type: typeof POST_ORDER_DETAILS_SUCCESS;
-  readonly order: TPopupOrder[];
+  readonly order: TOrderIngredient;
   readonly orderDetailsPopupOpen: boolean;
+  readonly number: number;
 }
 
 export interface IPostOrderDetailsRequestAction {
@@ -46,7 +47,7 @@ export interface IPostOrderDetailsCloseAction {
 
 export interface IGetOrderDetailsSuccessAction {
   readonly type: typeof GET_ORDER_DETAILS_SUCCESS;
-  readonly number: TPopupOrderDetails[];
+  readonly order: TOrderIngredient;
 }
 
 export interface IGetOrderDetailsRequestAction {
@@ -68,12 +69,14 @@ export type TOrderAction =
   | IPostOrderDetailsCloseAction;
 
 export const postOrderDetailsSuccessAction = (
-  order: TPopupOrder[],
-  orderDetailsPopupOpen: boolean
+  order: TOrderIngredient,
+  orderDetailsPopupOpen: boolean,
+  number: number
 ): IPostOrderDetailsSuccessAction => ({
   type: POST_ORDER_DETAILS_SUCCESS,
   order,
   orderDetailsPopupOpen,
+  number,
 });
 
 export const postOrderDetailsRequestAction =
@@ -87,10 +90,10 @@ export const postOrderDetailsFailedAction =
   });
 
 export const getOrderDetailsSuccessAction = (
-  number: TPopupOrderDetails[]
+  order: TOrderIngredient
 ): IGetOrderDetailsSuccessAction => ({
   type: GET_ORDER_DETAILS_SUCCESS,
-  number,
+  order,
 });
 
 export const getOrderDetailsRequestAction =
@@ -113,18 +116,18 @@ export const postOrderDetailsCloseAction = (
 export function postIngredientsConstructorBurger(ingredientsId: string[]) {
   return function (dispatch: AppDispatch) {
     dispatch(postOrderDetailsRequestAction());
-
-    const accessTokenConst: any = accessToken;
     api
-      .postIngredientsBurger(ingredientsId, accessTokenConst)
+      .postIngredientsBurger(ingredientsId, accessToken)
       .then((res) => {
-        dispatch(postOrderDetailsSuccessAction(res, true));
+        dispatch(
+          postOrderDetailsSuccessAction(res.order, true, res.order.number)
+        );
       })
       .catch((err) => dispatch(postOrderDetailsFailedAction()));
   };
 }
 
-export function getOrder(number: number) {
+export function getOrder(number: string | undefined) {
   return function (dispatch: AppDispatch) {
     dispatch(getOrderDetailsRequestAction());
     api

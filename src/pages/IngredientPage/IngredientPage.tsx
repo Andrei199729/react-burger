@@ -1,11 +1,11 @@
 import React from "react";
 import styles from "./IngredientPage.module.css";
 import { useParams, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
 import Main from "../../components/Main/Main";
 import IngredientDetails from "../../components/IngredientDetails/IngredientDetails";
 
 import { MAIN_PATH } from "../../utils/constants";
+import { useSelector } from "../../services/hooks";
 
 function IngredientPage() {
   const { id } = useParams();

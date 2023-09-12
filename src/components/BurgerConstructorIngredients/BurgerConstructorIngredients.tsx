@@ -25,7 +25,9 @@ const BurgerConstructorIngredients: FC<IBurgerConstructorIngredients> = (
   props
 ) => {
   const id = props.id;
+
   const originalIndex = props.findCard(id).index;
+
   const [{ isDragging }, drag] = useDrag(
     () => ({
       type: "card",
@@ -61,6 +63,7 @@ const BurgerConstructorIngredients: FC<IBurgerConstructorIngredients> = (
     }),
     [props.findCard, props.moveCard]
   );
+
   const opacity = isDragging ? 0 : 1;
   return (
     <div

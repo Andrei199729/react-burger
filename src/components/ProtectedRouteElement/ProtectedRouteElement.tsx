@@ -24,8 +24,8 @@ const Protected: FC<IProtected> = ({ onlyUnauthorized = false, component }) => {
   return component;
 };
 
-export const Authorized = Protected;
+export const Authorized: any = Protected;
 
-export const Unauthorized: FC<any> = ({ component }) => {
+export const Unauthorized = ({ component }: any) => {
   return <Protected onlyUnauthorized={true} component={component} />;
 };

@@ -1,45 +1,47 @@
 import React, { useEffect, useMemo, useState } from "react";
-import styles from "./OrderInfo.module.css";
-
+import styles from "./OrderFeedInfo.module.css";
 import { useLocation, useParams } from "react-router-dom";
 import {
   CurrencyIcon,
   FormattedDate,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useAppDispatch } from "../../services/actions-types/wsActionTypes";
-import { useSelector } from "react-redux";
-import HistoryOrders from "../HistoryOrders/HistoryOrders";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../services/actions-types/wsActionTypes";
+import OrdersFeed from "../OrdersFeed/OrdersFeed";
+import { initFeed } from "../../services/reducers/wsReducer";
 
 import { ORDER_FEED_PATH } from "../../utils/constants";
-import { getOrder } from "../../services/actions/popupOrder";
+import { useSelector } from "../../services/hooks";
+import { wsConnectionClosed } from "../../services/actions/wsAction";
 
-function OrderInfo() {
-  const { number } = useParams();
+interface IObjOutput {
+  [objOutput: string]: number;
+}
+
+function OrderFeedInfo() {
+  const { id } = useParams();
   const location = useLocation();
   const dispatch = useAppDispatch();
 
-  const { ingredients } = useSelector((state) => state.ingredients);
-  const { numberOrder } = useSelector((store) => store.popupOrder);
   const [currectObj] = useState({});
 
-  const objIngredients = useMemo(() => {
-    return Object.fromEntries(
-      Object.entries(numberOrder || {}).map(([key, value]) => [key, value])
-    );
-  }, [numberOrder]);
+  const { orders } = useAppSelector((store) => store.ws);
+  const ingredientId = orders?.find((item) => item._id === id);
+  const { ingredients } = useSelector((state) => state.ingredients);
+  const objIngredients = Object.fromEntries(
+    Object.entries(ingredientId || {}).map(([key, value]: any) => [key, value])
+  );
+  const currectArr: string[] = objIngredients.ingredients;
 
-  const currectArr = objIngredients.ingredients;
-
-  useEffect(() => {
-    dispatch(getOrder(number));
-  }, [dispatch, number]);
-
-  const set = new Set(objIngredients.ingredients?.map((item) => item));
+  const set = new Set(currectArr?.map((item: string) => item));
   const feedIngredients = ingredients?.filter((item) => set.has(item._id));
 
   const priceMains = feedIngredients.map(
     (price) => price.type !== "bun" && price.price
   );
+
   const priceBuns = feedIngredients.map(
     (price) => price.type === "bun" && price.price
   );
@@ -48,20 +50,39 @@ function OrderInfo() {
     if (!feedIngredients) {
       return 0;
     }
-    return priceMains?.reduce((sum, ingredient) => sum + ingredient, 0);
+    return priceMains?.reduce(
+      (sum: number, ingredient: any) => sum + ingredient,
+      0
+    );
   }, [feedIngredients, priceMains]);
 
   const totalPriceBuns = useMemo(() => {
     if (!feedIngredients) {
       return 0;
     }
-    return priceBuns?.reduce((sum, ingredient) => sum + ingredient * 2, 0);
+    return priceBuns?.reduce(
+      (sum: number, ingredient: any) => sum + ingredient * 2,
+      0
+    );
   }, [feedIngredients, priceBuns]);
 
-  const setNewValueInObj = (arrValue, arrInput, objOutput) => {
+  useEffect(() => {
+    dispatch(initFeed());
+    return () => {
+      dispatch(wsConnectionClosed());
+    };
+  }, [dispatch]);
+
+  const setNewValueInObj = (
+    arrValue: string,
+    arrInput: string[],
+    objOutput: IObjOutput
+  ) => {
     let buffs = [];
 
-    arrInput.forEach((e) => {
+    arrInput.forEach((e: string) => {
+      console.log(e);
+
       if (e === arrValue) {
         buffs.push(e);
       }
@@ -81,26 +102,23 @@ function OrderInfo() {
   return (
     <>
       {location.pathname === ORDER_FEED_PATH ? (
-        <HistoryOrders />
+        <OrdersFeed />
       ) : (
-        numberOrder && (
+        ingredientId && (
           <section className={`${styles["order-info"]} mb-30`}>
             <div className={`${styles["order-info__container"]}`}>
               <p
                 className={`${styles.number} text text_type_digits-default mb-10`}
               >
-                #{numberOrder.number}
+                #{ingredientId.number}
               </p>
-              <h2 className="text text_type_main-medium">{numberOrder.name}</h2>
+              <h2 className="text text_type_main-medium mb-3">
+                {ingredientId.name}
+              </h2>
               <p
-                className={`text text_type_main-default mt-3 mb-6 ${
-                  numberOrder.status === "done" && styles.done
-                }`}
+                className={`${styles.function} text text_type_main-default mb-15`}
               >
-                {numberOrder.status === "created" && "Создан"}
-                {numberOrder.status === "pending" && "Готовится"}
-                {numberOrder.status === "done" && "Выполнен"}
-                {numberOrder.status === "canceled" && "Отменен"}
+                {ingredientId.status === "done" ? "Готово" : "В ожидании"}
               </p>
               <p className="text text_type_main-medium mb-6">Состав:</p>
               <div className={`${styles.scroll} mb-10`}>
@@ -130,7 +148,7 @@ function OrderInfo() {
               </div>
               <div className={`${styles["box-date"]}`}>
                 <p className="text text_type_main-default text_color_inactive">
-                  <FormattedDate date={new Date(numberOrder.updatedAt)} />
+                  <FormattedDate date={new Date(ingredientId.updatedAt)} />
                 </p>
                 <div className={`${styles.total}`}>
                   <p className="text text_type_digits-default mr-2">
@@ -147,4 +165,4 @@ function OrderInfo() {
   );
 }
 
-export default OrderInfo;
+export default OrderFeedInfo;

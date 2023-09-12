@@ -8,7 +8,7 @@ import {
 import { TIngredient } from "../types/data";
 
 type TIngredientsConstructorState = {
-  ingredientsConstructor: ReadonlyArray<TIngredient>;
+  ingredientsConstructor: TIngredient[];
   bun: TIngredient | null | undefined;
 };
 
@@ -20,6 +20,8 @@ export const constructorReducer = (
   state = initialState,
   action: TBurgerIngredientsConstructorAction
 ): TIngredientsConstructorState => {
+  // console.log(action.ingredient);
+
   switch (action.type) {
     case BURGER_INGREDIENTS_CONSTRUCTOR:
       return {
@@ -54,7 +56,7 @@ export const constructorReducer = (
       return {
         ...state,
         ingredientsConstructor: action.chosenIngredientsClone.filter(
-          (item: any) => {
+          (item: TIngredient) => {
             return item._id;
           }
         ),

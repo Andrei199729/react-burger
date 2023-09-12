@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from "react";
+import React, { FC, FormEvent, ReactNode } from "react";
 import styles from "./FormAuthentication.module.css";
 import { Link } from "react-router-dom";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -7,17 +7,17 @@ import { useLocation } from "react-router-dom";
 import { LOGIN_PATH, REGISTER_PATH } from "../../utils/constants";
 
 interface IFormAuthentication {
-  readonly title: string;
-  readonly handleSubmit: () => void;
+  title: string;
+  handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
   method: string;
   formName: string;
   children?: ReactNode;
-  readonly button: string;
+  button: string;
   textLogin: string;
-  readonly text: string;
+  text: string;
   linkEntrance: string;
-  readonly link: string;
-  readonly linkText: string;
+  link: string;
+  linkText: string;
 }
 
 const FormAuthentication: FC<IFormAuthentication> = (props) => {

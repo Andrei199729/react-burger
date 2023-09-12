@@ -14,7 +14,7 @@ interface IIngredient {
 }
 
 interface IResult {
-  [result: string]: number;
+  [result: string]: any;
 }
 
 const Ingredient: FC<IIngredient> = ({ ingredient, dataIngredients }) => {

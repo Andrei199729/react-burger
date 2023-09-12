@@ -13,13 +13,11 @@ export function setCookie(
   name: string,
   value: string,
   props: {
-    [key: string]: string | number | boolean | Date | undefined;
+    [key: string]: any;
     path?: string;
     expires?: string | number | Date;
   } = {}
 ) {
-  console.log(props);
-
   props = { path: "/", ...props };
   let exp = props.expires;
   if (typeof exp == "number" && exp) {

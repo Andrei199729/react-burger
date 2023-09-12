@@ -1,16 +1,24 @@
-import React, { useMemo } from "react";
+import React, { FC, useMemo } from "react";
 import styles from "./OrderFeed.module.css";
 import {
   CurrencyIcon,
   FormattedDate,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector } from "react-redux";
-import PropTypes from "prop-types";
 import { useMatch } from "react-router-dom";
 
 import { PROFILE_ORDERS_PATH } from "../../utils/constants";
+import { useSelector } from "../../services/hooks";
 
-function OrderFeed(props) {
+interface IOrderFeed {
+  ingredients: string[];
+  number: number;
+  updatedAt: string;
+  name: string;
+  status: string;
+  createdAt: string;
+}
+
+const OrderFeed: FC<IOrderFeed> = (props) => {
   const matchHistoryProfile = useMatch(PROFILE_ORDERS_PATH);
 
   const ingredienstId = props.ingredients;
@@ -30,14 +38,20 @@ function OrderFeed(props) {
     if (!feedIngredients) {
       return 0;
     }
-    return priceMains?.reduce((sum, ingredient) => sum + ingredient, 0);
+    return priceMains?.reduce(
+      (sum: number, ingredient: any) => sum + ingredient,
+      0
+    );
   }, [feedIngredients, priceMains]);
 
   const totalPriceBuns = useMemo(() => {
     if (!feedIngredients) {
       return 0;
     }
-    return priceBuns?.reduce((sum, ingredient) => sum + ingredient * 2, 0);
+    return priceBuns?.reduce(
+      (sum: number, ingredient: any) => sum + ingredient * 2,
+      0
+    );
   }, [feedIngredients, priceBuns]);
 
   return (
@@ -100,14 +114,6 @@ function OrderFeed(props) {
       </div>
     </>
   );
-}
-
-OrderFeed.prototype = {
-  ingredients: PropTypes.number.isRequired,
-  number: PropTypes.number.isRequired,
-  updatedAt: PropTypes.number.isRequired,
-  name: PropTypes.string.isRequired,
-  status: PropTypes.string,
 };
 
 export default OrderFeed;

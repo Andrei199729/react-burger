@@ -22,13 +22,13 @@ const Modal: FC<IModal> = (props) => {
   const closeModalPath = (path: PathMatch<string> | null) =>
     path ? closeModalDetails : closeModal;
   useEffect(() => {
-    const onKeypress = (e: any) => {
+    const onKeypress = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         navigate(-1);
       }
     };
 
-    const onKeypressDetails = (e: any) => {
+    const onKeypressDetails = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         dispatch(postOrderDetailsCloseAction(false));
       }

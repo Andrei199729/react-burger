@@ -6,7 +6,7 @@ import {
   WS_SEND_MESSAGE,
   WS_CONNECTION_START,
 } from "../actions-types/wsActionTypes";
-import { TPopupOrderDetails } from "../types/data";
+import { TOrderIngredient } from "../types/data";
 
 export interface IWebSocket {
   wsInit: any;
@@ -18,7 +18,7 @@ export interface IWebSocket {
 }
 
 export interface IWsMessage {
-  orders: Array<TPopupOrderDetails>;
+  orders: TOrderIngredient[];
   success: boolean;
   total: number;
   totalToday: number;

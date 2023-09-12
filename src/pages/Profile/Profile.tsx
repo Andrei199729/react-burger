@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, FormEvent, FocusEvent, useState, FC } from "react";
 import styles from "./Profile.module.css";
 import { NavLink } from "react-router-dom";
 import {
@@ -9,7 +9,6 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useLocation } from "react-router-dom";
 import HistoryOrders from "../HistoryOrders/HistoryOrders";
-import { useDispatch, useSelector } from "react-redux";
 import { patchUserData, postLogoutAuth } from "../../services/actions/user";
 import { getCookie } from "../../utils/cookie";
 
@@ -20,41 +19,45 @@ import {
   PROFILE_ORDERS_PATH,
   accessToken,
 } from "../../utils/constants";
+import { useDispatch, useSelector } from "../../services/hooks";
 
-function Profile() {
+const Profile: FC = () => {
   const location = useLocation();
   const locationProfileOrders = location.pathname === PROFILE_ORDERS_PATH;
   const locationProfile = location.pathname === PROFILE_PATH;
   const { userData, password } = useSelector((state) => state.user);
-  const [nameProfile, setNameProfile] = useState(userData.user.name);
-  const [emailProfile, setEmailProfile] = useState(userData.user.email);
+  const user = (data: any) => (userData === null ? null : data);
+  const [nameProfile, setNameProfile] = useState(user(userData?.user.name));
+  const [emailProfile, setEmailProfile] = useState(user(userData?.user.email));
   const [passwordProfile, setPasswordProfile] = useState(password);
-  const inputRef = React.useRef(null);
+  const inputRef = React.useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
   const [edit, setEdit] = useState(false);
 
-  const onChangeName = (e) => {
+  const onChangeName = (e: ChangeEvent<HTMLInputElement>) => {
     setNameProfile(e.target.value);
   };
 
-  const onChangeEmail = (e) => {
+  const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
     setEmailProfile(e.target.value);
   };
 
-  const onChangePassword = (e) => {
+  const onChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
     setPasswordProfile(e.target.value);
   };
   const onIconClick = () => {
-    setTimeout(() => inputRef.current.focus(), 0);
+    setTimeout(() => {
+      if (inputRef && inputRef.current) inputRef.current.focus();
+    }, 0);
   };
 
   const handleCancel = () => {
-    setEmailProfile(userData.user.email);
-    setNameProfile(userData.user.name);
+    setEmailProfile(user(userData?.user.email));
+    setNameProfile(user(userData?.user.name));
     setEdit(false);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(
       patchUserData(nameProfile, emailProfile, passwordProfile, accessToken)
@@ -63,11 +66,11 @@ function Profile() {
   };
 
   const handleLogout = () => {
-    const refreshToken = getCookie("refreshToken");
+    const refreshToken: any = getCookie("refreshToken");
     dispatch(postLogoutAuth(refreshToken));
   };
 
-  function blurHandler(e) {
+  function blurHandler(e: FocusEvent<HTMLInputElement>) {
     switch (e.target.name) {
       case "name":
         setEdit(true);
@@ -150,7 +153,6 @@ function Profile() {
                 onBlur={blurHandler}
               />
               <EmailInput
-                type={"text"}
                 placeholder={"E-mail"}
                 onChange={onChangeEmail}
                 value={emailProfile}
@@ -190,6 +192,6 @@ function Profile() {
       </div>
     </section>
   );
-}
+};
 
 export default Profile;

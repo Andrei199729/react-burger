@@ -3,6 +3,7 @@ export type TIngredient = {
     arg0: (ingredient: TIngredient) => false | JSX.Element
   ): import("react").ReactNode;
   filter(arg0: (item: TIngredient) => item is TIngredient): unknown;
+  ingredient: TIngredient;
   calories: number;
   carbohydrates: number;
   fat: number;
@@ -26,7 +27,7 @@ export type TOwner = {
 
 export type TOrder = {
   createdAt: string;
-  ingredients: ReadonlyArray<TIngredient>;
+  ingredients: TIngredient[];
   name: string;
   number: number;
   owner: TOwner[];
@@ -34,6 +35,18 @@ export type TOrder = {
   status: string;
   updatedAt: string;
   _id: string;
+};
+
+export type TOrderIngredient = {
+  createdAt: string;
+  ingredients: string[];
+  name: string;
+  number: number;
+  owner: string;
+  status: string;
+  updatedAt: string;
+  _id: string;
+  _v: number;
 };
 
 export type TPopupOrder = {
@@ -67,7 +80,7 @@ export type TUserData = {
   success: boolean;
   accessToken: string;
   refreshToken: string;
-  user: ReadonlyArray<TUser>;
+  user: TUser;
 };
 
 export type TLogout = { success: boolean; message: string };

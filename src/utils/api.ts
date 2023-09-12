@@ -39,7 +39,7 @@ class Api {
     }).then(this._getResponseData);
   }
 
-  getOrderNumber(number: number) {
+  getOrderNumber(number: string | undefined) {
     return fetch(`${this.address}/${ORDERS_PATH}/${number}`).then(
       this._getResponseData
     );

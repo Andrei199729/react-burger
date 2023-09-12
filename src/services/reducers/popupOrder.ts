@@ -9,15 +9,16 @@ import {
   GET_ORDER_DETAILS_FAILED,
   TOrderAction,
 } from "../actions/popupOrder";
+import { TOrderIngredient } from "../types/data";
 
 type TOrderState = {
-  createdOrder: any | undefined | null;
+  createdOrder: TOrderIngredient | null;
   orderDetailsPopupOpen: boolean;
-  numberOrder: any;
+  numberOrder: number | null;
 };
 
 const initialState: TOrderState = {
-  createdOrder: undefined || null,
+  createdOrder: null,
   orderDetailsPopupOpen: false,
   numberOrder: null,
 };
@@ -42,6 +43,7 @@ export const popupOrderReducer = (
         ...state,
         createdOrder: action.order,
         orderDetailsPopupOpen: action.orderDetailsPopupOpen,
+        numberOrder: action.number,
       };
 
     case POST_ORDER_DETAILS_FAILED:
@@ -61,7 +63,7 @@ export const popupOrderReducer = (
     case GET_ORDER_DETAILS_SUCCESS:
       return {
         ...state,
-        numberOrder: action.number,
+        createdOrder: action.order,
       };
     case GET_ORDER_DETAILS_FAILED:
       return {

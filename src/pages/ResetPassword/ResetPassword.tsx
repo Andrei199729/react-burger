@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import {
   PasswordInput,
   Input,
@@ -6,9 +6,9 @@ import {
 import FormAuthentication from "../FormAuthentication/FormAuthentication";
 import { useNavigate } from "react-router-dom";
 import { postResetPasswordAuth } from "../../services/actions/user";
-import { useDispatch, useSelector } from "react-redux";
 
 import { LOGIN_PATH, PASSWORD_RESET_PATH } from "../../utils/constants";
+import { useDispatch, useSelector } from "../../services/hooks";
 
 function ResetPassword() {
   const navigate = useNavigate();
@@ -18,11 +18,12 @@ function ResetPassword() {
   const [valueCode, setValueCode] = useState("");
   const { success } = useSelector((state) => state.user);
   const inputRef = React.useRef(null);
-  const onChangePassword = (e) => {
-    setValuePassword(e.target.value);
+  const onChangePassword = (e: FormEvent<EventTarget>) => {
+    const valuePasswordEvent = (e.target as HTMLInputElement).value;
+    setValuePassword(valuePasswordEvent);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (valueCode && valuePassword) {
       dispatch(postResetPasswordAuth(valuePassword, valueCode));
@@ -41,6 +42,10 @@ function ResetPassword() {
       text="Вспомнили пароль?"
       linkText="Войти"
       link={LOGIN_PATH}
+      method={""}
+      formName={""}
+      textLogin={""}
+      linkEntrance={""}
     >
       <div>
         <PasswordInput

@@ -30,4 +30,4 @@ export const USER_PATH = "auth/user";
 export const TOKEN_PATH = "auth/token";
 export const LOGOUT_PATH = "auth/logout";
 
-export const accessToken = getCookie("accessToken");
+export const accessToken: any = getCookie("accessToken");

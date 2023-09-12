@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import styles from "./OrdersFeed.module.css";
 import { Link, useLocation } from "react-router-dom";
 import {
-  WS_CONNECTION_CLOSED,
   useAppDispatch,
   useAppSelector,
 } from "../../services/actions-types/wsActionTypes";
@@ -10,6 +9,7 @@ import { initFeed } from "../../services/reducers/wsReducer";
 import OrderFeed from "../OrderFeed/OrderFeed";
 
 import { ORDER_FEED_PATH } from "../../utils/constants";
+import { wsConnectionClosed } from "../../services/actions/wsAction";
 
 function OrdersFeed() {
   const location = useLocation();
@@ -18,7 +18,9 @@ function OrdersFeed() {
 
   useEffect(() => {
     dispatch(initFeed());
-    return () => dispatch({ type: WS_CONNECTION_CLOSED });
+    return () => {
+      dispatch(wsConnectionClosed());
+    };
   }, [dispatch]);
 
   return (

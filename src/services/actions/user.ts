@@ -177,7 +177,7 @@ export interface ISetAuthLoggedInAction {
 
 export interface ISetUserDataAction {
   readonly type: typeof SET_USER_DATA;
-  readonly userData: null | TUserData;
+  readonly userData: TUserData | null;
   readonly accessToken: any;
 }
 
@@ -371,7 +371,7 @@ export function postRegisterAuth(
 }
 
 export function postLoginAuth(emailRegister: string, passwordRegister: string) {
-  return function (dispatch: any) {
+  return function (dispatch: AppDispatch) {
     dispatch(postLoginRequestAction());
     postLogin(emailRegister, passwordRegister)
       .then((res) => {
@@ -438,7 +438,6 @@ export function postLogoutAuth(token: string) {
         deleteCookie("accessToken");
         deleteCookie("refreshToken");
         dispatch(postLogoutSuccessAction(res));
-        console.log(res);
 
         dispatch(setUserData(null, null));
       })
@@ -459,7 +458,7 @@ export function postForgotPasswordAuth(email: string) {
 }
 
 export function postResetPasswordAuth(email: string, token: string) {
-  return function (dispatch: any) {
+  return function (dispatch: AppDispatch) {
     dispatch(postResetPasswordRequestAction());
     api
       .postResetPassword(email, token)
@@ -471,7 +470,7 @@ export function postResetPasswordAuth(email: string, token: string) {
 }
 
 export const checkUserAuth = () => {
-  return (dispatch: any) => {
+  return (dispatch: AppDispatch) => {
     if (accessToken) {
       dispatch(getUserData())
         .catch(() => {

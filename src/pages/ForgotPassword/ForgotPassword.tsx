@@ -1,21 +1,22 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { EmailInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import FormAuthentication from "../FormAuthentication/FormAuthentication";
 import { useNavigate } from "react-router-dom";
 import { postForgotPasswordAuth } from "../../services/actions/user";
-import { useDispatch } from "react-redux";
 
 import { LOGIN_PATH, PASSWORD_RESET_PATH } from "../../utils/constants";
+import { useDispatch } from "../../services/hooks";
 
 function ForgotPassword() {
   const navigate = useNavigate();
   const [valueEmail, setValueEmail] = useState("");
   const dispatch = useDispatch();
-  const onChangeEmail = (e) => {
-    setValueEmail(e.target.value);
+  const onChangeEmail = (e: FormEvent<EventTarget>) => {
+    const valueEmailEvent = (e.target as HTMLInputElement).value;
+    setValueEmail(valueEmailEvent);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (valueEmail) {
       dispatch(postForgotPasswordAuth(valueEmail));
@@ -31,9 +32,12 @@ function ForgotPassword() {
       text="Вспомнили пароль?"
       linkText="Войти"
       link={LOGIN_PATH}
+      method={""}
+      formName={""}
+      textLogin={""}
+      linkEntrance={""}
     >
       <EmailInput
-        type={"text"}
         placeholder={"Укажите e-mail"}
         onChange={onChangeEmail}
         value={valueEmail}

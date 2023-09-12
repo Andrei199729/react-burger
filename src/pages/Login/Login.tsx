@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import FormAuthentication from "../FormAuthentication/FormAuthentication";
-import { useDispatch } from "react-redux";
 import { postLoginAuth } from "../../services/actions/user";
 
 import {
@@ -8,14 +7,15 @@ import {
   EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-import { MAIN_PATH, PASSWORD_RECOVERY_PATH } from "../../utils/constants";
+import { PASSWORD_RECOVERY_PATH } from "../../utils/constants";
+import { useDispatch } from "../../services/hooks";
 
 function Login() {
   const dispatch = useDispatch();
   const [valueEmail, setValueEmail] = useState("");
   const [valuePassword, setValuePassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(postLoginAuth(valueEmail, valuePassword));
   };
@@ -30,12 +30,10 @@ function Login() {
       text="Забыли пароль?"
       linkText="Восстановить пароль"
       link={PASSWORD_RECOVERY_PATH}
-      linkPath={MAIN_PATH}
       method="POST"
       formName="formlogin"
     >
       <EmailInput
-        type={"text"}
         placeholder={"E-mail"}
         onChange={(e) => setValueEmail(e.target.value)}
         value={valueEmail}

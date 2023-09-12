@@ -29,20 +29,23 @@ function BurgerConstructor() {
   const { ingredientsConstructor, bun } = useSelector(
     (state) => state.constructorItems
   );
+
   const { userData } = useSelector((state) => state.user);
 
   const findCard = (id: string) => {
     const ingredientContainer = ingredientsConstructor.filter(
       (c) => c._id === id
     )[0];
+
     return {
       ingredientContainer,
       index: ingredientsConstructor.indexOf(ingredientContainer),
     };
   };
 
-  const moveCard = (id: string, atIndex: number) => {
-    const { ingredientContainer, index } = findCard(id);
+  const moveCard = (id: any, atIndex: number) => {
+    const { ingredientContainer, index } = findCard(id.id);
+
     dispatch({
       type: UPDATE_CONSTRUCTOR_ITEM,
       item: update(ingredientsConstructor, {
@@ -78,7 +81,7 @@ function BurgerConstructor() {
   }, [bun]);
 
   const moveConstructorItem = (item: TIngredient) => {
-    dispatch(addConstructorItemAction(...([item] as const)));
+    dispatch(addConstructorItemAction(item.ingredient));
   };
 
   const [{ isHover }, dropTarget] = useDrop<
@@ -101,8 +104,11 @@ function BurgerConstructor() {
     const ingredientsId = ingredientsConstructor.map(
       (ingredientId) => ingredientId._id
     );
+
     const buns = new Array(2).fill(bun);
+
     const dataIds = buns.map((el) => el._id);
+
     dataIds.splice(1, 0, ...ingredientsId);
     dispatch(postIngredientsConstructorBurger(dataIds));
 

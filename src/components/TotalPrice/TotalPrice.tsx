@@ -9,7 +9,7 @@ import { useSelector } from "../../services/hooks";
 
 interface ITotalPrice {
   totalPrice: number;
-  handleCheckout: any;
+  handleCheckout: () => void;
 }
 
 const TotalPrice: FC<ITotalPrice> = (props) => {

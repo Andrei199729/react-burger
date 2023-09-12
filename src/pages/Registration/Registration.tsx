@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import {
   PasswordInput,
   EmailInput,
@@ -6,10 +6,10 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import FormAuthentication from "../FormAuthentication/FormAuthentication";
 import { postRegisterAuth } from "../../services/actions/user";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { LOGIN_PATH } from "../../utils/constants";
+import { useDispatch } from "../../services/hooks";
 
 function Registration() {
   const dispatch = useDispatch();
@@ -19,7 +19,7 @@ function Registration() {
   const [emailRegister, setEmailRegister] = useState("");
   const [passwordRegister, setPasswordRegister] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(postRegisterAuth(nameRegister, emailRegister, passwordRegister));
     setNameRegister("");
@@ -38,6 +38,8 @@ function Registration() {
       link={LOGIN_PATH}
       method="POST"
       formName="formregister"
+      textLogin={""}
+      linkEntrance={""}
     >
       <Input
         type={"text"}
@@ -51,7 +53,6 @@ function Registration() {
         extraClass="mb-6"
       />
       <EmailInput
-        type={"text"}
         placeholder={"E-mail"}
         onChange={(e) => setEmailRegister(e.target.value)}
         value={emailRegister}

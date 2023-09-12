@@ -7,12 +7,12 @@ import {
 } from "../actions-types/wsActionTypes";
 
 import { WS_BASE_URL_ALL } from "../../utils/constants";
-import { TPopupOrderDetails } from "../types/data";
+import { TOrderIngredient } from "../types/data";
 import { TWsConnectionAction } from "../actions/wsAction";
 
 type TWsConnectedState = {
   wsConnected: boolean;
-  orders: ReadonlyArray<TPopupOrderDetails>;
+  orders: TOrderIngredient[];
   total: number;
   totalToday: number;
   error: boolean;

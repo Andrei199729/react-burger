@@ -28,7 +28,7 @@ type TUserState = {
   success: boolean;
 };
 
-const initialState = {
+const initialState: TUserState = {
   userData: null,
   user: null,
   password: "",
