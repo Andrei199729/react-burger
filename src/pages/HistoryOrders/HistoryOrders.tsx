@@ -27,7 +27,7 @@ function HistoryOrders() {
 
   return (
     <section className={`${styles["history-orders__constructor"]}`}>
-      {orders.length === 0 && (
+      {(orders.length === 0 || undefined) && (
         <p className={`text text_type_main-large`}>Сделайте заказ</p>
       )}
       <div className={`${styles.scroll}`}>

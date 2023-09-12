@@ -31,9 +31,9 @@ function OrderFeedInfo() {
   const ingredientId = orders?.find((item) => item._id === id);
   const { ingredients } = useSelector((state) => state.ingredients);
   const objIngredients = Object.fromEntries(
-    Object.entries(ingredientId || {}).map(([key, value]: any) => [key, value])
+    Object.entries(ingredientId || {}).map(([key, value]) => [key, value])
   );
-  const currectArr: string[] = objIngredients.ingredients;
+  const currectArr = objIngredients.ingredients as string[];
 
   const set = new Set(currectArr?.map((item: string) => item));
   const feedIngredients = ingredients?.filter((item) => set.has(item._id));
