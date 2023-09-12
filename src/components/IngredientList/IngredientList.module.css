@@ -1,0 +1,17 @@
+.burger-ingredient {
+  display: block;
+}
+
+.burger-ingredient__container-lists {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.link {
+  text-decoration: none;
+  color: #f2f2f3;
+}

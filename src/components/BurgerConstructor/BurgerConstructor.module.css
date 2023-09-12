@@ -1,0 +1,55 @@
+.burger-constructor {
+  max-height: 912px;
+  padding: 10px 0 10px 0;
+}
+
+.burger-constructor__container {
+  display: flex;
+  flex-direction: column;
+  max-height: 656px;
+}
+
+.tip {
+  padding: 10px;
+}
+
+.scroll {
+  overflow-y: scroll;
+  max-height: 464px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 0 10px;
+}
+
+.scroll::-webkit-scrollbar {
+  width: 8px;
+  background-color: #2f2f37;
+  position: relative;
+  height: 464px;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+  background-color: #8585ad;
+  height: 292px;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+}
+
+.bun {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.onHover {
+  box-shadow: 0px 1px 2px 0px rgba(0, 255, 255, 0.7),
+    1px 2px 4px 0px rgba(0, 255, 255, 0.7),
+    2px 4px 8px 0px rgba(0, 255, 255, 0.7),
+    2px 4px 16px 0px rgba(0, 255, 255, 0.7);
+  border-radius: 10px;
+  transition: all 0.2s linear;
+}

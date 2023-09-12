@@ -1,0 +1,82 @@
+.order-feed {
+  max-width: 100%;
+}
+
+.order-feed__container {
+  display: flex;
+  justify-content: center;
+}
+
+.scroll {
+  overflow-y: scroll;
+  max-height: 812px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.scroll::-webkit-scrollbar {
+  width: 8px;
+  background-color: #2f2f37;
+  position: relative;
+  height: 812px;
+}
+.scroll::-webkit-scrollbar-thumb {
+  background-color: #8585ad;
+  height: 640px;
+}
+
+.cards-order {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card-order {
+  box-sizing: border-box;
+  width: 584px;
+  background-color: #1c1c21;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 2px rgba(0, 0, 0, 0.06),
+    0px 0px 1px rgba(0, 0, 0, 0.04);
+  border-radius: 40px;
+  text-decoration: none;
+  color: #f2f2f3;
+}
+
+.link {
+  text-decoration: none;
+  color: #f2f2f3;
+}
+
+.table {
+  width: 580px;
+  display: flex;
+  flex-direction: column;
+}
+
+.table-box {
+  display: flex;
+  justify-content: space-between;
+}
+
+.table-block {
+  flex: 1 0;
+}
+
+.order-feed-column {
+  display: flex;
+  gap: 8px;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  max-height: 320px;
+}
+
+.order-number {
+  color: #00cccc;
+}
+
+.number {
+  text-shadow: 0px 0px 16px rgba(51, 51, 255, 0.25),
+    0px 0px 8px rgba(51, 51, 255, 0.25), 0px 4px 32px rgba(51, 51, 255, 0.5);
+}

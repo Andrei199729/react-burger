@@ -1,0 +1,16 @@
+.card {
+  position: relative;
+  width: 272px;
+  cursor: pointer;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.name {
+  text-align: center;
+  height: 48px;
+}

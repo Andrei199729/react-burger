@@ -1,0 +1,14 @@
+.icon {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.onHover {
+  box-shadow: 2px 4px 16px 0px rgba(0, 255, 255, 0.7),
+    2px 4px 16px 0px rgba(0, 255, 255, 0.7),
+    2px 4px 16px 0px rgba(0, 255, 255, 0.7),
+    2px 4px 16px 0px rgba(0, 255, 255, 0.7);
+  border-radius: 40px;
+  transition: all 0.2s linear;
+}

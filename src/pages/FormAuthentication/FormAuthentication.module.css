@@ -1,0 +1,38 @@
+.authentication {
+  max-width: 100%;
+  margin: 180px 0 362px;
+}
+
+.authentication__container {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.authentication__title {
+  text-align: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.authentication-route {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.linkSign {
+  text-decoration: none;
+}
+
+.link {
+  text-decoration: none;
+  text-align: center;
+}
+
+.buttonSize {
+  margin: 0 auto;
+  min-width: 128px;
+}
