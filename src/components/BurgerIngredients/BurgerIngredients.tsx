@@ -5,6 +5,7 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientList from "../IngredientList/IngredientList";
 import { useInView } from "react-intersection-observer";
 import { useSelector } from "../../services/hooks";
+import { TIngredient } from "../../services/types/data";
 
 function BurgerIngredients() {
   const [current, setCurrent] = useState("rolls");
@@ -33,17 +34,17 @@ function BurgerIngredients() {
   }, [inViewRolls, inViewMains, inViewSauces]);
 
   const rolls = useMemo(
-    () => ingredients?.filter((roll) => roll.type === "bun"),
+    () => ingredients?.filter((roll: TIngredient) => roll.type === "bun"),
     [ingredients]
   );
 
   const sauces = useMemo(
-    () => ingredients?.filter((sauce) => sauce.type === "sauce"),
+    () => ingredients?.filter((sauce: TIngredient) => sauce.type === "sauce"),
     [ingredients]
   );
 
   const mains = useMemo(
-    () => ingredients?.filter((main) => main.type === "main"),
+    () => ingredients?.filter((main: TIngredient) => main.type === "main"),
     [ingredients]
   );
 

@@ -8,6 +8,7 @@ import { useMatch } from "react-router-dom";
 
 import { PROFILE_ORDERS_PATH } from "../../utils/constants";
 import { useSelector } from "../../services/hooks";
+import { TIngredient } from "../../services/types/data";
 
 interface IOrderFeed {
   ingredients: string[];
@@ -25,13 +26,15 @@ const OrderFeed: FC<IOrderFeed> = (props) => {
   const { ingredients } = useSelector((state) => state.ingredients);
 
   const set = new Set(ingredienstId.map((item) => item));
-  const feedIngredients = ingredients.filter((item) => set.has(item._id));
+  const feedIngredients = ingredients.filter((item: TIngredient) =>
+    set.has(item._id)
+  );
   const priceMains = feedIngredients.map(
-    (price) => price.type !== "bun" && price.price
+    (price: TIngredient) => price.type !== "bun" && price.price
   );
 
   const priceBuns = feedIngredients.map(
-    (price) => price.type === "bun" && price.price
+    (price: TIngredient) => price.type === "bun" && price.price
   );
 
   const totalPriceMains = useMemo(() => {
@@ -39,7 +42,8 @@ const OrderFeed: FC<IOrderFeed> = (props) => {
       return 0;
     }
     return priceMains?.reduce(
-      (sum: number, ingredient: any) => sum + ingredient,
+      (sum: number, ingredient: number | boolean) =>
+        typeof ingredient === "number" ? sum + ingredient : sum,
       0
     );
   }, [feedIngredients, priceMains]);
@@ -48,8 +52,10 @@ const OrderFeed: FC<IOrderFeed> = (props) => {
     if (!feedIngredients) {
       return 0;
     }
+
     return priceBuns?.reduce(
-      (sum: number, ingredient: any) => sum + ingredient * 2,
+      (sum: number, ingredient: number | boolean) =>
+        typeof ingredient === "number" ? sum + ingredient * 2 : sum,
       0
     );
   }, [feedIngredients, priceBuns]);
@@ -78,31 +84,39 @@ const OrderFeed: FC<IOrderFeed> = (props) => {
       <div className={`${styles.box}  mt-6`}>
         <ul className={`${styles["lists-ingredient"]}`}>
           {feedIngredients
-            .map((ingredient, index) => {
-              return (
-                <li
-                  className={`${styles.list} ${
-                    feedIngredients.length >= 7 && styles["list-count"]
-                  }`}
-                  key={index}
-                >
-                  <img
-                    className={`${styles["image"]}`}
-                    src={ingredient.image_mobile}
-                    alt={ingredient.name}
-                  />
-                  {index === 5 && (
-                    <p
-                      className={`${styles.count} text text_type_main-default`}
-                    >
-                      {feedIngredients.length - 6 === 0
-                        ? ""
-                        : `+${feedIngredients.length - 6}`}
-                    </p>
-                  )}
-                </li>
-              );
-            })
+            .map(
+              (
+                ingredient: {
+                  image_mobile: string | undefined;
+                  name: string | undefined;
+                },
+                index: React.Key | null | undefined
+              ) => {
+                return (
+                  <li
+                    className={`${styles.list} ${
+                      feedIngredients.length >= 7 && styles["list-count"]
+                    }`}
+                    key={index}
+                  >
+                    <img
+                      className={`${styles["image"]}`}
+                      src={ingredient.image_mobile}
+                      alt={ingredient.name}
+                    />
+                    {index === 5 && (
+                      <p
+                        className={`${styles.count} text text_type_main-default`}
+                      >
+                        {feedIngredients.length - 6 === 0
+                          ? ""
+                          : `+${feedIngredients.length - 6}`}
+                      </p>
+                    )}
+                  </li>
+                );
+              }
+            )
             .slice(0, 6)}
         </ul>
         <div className={`${styles["total-price__box"]}`}>

@@ -6,12 +6,13 @@ import IngredientDetails from "../../components/IngredientDetails/IngredientDeta
 
 import { MAIN_PATH } from "../../utils/constants";
 import { useSelector } from "../../services/hooks";
+import { TIngredient } from "../../services/types/data";
 
 function IngredientPage() {
   const { id } = useParams();
   const location = useLocation();
   const { ingredients } = useSelector((state) => state.ingredients);
-  const ingredientId = ingredients.find((item) => item._id === id);
+  const ingredientId = ingredients.find((item: TIngredient) => item._id === id);
 
   return (
     <>

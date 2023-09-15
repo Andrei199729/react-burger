@@ -1,3 +1,4 @@
+import { TIngredient, TOrderIngredient } from "../services/types/data";
 import {
   INGREDIENTS_API_PATH,
   FORGOT_PASS_API_PATH,
@@ -10,17 +11,24 @@ interface IApi {
   address: string;
 }
 
+type TResponse<T> = {
+  success: boolean;
+  data: TIngredient[];
+  order: TOrderIngredient;
+  orders: TOrderIngredient[];
+} & T;
+
 class Api {
   address: string;
   constructor({ address }: IApi) {
     this.address = address;
   }
 
-  _getResponseData(res: Response) {
-    return res.status
-      ? res.json()
-      : Promise.reject(new Error(`Ошибка: ${res.status}`));
-  }
+  _getResponseData = <T>(res: Response) => {
+    return res.ok
+      ? res.json().then((data) => data as TResponse<T>)
+      : Promise.reject(res.status);
+  };
 
   getInitialIngredients() {
     return fetch(`${this.address}/${INGREDIENTS_API_PATH}`).then(

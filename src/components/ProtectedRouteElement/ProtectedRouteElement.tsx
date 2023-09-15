@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, ReactElement } from "react";
 import { Navigate, RouteProps, useLocation } from "react-router-dom";
 
 import { MAIN_PATH, LOGIN_PATH } from "../../utils/constants";
@@ -6,7 +6,7 @@ import { useSelector } from "../../services/hooks";
 
 type IProtected = {
   onlyUnauthorized: boolean;
-  component: any;
+  component: ReactElement;
 } & RouteProps;
 
 const Protected: FC<IProtected> = ({ onlyUnauthorized = false, component }) => {

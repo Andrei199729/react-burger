@@ -15,6 +15,7 @@ import { initFeed } from "../../services/reducers/wsReducer";
 import { ORDER_FEED_PATH } from "../../utils/constants";
 import { useSelector } from "../../services/hooks";
 import { wsConnectionClosed } from "../../services/actions/wsAction";
+import { TIngredient } from "../../services/types/data";
 
 interface IObjOutput {
   [objOutput: string]: number;
@@ -36,14 +37,16 @@ function OrderFeedInfo() {
   const currectArr = objIngredients.ingredients as string[];
 
   const set = new Set(currectArr?.map((item: string) => item));
-  const feedIngredients = ingredients?.filter((item) => set.has(item._id));
+  const feedIngredients = ingredients?.filter((item: TIngredient) =>
+    set.has(item._id)
+  );
 
   const priceMains = feedIngredients.map(
-    (price) => price.type !== "bun" && price.price
+    (price: TIngredient) => price.type !== "bun" && price.price
   );
 
   const priceBuns = feedIngredients.map(
-    (price) => price.type === "bun" && price.price
+    (price: TIngredient) => price.type === "bun" && price.price
   );
 
   const totalPriceMains = useMemo(() => {
@@ -51,7 +54,8 @@ function OrderFeedInfo() {
       return 0;
     }
     return priceMains?.reduce(
-      (sum: number, ingredient: any) => sum + ingredient,
+      (sum: number, ingredient: number | boolean) =>
+        typeof ingredient === "number" ? sum + ingredient : sum,
       0
     );
   }, [feedIngredients, priceMains]);
@@ -61,7 +65,8 @@ function OrderFeedInfo() {
       return 0;
     }
     return priceBuns?.reduce(
-      (sum: number, ingredient: any) => sum + ingredient * 2,
+      (sum: number, ingredient: number | boolean) =>
+        typeof ingredient === "number" ? sum + ingredient * 2 : sum,
       0
     );
   }, [feedIngredients, priceBuns]);
@@ -81,8 +86,6 @@ function OrderFeedInfo() {
     let buffs = [];
 
     arrInput.forEach((e: string) => {
-      console.log(e);
-
       if (e === arrValue) {
         buffs.push(e);
       }
@@ -122,7 +125,7 @@ function OrderFeedInfo() {
               </p>
               <p className="text text_type_main-medium mb-6">Состав:</p>
               <div className={`${styles.scroll} mb-10`}>
-                {feedIngredients.map((item) => {
+                {feedIngredients.map((item: TIngredient) => {
                   return (
                     <div
                       className={`${styles["info-ingredient"]} mr-6`}

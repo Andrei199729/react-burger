@@ -6,7 +6,7 @@ import {
   WS_CONNECTION_START,
 } from "../actions-types/wsActionTypes";
 
-import { WS_BASE_URL_ALL } from "../../utils/constants";
+import { WS_BASE_URL, WS_BASE_URL_ALL } from "../../utils/constants";
 import { TOrderIngredient } from "../types/data";
 import { TWsConnectionAction } from "../actions/wsAction";
 
@@ -33,6 +33,11 @@ const initialState: TWsConnectedState = {
 export const initFeed = () => ({
   type: WS_CONNECTION_START,
   payload: WS_BASE_URL_ALL,
+});
+
+export const initFeedProfileOrders = (accessToken: string) => ({
+  type: WS_CONNECTION_START,
+  payload: `${WS_BASE_URL}?token=${accessToken}`,
 });
 
 export const wsReducer = (

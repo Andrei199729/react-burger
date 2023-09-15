@@ -1,12 +1,9 @@
 import { Middleware, MiddlewareAPI } from "redux";
 import { IWebSocket } from "../actions/wsAction";
-import { IWebSocketProfile } from "../actions/wsActionProfile";
 import { AppDispatch, RootState } from "../types";
 import { getUserData } from "../actions/user";
 
-export const socketMiddleware = (
-  wsActions: IWebSocket | IWebSocketProfile
-): Middleware => {
+export const socketMiddleware = (wsActions: IWebSocket): Middleware => {
   let socket: WebSocket | null = null;
 
   return (store: MiddlewareAPI<AppDispatch, RootState>) => {

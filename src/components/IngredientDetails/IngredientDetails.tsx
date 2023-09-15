@@ -2,12 +2,13 @@ import React from "react";
 import styles from "./IngredientDetails.module.css";
 import { useParams } from "react-router-dom";
 import { useSelector } from "../../services/hooks";
+import { TIngredient } from "../../services/types/data";
 
 function IngredientDetails() {
   const { id } = useParams();
   const { ingredients } = useSelector((state) => state.ingredients);
 
-  const ingredientId = ingredients.find((item) => item._id === id);
+  const ingredientId = ingredients.find((item: TIngredient) => item._id === id);
 
   if (!ingredientId) {
     return null;
