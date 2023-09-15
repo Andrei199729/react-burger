@@ -6,22 +6,22 @@ import {
   useAppSelector,
 } from "../../services/actions-types/wsActionTypes";
 import { PROFILE_ORDERS_PATH, accessToken } from "../../utils/constants";
-import { initFeedProfileOrders } from "../../services/reducers/wsReducerProfile";
+import { initFeedProfileOrders } from "../../services/reducers/wsReducer";
 import OrderFeed from "../OrderFeed/OrderFeed";
-import { wsConnectionClosedProfile } from "../../services/actions/wsActionProfile";
+import { wsConnectionClosed } from "../../services/actions/wsAction";
 
 function HistoryOrders() {
   const location = useLocation();
   const dispatch = useAppDispatch();
   const match = useMatch(PROFILE_ORDERS_PATH);
-  const { orders } = useAppSelector((store) => store.wsProfile);
+  const { orders } = useAppSelector((store) => store.ws);
 
   useEffect(() => {
     if (match) {
       dispatch(initFeedProfileOrders(accessToken.slice(7)));
     }
     return () => {
-      if (match) dispatch(wsConnectionClosedProfile());
+      if (match) dispatch(wsConnectionClosed());
     };
   }, [dispatch, match]);
 

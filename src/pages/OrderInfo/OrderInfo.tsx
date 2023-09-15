@@ -12,6 +12,7 @@ import HistoryOrders from "../HistoryOrders/HistoryOrders";
 import { ORDER_FEED_PATH } from "../../utils/constants";
 import { getOrder } from "../../services/actions/popupOrder";
 import { useSelector } from "../../services/hooks";
+import { TIngredient } from "../../services/types/data";
 
 type TNumberParams = {
   number: string;
@@ -46,13 +47,15 @@ function OrderInfo() {
     dispatch(getOrder(number));
   }, [dispatch, number]);
   const set = new Set(currectArr?.map((item: string) => item));
-  const feedIngredients = ingredients?.filter((item) => set.has(item._id));
+  const feedIngredients = ingredients?.filter((item: TIngredient) =>
+    set.has(item._id)
+  );
 
   const priceMains = feedIngredients.map(
-    (price) => price.type !== "bun" && price.price
+    (price: TIngredient) => price.type !== "bun" && price.price
   );
   const priceBuns = feedIngredients.map(
-    (price) => price.type === "bun" && price.price
+    (price: TIngredient) => price.type === "bun" && price.price
   );
 
   const totalPriceMains = useMemo(() => {
@@ -60,7 +63,8 @@ function OrderInfo() {
       return 0;
     }
     return priceMains?.reduce(
-      (sum: number, ingredient: any) => sum + ingredient,
+      (sum: number, ingredient: any) =>
+        typeof ingredient === "number" ? sum + ingredient : sum,
       0
     );
   }, [feedIngredients, priceMains]);
@@ -70,7 +74,8 @@ function OrderInfo() {
       return 0;
     }
     return priceBuns?.reduce(
-      (sum: number, ingredient: any) => sum + ingredient * 2,
+      (sum: number, ingredient: number | boolean) =>
+        typeof ingredient === "number" ? sum + ingredient * 2 : sum,
       0
     );
   }, [feedIngredients, priceBuns]);
@@ -127,7 +132,7 @@ function OrderInfo() {
               </p>
               <p className="text text_type_main-medium mb-6">Состав:</p>
               <div className={`${styles.scroll} mb-10`}>
-                {feedIngredients.map((item) => {
+                {feedIngredients.map((item: TIngredient) => {
                   return (
                     <div
                       className={`${styles["info-ingredient"]} mr-6`}
