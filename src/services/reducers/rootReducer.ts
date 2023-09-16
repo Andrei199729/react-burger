@@ -5,6 +5,7 @@ import { popupOrderReducer } from "./popupOrder";
 import { popupIngredientReducer } from "./popupIngredient";
 import { authReducer } from "./user";
 import { wsReducer } from "./wsReducer";
+import { wsReducerProfile } from "./wsReducerProfile";
 
 export const rootReducer = combineReducers({
   ingredients: ingredientReducer,
@@ -13,4 +14,5 @@ export const rootReducer = combineReducers({
   constructorItems: constructorReducer,
   user: authReducer,
   ws: wsReducer,
+  wsProfile: wsReducerProfile,
 });

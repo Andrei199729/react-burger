@@ -13,9 +13,6 @@ interface IApi {
 
 type TResponse<T> = {
   success: boolean;
-  data: TIngredient[];
-  order: TOrderIngredient;
-  orders: TOrderIngredient[];
 } & T;
 
 class Api {
@@ -32,7 +29,7 @@ class Api {
 
   getInitialIngredients() {
     return fetch(`${this.address}/${INGREDIENTS_API_PATH}`).then(
-      this._getResponseData
+      this._getResponseData<{ data: TIngredient[] }>
     );
   }
 
@@ -44,12 +41,12 @@ class Api {
         authorization: accessToken,
       },
       body: JSON.stringify({ ingredients: ingredientsId }),
-    }).then(this._getResponseData);
+    }).then(this._getResponseData<{ order: TOrderIngredient }>);
   }
 
   getOrderNumber(number: string | undefined) {
     return fetch(`${this.address}/${ORDERS_PATH}/${number}`).then(
-      this._getResponseData
+      this._getResponseData<{ orders: TOrderIngredient[] }>
     );
   }
 
