@@ -5,11 +5,13 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "../../services/actions-types/wsActionTypes";
-import { initFeed } from "../../services/reducers/wsReducer";
 import OrderFeed from "../OrderFeed/OrderFeed";
 
-import { ORDER_FEED_PATH } from "../../utils/constants";
-import { wsConnectionClosed } from "../../services/actions/wsAction";
+import { ORDER_FEED_PATH, WS_BASE_URL_ALL } from "../../utils/constants";
+import {
+  wsConnectionClosed,
+  wsConnectionStartAction,
+} from "../../services/actions/wsAction";
 
 function OrdersFeed() {
   const location = useLocation();
@@ -17,7 +19,7 @@ function OrdersFeed() {
   const { orders, total, totalToday } = useAppSelector((store) => store.ws);
 
   useEffect(() => {
-    dispatch(initFeed());
+    dispatch(wsConnectionStartAction(WS_BASE_URL_ALL));
     return () => {
       dispatch(wsConnectionClosed());
     };

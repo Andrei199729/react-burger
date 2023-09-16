@@ -3,16 +3,14 @@ import {
   WS_CONNECTION_ERROR_PROFILE,
   WS_CONNECTION_CLOSED_PROFILE,
   WS_GET_MESSAGE_PROFILE,
-  WS_CONNECTION_START_PROFILE,
 } from "../actions-types/wsActionTypes";
 
-import { WS_BASE_URL } from "../../utils/constants";
-import { TPopupOrderDetails } from "../types/data";
+import { TOrderIngredient } from "../types/data";
 import { TWsConnectionProfileAction } from "../actions/wsActionProfile";
 
 type TWsConnectedProfileState = {
   wsConnected: boolean;
-  orders: ReadonlyArray<TPopupOrderDetails>;
+  orders: TOrderIngredient[];
   total: number;
   totalToday: number;
   error: boolean;
@@ -27,11 +25,6 @@ const initialState: TWsConnectedProfileState = {
   error: false,
   errorMessage: null,
 };
-
-export const initFeedProfileOrders = (accessToken: string) => ({
-  type: WS_CONNECTION_START_PROFILE,
-  payload: `${WS_BASE_URL}?token=${accessToken}`,
-});
 
 export const wsReducerProfile = (
   state = initialState,

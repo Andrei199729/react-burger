@@ -3,10 +3,8 @@ import {
   WS_CONNECTION_ERROR,
   WS_CONNECTION_CLOSED,
   WS_GET_MESSAGE,
-  WS_CONNECTION_START,
 } from "../actions-types/wsActionTypes";
 
-import { WS_BASE_URL_ALL } from "../../utils/constants";
 import { TOrderIngredient } from "../types/data";
 import { TWsConnectionAction } from "../actions/wsAction";
 
@@ -29,11 +27,6 @@ const initialState: TWsConnectedState = {
   errorMessage: null,
   preloader: false,
 };
-
-export const initFeed = () => ({
-  type: WS_CONNECTION_START,
-  payload: WS_BASE_URL_ALL,
-});
 
 export const wsReducer = (
   state = initialState,

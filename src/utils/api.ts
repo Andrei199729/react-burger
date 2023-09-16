@@ -34,6 +34,8 @@ class Api {
   }
 
   postIngredientsBurger(ingredientsId: string[], accessToken: string) {
+    console.log(accessToken);
+
     return fetch(`${this.address}/${ORDERS_PATH}`, {
       method: "POST",
       headers: {

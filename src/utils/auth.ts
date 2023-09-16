@@ -76,7 +76,7 @@ export const postLogin = (emailRegister: string, passwordRegister: string) => {
   }).then(getJson);
 };
 
-export const postLogout = (token: string) => {
+export const postLogout = (token: string | undefined) => {
   return fetch(`${BASE_URL}/${LOGOUT_PATH}`, {
     method: "POST",
     headers: HEADERS,
@@ -84,7 +84,7 @@ export const postLogout = (token: string) => {
   }).then(getJson);
 };
 
-export const getAboutUser = (token: any) => {
+export const getAboutUser = (token: string) => {
   return fetchWithRefresh(`${BASE_URL}/${USER_PATH}`, {
     method: "GET",
     headers: {

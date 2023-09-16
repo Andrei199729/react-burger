@@ -10,11 +10,13 @@ import {
   useAppSelector,
 } from "../../services/actions-types/wsActionTypes";
 import OrdersFeed from "../OrdersFeed/OrdersFeed";
-import { initFeed } from "../../services/reducers/wsReducer";
 
-import { ORDER_FEED_PATH } from "../../utils/constants";
+import { ORDER_FEED_PATH, WS_BASE_URL_ALL } from "../../utils/constants";
 import { useSelector } from "../../services/hooks";
-import { wsConnectionClosed } from "../../services/actions/wsAction";
+import {
+  wsConnectionClosed,
+  wsConnectionStartAction,
+} from "../../services/actions/wsAction";
 import { TIngredient } from "../../services/types/data";
 
 interface IObjOutput {
@@ -72,7 +74,7 @@ function OrderFeedInfo() {
   }, [feedIngredients, priceBuns]);
 
   useEffect(() => {
-    dispatch(initFeed());
+    dispatch(wsConnectionStartAction(WS_BASE_URL_ALL));
     return () => {
       dispatch(wsConnectionClosed());
     };
