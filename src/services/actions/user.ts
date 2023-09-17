@@ -9,7 +9,7 @@ import { postLogin } from "../../utils/auth";
 import api from "../../utils/api";
 import { deleteCookie, setCookie } from "../../utils/cookie";
 import { accessToken } from "../../utils/constants";
-import { AppDispatch } from "../types";
+import { AppDispatch, AppThunk } from "../types";
 import { TLogout, TUserData, TUserUpdate } from "../types/data";
 
 export const GET_ABOUT_USER_SUCCESS: "GET_ABOUT_USER_SUCCESS" =
@@ -385,8 +385,8 @@ export function postLoginAuth(emailRegister: string, passwordRegister: string) {
   };
 }
 
-export function getUserData() {
-  return function (dispatch: AppDispatch) {
+export function getUserData(): AppThunk<Promise<unknown>> {
+  return function (dispatch) {
     dispatch(getAboutUserRequestAction());
 
     return getAboutUser(accessToken)
@@ -412,7 +412,7 @@ export function patchUserData(
 
         dispatch(setAuthloggedIn(true));
       })
-      .catch((err) => dispatch(patchAboutUserFailedAction()));
+      .catch(() => dispatch(patchAboutUserFailedAction()));
   };
 }
 
@@ -432,18 +432,16 @@ export function postTokenRefresh(refreshToken: string) {
 export function postLogoutAuth(token: string | undefined) {
   return function (dispatch: AppDispatch) {
     dispatch(postLogoutRequestAction());
-    console.log(token);
 
     postLogout(token)
       .then((res) => {
         deleteCookie("accessToken");
         deleteCookie("refreshToken");
         dispatch(postLogoutSuccessAction(res));
-        console.log(token);
 
         dispatch(setUserData(null, null));
       })
-      .catch((err) => dispatch(postLogoutFailedAction()));
+      .catch(() => dispatch(postLogoutFailedAction()));
   };
 }
 
@@ -452,10 +450,10 @@ export function postForgotPasswordAuth(email: string) {
     dispatch(postForgotPasswordRequestAction());
     api
       .postForgotPassword(email)
-      .then((res) => {
+      .then(() => {
         dispatch(postForgotPasswordSuccessAction(email));
       })
-      .catch((err) => dispatch(postForgotPasswordFailedAction()));
+      .catch(() => dispatch(postForgotPasswordFailedAction()));
   };
 }
 
@@ -471,8 +469,8 @@ export function postResetPasswordAuth(email: string, token: string) {
   };
 }
 
-export const checkUserAuth = () => {
-  return (dispatch: AppDispatch) => {
+export const checkUserAuth = (): AppThunk<unknown> => {
+  return (dispatch) => {
     if (accessToken) {
       dispatch(getUserData())
         .catch(() => {

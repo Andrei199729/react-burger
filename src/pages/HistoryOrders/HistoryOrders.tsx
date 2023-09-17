@@ -1,41 +1,35 @@
 import React, { useEffect } from "react";
 import styles from "./HistoryOrders.module.css";
-import { Link, useLocation, useMatch } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   useAppDispatch,
   useAppSelector,
 } from "../../services/actions-types/wsActionTypes";
-import {
-  PROFILE_ORDERS_PATH,
-  WS_BASE_URL,
-  accessToken,
-} from "../../utils/constants";
+import { PROFILE_ORDERS_PATH, WS_BASE_URL } from "../../utils/constants";
 import OrderFeed from "../OrderFeed/OrderFeed";
 import {
-  wsConnectionClosedProfile,
-  wsConnectionStartProfileAction,
+  disconnectProfile,
+  wsConnectionStartAction,
 } from "../../services/actions/wsActionProfile";
+import { getCookie } from "../../utils/cookie";
 
 function HistoryOrders() {
   const location = useLocation();
   const dispatch = useAppDispatch();
-  const match = useMatch(PROFILE_ORDERS_PATH);
   const { orders } = useAppSelector((store) => store.wsProfile);
+  const accessToken = getCookie("accessToken")?.split("Bearer ")[1];
 
   useEffect(() => {
-    dispatch(
-      wsConnectionStartProfileAction(
-        `${WS_BASE_URL}?token=${accessToken?.split("Bearer ")[1]}`
-      )
-    );
+    dispatch(wsConnectionStartAction(`${WS_BASE_URL}?token=${accessToken}`));
     return () => {
-      dispatch(wsConnectionClosedProfile());
+      dispatch(disconnectProfile());
     };
-  }, [dispatch, match]);
+  }, [accessToken, dispatch]);
 
   return (
     <section className={`${styles["history-orders__constructor"]}`}>
-      {orders?.length !== 0 ? (
+      {/* {orders?.length !== 0 ? ( */}
+      {
         <div className={`${styles.scroll}`}>
           <div className={`${styles["cards-order"]}`}>
             {orders
@@ -61,9 +55,11 @@ function HistoryOrders() {
               .reverse()}
           </div>
         </div>
-      ) : (
-        <p className={`text text_type_main-large`}>Сделайте заказ</p>
-      )}
+        // )
+        // : (
+        // <p className={`text text_type_main-large`}>Сделайте заказ</p>
+        // )
+      }
     </section>
   );
 }

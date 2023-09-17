@@ -5,6 +5,7 @@ import {
   WS_GET_MESSAGE_PROFILE,
   WS_SEND_MESSAGE_PROFILE,
   WS_CONNECTION_START_PROFILE,
+  WS_DISCONNECT_PROFILE,
 } from "../actions-types/wsActionTypes";
 import { TPopupOrderDetails } from "../types/data";
 
@@ -17,7 +18,7 @@ export interface IWsMessageProfile {
 
 export interface IWsConnectionStartProfileAction {
   readonly type: typeof WS_CONNECTION_START_PROFILE;
-  readonly payload: Event | string;
+  readonly payload: string;
 }
 
 export interface IWsConnectionSuccessProfileAction {
@@ -42,16 +43,21 @@ export interface IWsSendMessageProfileAction {
   readonly type: typeof WS_SEND_MESSAGE_PROFILE;
 }
 
+export interface IWsDisconnectProfile {
+  readonly type: typeof WS_DISCONNECT_PROFILE;
+}
+
 export type TWsConnectionProfileAction =
   | IWsConnectionSuccessProfileAction
   | IWsConnectionErrorProfileAction
   | IWsConnectionClosedProfileAction
   | IWsConnectionMessageProfileAction
   | IWsSendMessageProfileAction
-  | IWsConnectionStartProfileAction;
+  | IWsConnectionStartProfileAction
+  | IWsDisconnectProfile;
 
-export const wsConnectionStartProfileAction = (
-  url: Event | string
+export const wsConnectionStartAction = (
+  url: string
 ): IWsConnectionStartProfileAction => {
   return {
     type: WS_CONNECTION_START_PROFILE,
@@ -59,14 +65,13 @@ export const wsConnectionStartProfileAction = (
   };
 };
 
-export const wsConnectionSuccessProfile =
-  (): IWsConnectionSuccessProfileAction => {
-    return {
-      type: WS_CONNECTION_SUCCESS_PROFILE,
-    };
+export const wsConnectionSuccess = (): IWsConnectionSuccessProfileAction => {
+  return {
+    type: WS_CONNECTION_SUCCESS_PROFILE,
   };
+};
 
-export const wsConnectionErrorProfile = (
+export const wsConnectionError = (
   error: null | string
 ): IWsConnectionErrorProfileAction => {
   return {
@@ -75,14 +80,13 @@ export const wsConnectionErrorProfile = (
   };
 };
 
-export const wsConnectionClosedProfile =
-  (): IWsConnectionClosedProfileAction => {
-    return {
-      type: WS_CONNECTION_CLOSED_PROFILE,
-    };
+export const wsConnectionClosed = (): IWsConnectionClosedProfileAction => {
+  return {
+    type: WS_CONNECTION_CLOSED_PROFILE,
   };
+};
 
-export const wsGetMessageProfile = (
+export const wsGetMessage = (
   message: IWsMessageProfile
 ): IWsConnectionMessageProfileAction => {
   return {
@@ -90,3 +94,7 @@ export const wsGetMessageProfile = (
     payload: message,
   };
 };
+
+export const disconnectProfile = (): IWsDisconnectProfile => ({
+  type: WS_DISCONNECT_PROFILE,
+});

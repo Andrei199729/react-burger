@@ -15,7 +15,7 @@ type TWsConnectedState = {
   totalToday: number;
   error: boolean;
   preloader: boolean;
-  errorMessage: null | string;
+  errorMessage: string;
 };
 
 const initialState: TWsConnectedState = {
@@ -24,7 +24,7 @@ const initialState: TWsConnectedState = {
   total: 0,
   totalToday: 0,
   error: false,
-  errorMessage: null,
+  errorMessage: "",
   preloader: false,
 };
 
@@ -37,7 +37,7 @@ export const wsReducer = (
       return {
         ...state,
         error: false,
-        errorMessage: null,
+        errorMessage: "",
         wsConnected: true,
         preloader: true,
       };

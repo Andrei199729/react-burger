@@ -9,7 +9,7 @@ import OrderFeed from "../OrderFeed/OrderFeed";
 
 import { ORDER_FEED_PATH, WS_BASE_URL_ALL } from "../../utils/constants";
 import {
-  wsConnectionClosed,
+  disconnect,
   wsConnectionStartAction,
 } from "../../services/actions/wsAction";
 
@@ -21,7 +21,7 @@ function OrdersFeed() {
   useEffect(() => {
     dispatch(wsConnectionStartAction(WS_BASE_URL_ALL));
     return () => {
-      dispatch(wsConnectionClosed());
+      dispatch(disconnect());
     };
   }, [dispatch]);
 

@@ -14,7 +14,7 @@ import OrdersFeed from "../OrdersFeed/OrdersFeed";
 import { ORDER_FEED_PATH, WS_BASE_URL_ALL } from "../../utils/constants";
 import { useSelector } from "../../services/hooks";
 import {
-  wsConnectionClosed,
+  disconnect,
   wsConnectionStartAction,
 } from "../../services/actions/wsAction";
 import { TIngredient } from "../../services/types/data";
@@ -76,7 +76,7 @@ function OrderFeedInfo() {
   useEffect(() => {
     dispatch(wsConnectionStartAction(WS_BASE_URL_ALL));
     return () => {
-      dispatch(wsConnectionClosed());
+      dispatch(disconnect());
     };
   }, [dispatch]);
 

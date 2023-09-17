@@ -16,6 +16,8 @@ import {
   WS_CONNECTION_START_PROFILE,
   WS_CONNECTION_SUCCESS,
   WS_CONNECTION_SUCCESS_PROFILE,
+  WS_DISCONNECT,
+  WS_DISCONNECT_PROFILE,
   WS_GET_MESSAGE,
   WS_GET_MESSAGE_PROFILE,
   WS_SEND_MESSAGE,
@@ -29,6 +31,7 @@ const wsActions = {
   onError: WS_CONNECTION_ERROR,
   onMessage: WS_GET_MESSAGE,
   wsSend: WS_SEND_MESSAGE,
+  wsDisconnect: WS_DISCONNECT,
 };
 
 const wsActionsProfile = {
@@ -38,6 +41,7 @@ const wsActionsProfile = {
   onError: WS_CONNECTION_ERROR_PROFILE,
   onMessage: WS_GET_MESSAGE_PROFILE,
   wsSend: WS_SEND_MESSAGE_PROFILE,
+  wsDisconnect: WS_DISCONNECT_PROFILE,
 };
 
 declare global {

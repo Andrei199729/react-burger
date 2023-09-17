@@ -16,7 +16,7 @@ const HEADERS = {
 const getJson = (res: Response) => {
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
-export const postRefreshToken = (refreshToken: string) => {
+export const postRefreshToken = (refreshToken?: string | undefined) => {
   return fetch(`${BASE_URL}/${TOKEN_PATH}`, {
     method: "POST",
     headers: HEADERS,
@@ -32,9 +32,7 @@ export const fetchWithRefresh = async (url: string, options: any) => {
     return await getJson(res);
   } catch (err: any) {
     if (err.message === "jwt expired") {
-      const newLocal: any = this;
-      const refreshData = await newLocal.postRefreshToken();
-
+      const refreshData = await postRefreshToken();
       if (!refreshData.success) {
         return Promise.reject(refreshData);
       }

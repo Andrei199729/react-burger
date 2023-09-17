@@ -22,7 +22,6 @@ import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import IngredientPage from "../../pages/IngredientPage/IngredientPage";
 import Modal from "../Modal/Modal";
 import { getIngredients } from "../../services/actions/ingredient";
-import { checkUserAuth } from "../../services/actions/user";
 
 import {
   MAIN_PATH,
@@ -40,6 +39,7 @@ import {
 } from "../../utils/constants";
 import Preloader from "../Preloader/Preloader";
 import { useDispatch, useSelector } from "../../services/hooks";
+import { checkUserAuth } from "../../services/actions/user";
 
 function App() {
   const dispatch = useDispatch();
