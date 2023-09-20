@@ -1,23 +1,33 @@
-import { Middleware, MiddlewareAPI } from "redux";
+import { Middleware } from "redux";
 import { IWebSocket } from "../actions/wsAction";
-import { AppDispatch, RootState } from "../types";
-import { getUserData } from "../actions/user";
+import { RootState } from "../types";
 
-export const socketMiddleware = (wsActions: IWebSocket): Middleware => {
-  let socket: WebSocket | null = null;
-
-  return (store: MiddlewareAPI<AppDispatch, RootState>) => {
-    const { dispatch } = store;
+export const socketMiddleware = (
+  wsActions: IWebSocket
+): Middleware<{}, RootState> => {
+  return (store) => {
+    let socket: WebSocket | null = null;
 
     return (next) => (action) => {
-      const { type, payload } = action;
-      const { wsInit, onOpen, onClose, onError, onMessage, wsSend } = wsActions;
+      const { dispatch } = store;
+      const { type } = action;
+      const {
+        wsInit,
+        onOpen,
+        onClose,
+        onError,
+        onMessage,
+        wsSend,
+        wsDisconnect,
+      } = wsActions;
+
       if (type === wsInit) {
         socket = new WebSocket(action.payload);
       }
+
       if (socket) {
         socket.onopen = (event) => {
-          dispatch({ type: onOpen, payload: event });
+          dispatch({ type: onOpen });
         };
 
         socket.onerror = () => {
@@ -27,24 +37,22 @@ export const socketMiddleware = (wsActions: IWebSocket): Middleware => {
         socket.onmessage = (event) => {
           const { data } = event;
           const parsedData = JSON.parse(data);
-          if (
-            parsedData.message &&
-            parsedData.message === "Invalid or missing token"
-          ) {
-            dispatch(getUserData());
-          }
+
           dispatch({ type: onMessage, payload: parsedData });
         };
 
-        if (type === wsSend) {
-          const message = payload;
-          socket.send(JSON.stringify(message));
-        }
         socket.onclose = (event) => {
           dispatch({ type: onClose, payload: event });
         };
-      }
 
+        if (type === wsSend) {
+          socket.send(JSON.stringify(action.payload));
+        }
+        if (type === wsDisconnect) {
+          socket.close();
+          socket = null;
+        }
+      }
       next(action);
     };
   };

@@ -66,7 +66,7 @@ const Profile: FC = () => {
   };
 
   const handleLogout = () => {
-    const refreshToken: any = getCookie("refreshToken");
+    const refreshToken = getCookie("refreshToken");
     dispatch(postLogoutAuth(refreshToken));
   };
 

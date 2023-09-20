@@ -42,7 +42,6 @@ export type TOrderIngredient = {
   status: string;
   updatedAt: string;
   _id: string;
-  _v: number;
 };
 
 export type TPopupOrder = {
@@ -74,8 +73,8 @@ export type TUserUpdate = TUser & {
 
 export type TUserData = {
   success: boolean;
-  accessToken: string;
-  refreshToken: string;
+  accessToken: string | undefined;
+  refreshToken: string | undefined;
   user: TUser;
 };
 

@@ -1,72 +1,63 @@
 import {
-  WS_CONNECTION_SUCCESS,
-  WS_CONNECTION_ERROR,
-  WS_CONNECTION_CLOSED,
-  WS_GET_MESSAGE,
+  WS_CONNECTION_SUCCESS_PROFILE,
+  WS_CONNECTION_ERROR_PROFILE,
+  WS_CONNECTION_CLOSED_PROFILE,
+  WS_GET_MESSAGE_PROFILE,
 } from "../actions-types/wsActionTypes";
 
 import { TOrderIngredient } from "../types/data";
-import { TWsConnectionAction } from "../actions/wsAction";
+import { TWsConnectionProfileAction } from "../actions/wsActionProfile";
 
-type TWsConnectedState = {
+type TWsConnectedProfileState = {
   wsConnected: boolean;
   orders: TOrderIngredient[];
   total: number;
   totalToday: number;
   error: boolean;
-  preloader: boolean;
-  errorMessage: string;
+  errorMessage: null | string;
 };
 
-const initialState: TWsConnectedState = {
+const initialState: TWsConnectedProfileState = {
   wsConnected: false,
   orders: [],
   total: 0,
   totalToday: 0,
   error: false,
-  errorMessage: "",
-  preloader: false,
+  errorMessage: null,
 };
 
-export const wsReducer = (
+export const wsReducerProfile = (
   state = initialState,
-  action: TWsConnectionAction
-): TWsConnectedState => {
+  action: TWsConnectionProfileAction
+): TWsConnectedProfileState => {
   switch (action.type) {
-    case WS_CONNECTION_SUCCESS:
+    case WS_CONNECTION_SUCCESS_PROFILE:
       return {
         ...state,
         error: false,
-        errorMessage: "",
+        errorMessage: null,
         wsConnected: true,
-        preloader: true,
       };
-
-    case WS_CONNECTION_ERROR:
+    case WS_CONNECTION_ERROR_PROFILE:
       return {
         ...state,
         errorMessage: action.payload,
         error: true,
         wsConnected: false,
-        preloader: false,
       };
-
-    case WS_CONNECTION_CLOSED:
+    case WS_CONNECTION_CLOSED_PROFILE:
       return {
         ...state,
         error: false,
         wsConnected: false,
-        preloader: false,
       };
-
-    case WS_GET_MESSAGE:
+    case WS_GET_MESSAGE_PROFILE:
       return {
         ...state,
         error: false,
         orders: action.payload.orders,
         total: action.payload.total,
         totalToday: action.payload.totalToday,
-        preloader: false,
       };
     default:
       return state;

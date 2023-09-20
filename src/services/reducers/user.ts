@@ -23,7 +23,7 @@ type TUserState = {
   userData: TUserData | null;
   user: TUserUpdate | null;
   password: string;
-  accessToken: undefined;
+  accessToken: string | undefined;
   isAuthloggedIn: boolean;
   success: boolean;
 };

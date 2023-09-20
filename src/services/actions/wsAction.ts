@@ -5,16 +5,18 @@ import {
   WS_GET_MESSAGE,
   WS_SEND_MESSAGE,
   WS_CONNECTION_START,
+  WS_DISCONNECT,
 } from "../actions-types/wsActionTypes";
 import { TOrderIngredient } from "../types/data";
 
 export interface IWebSocket {
-  wsInit: any;
-  onOpen: any;
-  onClose: any;
-  onError: any;
-  onMessage: any;
-  wsSend: any;
+  wsInit: string;
+  onOpen: string;
+  onClose: string;
+  onError: string;
+  onMessage: string;
+  wsSend: string;
+  wsDisconnect: string;
 }
 
 export interface IWsMessage {
@@ -37,7 +39,7 @@ export interface IWsConnectionSuccessAction {
 
 export interface IWsConnectionErrorAction {
   readonly type: typeof WS_CONNECTION_ERROR;
-  readonly payload: null | string;
+  readonly payload: string;
 }
 
 export interface IWsConnectionClosedAction {
@@ -53,13 +55,18 @@ export interface IWsSendMessageAction {
   readonly type: typeof WS_SEND_MESSAGE;
 }
 
+export interface IWsDisconnect {
+  readonly type: typeof WS_DISCONNECT;
+}
+
 export type TWsConnectionAction =
   | IWsConnectionSuccessAction
   | IWsConnectionErrorAction
   | IWsConnectionClosedAction
   | IWsConnectionMessageAction
   | IWsSendMessageAction
-  | IWsConnectionStartAction;
+  | IWsConnectionStartAction
+  | IWsDisconnect;
 
 export const wsConnectionStartAction = (
   url: Event | string
@@ -81,9 +88,7 @@ export const wsConnectionSuccess = (
   };
 };
 
-export const wsConnectionError = (
-  error: string | null
-): IWsConnectionErrorAction => {
+export const wsConnectionError = (error: string): IWsConnectionErrorAction => {
   return {
     type: WS_CONNECTION_ERROR,
     payload: error,
@@ -104,3 +109,7 @@ export const wsGetMessage = (
     payload: message,
   };
 };
+
+export const disconnect = (): IWsDisconnect => ({
+  type: WS_DISCONNECT,
+});
