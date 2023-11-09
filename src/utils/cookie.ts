@@ -13,7 +13,7 @@ export function setCookie(
   props: { [key: string]: any } & { expires?: number | Date | string } = {}
 ) {
   props = {
-    path: "/",
+    path: "/react-burger",
     ...props,
   };
   let exp = props.expires;

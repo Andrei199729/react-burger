@@ -18,7 +18,7 @@ export const PROFILE_PATH = "/profile";
 export const PROFILE_ORDERS_PATH = "/profile/orders";
 export const ORDERS_PATH = "orders";
 export const PROFILE_ORDERS_ID_PATH = "/profile/orders/:number";
-export const ERROR_PATH = "*";
+export const ERROR_PATH = "/*";
 
 export const INGREDIENTS_API_PATH = "ingredients";
 export const FORGOT_PASS_API_PATH = "password-reset";

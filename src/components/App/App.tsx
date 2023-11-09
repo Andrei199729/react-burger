@@ -46,6 +46,7 @@ function App() {
   const location = useLocation();
   const background = location.state && location.state.background;
   const preloader = useSelector((state) => state.ingredients.preloader);
+
   useEffect(() => {
     dispatch(checkUserAuth());
     dispatch(getIngredients());
